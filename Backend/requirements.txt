@@ -1,0 +1,12 @@
+pillow
+fastapi
+langchain
+langchain-core
+langchain-ollama 
+langchain-google-genai
+langchain-openai
+langgraph
+pydantic
+python-dotenv
+typing_extensions
+uvicorn

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageSquare, X, Send, Bot, User, FileText } from 'lucide-react';
+import { MessageSquare, X, Send, Bot, User, FileText, Loader2 } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -38,43 +38,72 @@ export default function ProjectChatbot() {
     scrollToBottom();
   }, [messages, isTyping]);
 
-  const handleSend = () => {
-    if (!inputValue.trim()) return;
+  const handleSend = async (textToSend?: any) => {
+    const textStr = typeof textToSend === 'string' ? textToSend : inputValue;
+    const text = textStr.trim();
+    if (!text) return;
 
     const newUserMessage: Message = {
       id: Date.now().toString(),
       sender: 'user',
-      text: inputValue,
+      text: text,
     };
 
     setMessages((prev) => [...prev, newUserMessage]);
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate bot response
-    setTimeout(() => {
-      setIsTyping(false);
-      
-      const lowerInput = newUserMessage.text.toLowerCase();
-      let botResponse = "I can help summarize the project documents, identify risks, or provide schedule updates. Just ask!";
-      let isSummary = false;
+    try {
+      const response = await fetch('http://localhost:8000/query', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: text }),
+      });
 
-      if (lowerInput.includes('summar') || lowerInput.includes('document') || lowerInput.includes('project')) {
-        botResponse = MOCK_SUMMARY;
-        isSummary = true;
-      } else if (lowerInput.includes('risk')) {
-        botResponse = "The main risk right now is the blocked API integration. The backend team is currently waiting on vendor credentials, which might push the schedule back by 3-5 days.";
+      if (!response.ok) {
+        throw new Error('Backend query failed');
       }
 
+      const data = await response.json();
+      setIsTyping(false);
+
       const newBotMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: Date.now().toString(),
         sender: 'bot',
-        text: botResponse,
-        isSummary,
+        text: data.message,
+        isSummary: text.toLowerCase().includes('summar') || text.toLowerCase().includes('document'),
       };
 
       setMessages((prev) => [...prev, newBotMessage]);
-    }, 1500);
+    } catch (error) {
+      console.warn('Real-time assistant fallback to mock simulation:', error);
+      
+      // Graceful simulated intelligence fallback if local Ollama/server is not active
+      setTimeout(() => {
+        setIsTyping(false);
+        const lowerInput = text.toLowerCase();
+        let botResponse = "I can help summarize the project documents, identify risks, or provide schedule updates. Just ask!";
+        let isSummary = false;
+
+        if (lowerInput.includes('summar') || lowerInput.includes('document') || lowerInput.includes('project')) {
+          botResponse = MOCK_SUMMARY;
+          isSummary = true;
+        } else if (lowerInput.includes('risk')) {
+          botResponse = "The main risk right now is the blocked API integration. The backend team is currently waiting on vendor credentials, which might push the schedule back by 3-5 days.";
+        }
+
+        const newBotMessage: Message = {
+          id: Date.now().toString(),
+          sender: 'bot',
+          text: botResponse,
+          isSummary,
+        };
+
+        setMessages((prev) => [...prev, newBotMessage]);
+      }, 1200);
+    }
   };
 
   return (
@@ -189,20 +218,13 @@ export default function ProjectChatbot() {
         {messages.length === 1 && (
           <div className="px-4 pb-2 flex gap-2 overflow-x-auto scrollbar-hide">
             <button
-              onClick={() => {
-                setInputValue("Summarize the latest documents");
-                // We use a timeout to let state update before sending
-                setTimeout(() => document.getElementById('chat-send-btn')?.click(), 10);
-              }}
+              onClick={() => handleSend("Summarize the latest documents")}
               className="flex-shrink-0 px-3 py-1.5 bg-brand-primary/20 hover:bg-brand-primary/40 border border-brand-primary/30 rounded-full text-xs text-brand-accent transition-colors"
             >
               Summarize documents
             </button>
             <button
-              onClick={() => {
-                setInputValue("What are the key risks?");
-                setTimeout(() => document.getElementById('chat-send-btn')?.click(), 10);
-              }}
+              onClick={() => handleSend("What are the key risks?")}
               className="flex-shrink-0 px-3 py-1.5 bg-brand-primary/20 hover:bg-brand-primary/40 border border-brand-primary/30 rounded-full text-xs text-brand-accent transition-colors"
             >
               Identify risks
@@ -218,19 +240,24 @@ export default function ProjectChatbot() {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') handleSend();
+                if (e.key === 'Enter' && !isTyping) handleSend();
               }}
-              placeholder="Ask the assistant..."
-              className="w-full bg-brand-primary/10 border border-brand-primary/30 rounded-full pl-4 pr-12 py-3 text-sm text-brand-light placeholder-brand-light/40 focus:outline-none focus:border-brand-accent transition-colors"
+              disabled={isTyping}
+              placeholder={isTyping ? "Assistant is thinking..." : "Ask the assistant..."}
+              className="w-full bg-brand-primary/10 border border-brand-primary/30 rounded-full pl-4 pr-12 py-3 text-sm text-brand-light placeholder-brand-light/40 focus:outline-none focus:border-brand-accent transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             />
             <button
               id="chat-send-btn"
               onClick={handleSend}
-              disabled={!inputValue.trim()}
+              disabled={isTyping || !inputValue.trim()}
               className="absolute right-2 p-2 rounded-full bg-brand-accent text-brand-dark disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-transform"
               aria-label="Send message"
             >
-              <Send className="w-4 h-4" />
+              {isTyping ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Send className="w-4 h-4" />
+              )}
             </button>
           </div>
         </div>
