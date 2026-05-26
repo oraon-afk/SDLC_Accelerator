@@ -3,7 +3,8 @@ import { personaInfo, agents } from '../data/agents';
 import { useNavigate } from 'react-router-dom';
 import { 
   ClipboardList, Search, Shield, Layers, CheckSquare, 
-  FileText, Activity, TrendingUp, LogOut, Upload, ChevronRight, Bell, Zap, Menu, X, AlertTriangle
+  FileText, Activity, TrendingUp, LogOut, Upload, ChevronRight, Bell, Zap, Menu, X, AlertTriangle,
+  Folder, Plus, Target, Users, DollarSign
 } from 'lucide-react';
 import { useState } from 'react';
 import ProjectChatbot from '../components/ProjectChatbot';
@@ -27,6 +28,156 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
   const Icon = personaIcons[persona];
   const availableAgents = agents.filter(agent => agent.persona === persona);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Program Manager project storage (runtime only)
+  const [projects, setProjects] = useState<any[]>([
+    {
+      id: '1',
+      name: 'E-Commerce Platform Modernization',
+      objective: {
+        businessGoal: 'Increase online conversion rates by 25% and reduce checkout abandonment.',
+        expectedOutcome: 'A modern, high-speed React-based storefront with an optimized checkout flow.'
+      },
+      scope: {
+        featuresIncluded: ['Payment gateway integration', 'Responsive UI', 'Search auto-complete', 'Product catalog'],
+        featuresExcluded: ['Wholesale client accounts', 'Loyalty points system', 'Native iOS/Android App']
+      },
+      stakeholders: {
+        businessOwner: ['Sarah Jenkins (VP of Digital)', 'Mark R. (Product Lead)'],
+        technicalOwner: ['David Chen (Principal Architect)', 'Elena G. (Dev Lead)'],
+        endUsers: ['Retail consumers', 'Store customer service agents', 'Marketing operators']
+      },
+      budgetResources: {
+        teamSize: '12 members (4 Frontend, 4 Backend, 2 QA, 1 PM, 1 Designer)',
+        costEstimation: '$150,000 USD',
+        toolRequirements: 'Vercel, AWS RDS, Tailwind UI, Datadog'
+      },
+      successMetrics: {
+        performanceTargets: ['LCP < 2.5s', 'TTI < 1.8s', '99.9% API uptime'],
+        userAdoption: ['90% migration in 30 days', 'CSAT score > 4.5/5'],
+        timeReduction: ['Checkout time < 45 seconds', '30% automated return processing'],
+        errorReduction: ['40% fewer checkout crashes', 'Zero payment validation errors']
+      },
+      createdAt: new Date('2026-05-10')
+    }
+  ]);
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<any | null>(null);
+
+  // Form input states (Objective and Budget remain as strings, others become lists/tags)
+  const [newProjectName, setNewProjectName] = useState('');
+  const [newBusinessGoal, setNewBusinessGoal] = useState('');
+  const [newExpectedOutcome, setNewExpectedOutcome] = useState('');
+  
+  // Lists / tags states
+  const [newFeaturesIncluded, setNewFeaturesIncluded] = useState<string[]>([]);
+  const [newFeaturesExcluded, setNewFeaturesExcluded] = useState<string[]>([]);
+  const [newBusinessOwner, setNewBusinessOwner] = useState<string[]>([]);
+  const [newTechnicalOwner, setNewTechnicalOwner] = useState<string[]>([]);
+  const [newEndUsers, setNewEndUsers] = useState<string[]>([]);
+  
+  const [newTeamSize, setNewTeamSize] = useState('');
+  const [newCostEstimation, setNewCostEstimation] = useState('');
+  const [newToolRequirements, setNewToolRequirements] = useState('');
+  
+  const [newPerformanceTargets, setNewPerformanceTargets] = useState<string[]>([]);
+  const [newUserAdoption, setNewUserAdoption] = useState<string[]>([]);
+  const [newTimeReduction, setNewTimeReduction] = useState<string[]>([]);
+  const [newErrorReduction, setNewErrorReduction] = useState<string[]>([]);
+
+  // Text inputs for active tag creation editors
+  const [featuresIncludedText, setFeaturesIncludedText] = useState('');
+  const [featuresExcludedText, setFeaturesExcludedText] = useState('');
+  const [businessOwnerText, setBusinessOwnerText] = useState('');
+  const [technicalOwnerText, setTechnicalOwnerText] = useState('');
+  const [endUsersText, setEndUsersText] = useState('');
+  const [performanceTargetsText, setPerformanceTargetsText] = useState('');
+  const [userAdoptionText, setUserAdoptionText] = useState('');
+  const [timeReductionText, setTimeReductionText] = useState('');
+  const [errorReductionText, setErrorReductionText] = useState('');
+
+  // Tag helper functions
+  const addTag = (text: string, setText: (val: string) => void, list: string[], setList: (val: string[]) => void) => {
+    const trimmed = text.trim();
+    if (trimmed && !list.includes(trimmed)) {
+      setList([...list, trimmed]);
+      setText('');
+    }
+  };
+
+  const removeTag = (index: number, list: string[], setList: (val: string[]) => void) => {
+    setList(list.filter((_, i) => i !== index));
+  };
+
+  const handleCreateProject = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newProjectName.trim()) return;
+
+    const newProject = {
+      id: Date.now().toString(),
+      name: newProjectName,
+      objective: {
+        businessGoal: newBusinessGoal,
+        expectedOutcome: newExpectedOutcome,
+      },
+      scope: {
+        featuresIncluded: newFeaturesIncluded,
+        featuresExcluded: newFeaturesExcluded,
+      },
+      stakeholders: {
+        businessOwner: newBusinessOwner,
+        technicalOwner: newTechnicalOwner,
+        endUsers: newEndUsers,
+      },
+      budgetResources: {
+        teamSize: newTeamSize,
+        costEstimation: newCostEstimation,
+        toolRequirements: newToolRequirements,
+      },
+      successMetrics: {
+        performanceTargets: newPerformanceTargets,
+        userAdoption: newUserAdoption,
+        timeReduction: newTimeReduction,
+        errorReduction: newErrorReduction,
+      },
+      createdAt: new Date()
+    };
+
+    setProjects([newProject, ...projects]);
+    setIsCreateModalOpen(false);
+
+    // Reset fields
+    setNewProjectName('');
+    setNewBusinessGoal('');
+    setNewExpectedOutcome('');
+    
+    setNewFeaturesIncluded([]);
+    setNewFeaturesExcluded([]);
+    setNewBusinessOwner([]);
+    setNewTechnicalOwner([]);
+    setNewEndUsers([]);
+    
+    setNewTeamSize('');
+    setNewCostEstimation('');
+    setNewToolRequirements('');
+    
+    setNewPerformanceTargets([]);
+    setNewUserAdoption([]);
+    setNewTimeReduction([]);
+    setNewErrorReduction([]);
+
+    // Reset editor texts
+    setFeaturesIncludedText('');
+    setFeaturesExcludedText('');
+    setBusinessOwnerText('');
+    setTechnicalOwnerText('');
+    setEndUsersText('');
+    setPerformanceTargetsText('');
+    setUserAdoptionText('');
+    setTimeReductionText('');
+    setErrorReductionText('');
+  };
 
   const recentActivity = [
     { id: 1, agent: 'IntellI-PM', action: 'Risk analysis completed', time: '2 hours ago', status: 'success' },
@@ -131,6 +282,14 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
                 </p>
               </div>
               <div className="flex gap-3 shrink-0">
+                {persona === 'program-manager' && (
+                  <button
+                    onClick={() => setIsCreateModalOpen(true)}
+                    className="bg-brand-accent text-brand-dark border border-transparent px-6 py-2.5 rounded-xl font-bold shadow-sm hover:shadow-brand-accent/40 hover:bg-white transition-all hover:-translate-y-0.5"
+                  >
+                    + Create Project
+                  </button>
+                )}
                 <button
                   onClick={() => availableAgents[0] && navigate(`/agent/${availableAgents[0].id}`)}
                   className="bg-brand-dark text-brand-light border border-brand-primary/30 px-6 py-2.5 rounded-xl font-semibold shadow-sm hover:shadow-brand-accent/20 hover:border-brand-accent transition-all hover:-translate-y-0.5"
@@ -210,6 +369,818 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
                     <span className="text-sm text-brand-light/80 leading-snug">Budget variance of 4% detected in latest vendor invoice processing.</span>
                   </li>
                 </ul>
+              </div>
+            </div>
+          )}
+
+          {/* PM Specific Project Portfolio */}
+          {persona === 'program-manager' && (
+            <div className="mb-8 animate-slide-up" style={{ animationDelay: '0.18s' }}>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold text-brand-light flex items-center gap-2">
+                  <Folder className="w-5 h-5 text-brand-accent" /> Project Portfolio ({projects.length})
+                </h3>
+                <button
+                  onClick={() => setIsCreateModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-brand-primary/20 hover:bg-brand-primary/40 border border-brand-primary/30 rounded-xl text-sm font-semibold text-brand-accent transition-all hover:scale-105"
+                >
+                  <Plus className="w-4 h-4" /> Create Project
+                </button>
+              </div>
+              
+              {projects.length === 0 ? (
+                <div className="bg-brand-primary/5 rounded-2xl p-8 border border-brand-primary/30 text-center">
+                  <p className="text-brand-light/60 text-sm">No projects created yet. Click "Create Project" to add your first project.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {projects.map((project) => (
+                    <div
+                      key={project.id}
+                      onClick={() => setSelectedProject(project)}
+                      className="group bg-brand-primary/5 backdrop-blur-md rounded-2xl p-6 border border-brand-primary/30 hover:border-brand-accent hover:shadow-lg hover:shadow-brand-accent/10 transition-all text-left cursor-pointer relative"
+                    >
+                      <div className="absolute top-4 right-4 bg-brand-accent/15 text-brand-accent text-xs font-semibold px-2 py-1 rounded-md">
+                        Active
+                      </div>
+                      <h4 className="text-lg font-bold text-brand-light mb-2 group-hover:text-brand-accent transition-colors truncate pr-12">
+                        {project.name}
+                      </h4>
+                      <p className="text-sm text-brand-light/75 line-clamp-2 leading-relaxed mb-4">
+                        {project.objective.businessGoal || 'No business goal specified.'}
+                      </p>
+                      <div className="flex items-center justify-between text-xs text-brand-light/50 border-t border-brand-primary/20 pt-4">
+                        <span>Owner: {project.stakeholders.businessOwner && project.stakeholders.businessOwner[0] ? project.stakeholders.businessOwner[0].split(' ')[0] : 'Unassigned'}</span>
+                        <span>Team Size: {project.budgetResources.teamSize || 'N/A'}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Create Project Modal */}
+          {isCreateModalOpen && (
+            <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+              <div className="bg-brand-dark border border-brand-primary/40 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 text-white shadow-2xl animate-fade-in flex flex-col">
+                <div className="flex items-center justify-between pb-4 border-b border-brand-primary/20 mb-6">
+                  <h3 className="text-xl font-bold text-brand-light flex items-center gap-2">
+                    <Folder className="w-5 h-5 text-brand-accent" /> Create New Project Profile
+                  </h3>
+                  <button
+                    onClick={() => setIsCreateModalOpen(false)}
+                    className="p-2 text-brand-light/60 hover:text-white hover:bg-brand-primary/20 rounded-lg transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <form onSubmit={handleCreateProject} className="space-y-6">
+                  {/* Project Name */}
+                  <div>
+                    <label className="block text-sm font-semibold text-brand-accent mb-1">Project Name / Title *</label>
+                    <input
+                      type="text"
+                      value={newProjectName}
+                      onChange={(e) => setNewProjectName(e.target.value)}
+                      className="w-full bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2.5 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-sm"
+                      placeholder="e.g. Next-Generation SDLC Hub"
+                      required
+                    />
+                  </div>
+
+                  {/* 1. Project Objective */}
+                  <div className="border-t border-brand-primary/20 pt-4">
+                    <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                      <Target className="w-4 h-4 text-brand-accent" />
+                      1. Project Objective
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">Business Goal</label>
+                        <textarea
+                          rows={2}
+                          value={newBusinessGoal}
+                          onChange={(e) => setNewBusinessGoal(e.target.value)}
+                          className="w-full bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                          placeholder="What high-level business goal does this address?"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">Expected Outcome</label>
+                        <textarea
+                          rows={2}
+                          value={newExpectedOutcome}
+                          onChange={(e) => setNewExpectedOutcome(e.target.value)}
+                          className="w-full bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                          placeholder="What is the expected outcome of the project?"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 2. Scope */}
+                  <div className="border-t border-brand-primary/20 pt-4">
+                    <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-brand-accent" />
+                      2. Scope Definition
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Features Included */}
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">Features Included (Tags)</label>
+                        <div className="flex gap-2 mb-2">
+                          <input
+                            type="text"
+                            value={featuresIncludedText}
+                            onChange={(e) => setFeaturesIncludedText(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                addTag(featuresIncludedText, setFeaturesIncludedText, newFeaturesIncluded, setNewFeaturesIncluded);
+                              }
+                            }}
+                            className="flex-1 bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                            placeholder="Type feature and press Enter"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => addTag(featuresIncludedText, setFeaturesIncludedText, newFeaturesIncluded, setNewFeaturesIncluded)}
+                            className="px-3 bg-brand-primary/30 hover:bg-brand-accent hover:text-brand-dark border border-brand-primary/30 rounded-xl text-xs font-bold text-brand-accent transition-colors"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 min-h-[32px] p-2 bg-brand-primary/5 rounded-xl border border-brand-primary/20">
+                          {newFeaturesIncluded.map((tag, idx) => (
+                            <span key={idx} className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                              {tag}
+                              <button
+                                type="button"
+                                onClick={() => removeTag(idx, newFeaturesIncluded, setNewFeaturesIncluded)}
+                                className="hover:text-white ml-1 focus:outline-none font-bold"
+                              >
+                                &times;
+                              </button>
+                            </span>
+                          ))}
+                          {newFeaturesIncluded.length === 0 && (
+                            <span className="text-xs text-brand-light/40 italic">No features added.</span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Features Excluded */}
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">Features Excluded (Tags)</label>
+                        <div className="flex gap-2 mb-2">
+                          <input
+                            type="text"
+                            value={featuresExcludedText}
+                            onChange={(e) => setFeaturesExcludedText(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                addTag(featuresExcludedText, setFeaturesExcludedText, newFeaturesExcluded, setNewFeaturesExcluded);
+                              }
+                            }}
+                            className="flex-1 bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                            placeholder="Type feature and press Enter"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => addTag(featuresExcludedText, setFeaturesExcludedText, newFeaturesExcluded, setNewFeaturesExcluded)}
+                            className="px-3 bg-brand-primary/30 hover:bg-brand-accent hover:text-brand-dark border border-brand-primary/30 rounded-xl text-xs font-bold text-brand-accent transition-colors"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 min-h-[32px] p-2 bg-brand-primary/5 rounded-xl border border-brand-primary/20">
+                          {newFeaturesExcluded.map((tag, idx) => (
+                            <span key={idx} className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                              {tag}
+                              <button
+                                type="button"
+                                onClick={() => removeTag(idx, newFeaturesExcluded, setNewFeaturesExcluded)}
+                                className="hover:text-white ml-1 focus:outline-none font-bold"
+                              >
+                                &times;
+                              </button>
+                            </span>
+                          ))}
+                          {newFeaturesExcluded.length === 0 && (
+                            <span className="text-xs text-brand-light/40 italic">No features excluded.</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 3. Stakeholders */}
+                  <div className="border-t border-brand-primary/20 pt-4">
+                    <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                      <Users className="w-4 h-4 text-brand-accent" />
+                      3. Stakeholders (Tags)
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {/* Business Owner */}
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">Business Owners</label>
+                        <div className="flex gap-2 mb-2">
+                          <input
+                            type="text"
+                            value={businessOwnerText}
+                            onChange={(e) => setBusinessOwnerText(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                addTag(businessOwnerText, setBusinessOwnerText, newBusinessOwner, setNewBusinessOwner);
+                              }
+                            }}
+                            className="flex-1 bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                            placeholder="Name / Role & Enter"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => addTag(businessOwnerText, setBusinessOwnerText, newBusinessOwner, setNewBusinessOwner)}
+                            className="px-3 bg-brand-primary/30 hover:bg-brand-accent hover:text-brand-dark border border-brand-primary/30 rounded-xl text-xs font-bold text-brand-accent transition-colors"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 min-h-[32px] p-2 bg-brand-primary/5 rounded-xl border border-brand-primary/20">
+                          {newBusinessOwner.map((tag, idx) => (
+                            <span key={idx} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                              {tag}
+                              <button
+                                type="button"
+                                onClick={() => removeTag(idx, newBusinessOwner, setNewBusinessOwner)}
+                                className="hover:text-white ml-1 focus:outline-none font-bold"
+                              >
+                                &times;
+                              </button>
+                            </span>
+                          ))}
+                          {newBusinessOwner.length === 0 && (
+                            <span className="text-xs text-brand-light/40 italic">None added.</span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Technical Owner */}
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">Technical Owners</label>
+                        <div className="flex gap-2 mb-2">
+                          <input
+                            type="text"
+                            value={technicalOwnerText}
+                            onChange={(e) => setTechnicalOwnerText(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                addTag(technicalOwnerText, setTechnicalOwnerText, newTechnicalOwner, setNewTechnicalOwner);
+                              }
+                            }}
+                            className="flex-1 bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                            placeholder="Name / Role & Enter"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => addTag(technicalOwnerText, setTechnicalOwnerText, newTechnicalOwner, setNewTechnicalOwner)}
+                            className="px-3 bg-brand-primary/30 hover:bg-brand-accent hover:text-brand-dark border border-brand-primary/30 rounded-xl text-xs font-bold text-brand-accent transition-colors"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 min-h-[32px] p-2 bg-brand-primary/5 rounded-xl border border-brand-primary/20">
+                          {newTechnicalOwner.map((tag, idx) => (
+                            <span key={idx} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                              {tag}
+                              <button
+                                type="button"
+                                onClick={() => removeTag(idx, newTechnicalOwner, setNewTechnicalOwner)}
+                                className="hover:text-white ml-1 focus:outline-none font-bold"
+                              >
+                                &times;
+                              </button>
+                            </span>
+                          ))}
+                          {newTechnicalOwner.length === 0 && (
+                            <span className="text-xs text-brand-light/40 italic">None added.</span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* End Users */}
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">End Users</label>
+                        <div className="flex gap-2 mb-2">
+                          <input
+                            type="text"
+                            value={endUsersText}
+                            onChange={(e) => setEndUsersText(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                addTag(endUsersText, setEndUsersText, newEndUsers, setNewEndUsers);
+                              }
+                            }}
+                            className="flex-1 bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                            placeholder="Audience & Enter"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => addTag(endUsersText, setEndUsersText, newEndUsers, setNewEndUsers)}
+                            className="px-3 bg-brand-primary/30 hover:bg-brand-accent hover:text-brand-dark border border-brand-primary/30 rounded-xl text-xs font-bold text-brand-accent transition-colors"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 min-h-[32px] p-2 bg-brand-primary/5 rounded-xl border border-brand-primary/20">
+                          {newEndUsers.map((tag, idx) => (
+                            <span key={idx} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                              {tag}
+                              <button
+                                type="button"
+                                onClick={() => removeTag(idx, newEndUsers, setNewEndUsers)}
+                                className="hover:text-white ml-1 focus:outline-none font-bold"
+                              >
+                                &times;
+                              </button>
+                            </span>
+                          ))}
+                          {newEndUsers.length === 0 && (
+                            <span className="text-xs text-brand-light/40 italic">None added.</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 4. Budget & Resources */}
+                  <div className="border-t border-brand-primary/20 pt-4">
+                    <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                      <DollarSign className="w-4 h-4 text-brand-accent" />
+                      4. Budget & Resources
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">Team Size</label>
+                        <input
+                          type="text"
+                          value={newTeamSize}
+                          onChange={(e) => setNewTeamSize(e.target.value)}
+                          className="w-full bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                          placeholder="e.g. 10 members"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">Cost Estimation</label>
+                        <input
+                          type="text"
+                          value={newCostEstimation}
+                          onChange={(e) => setNewCostEstimation(e.target.value)}
+                          className="w-full bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                          placeholder="e.g. $120,000 USD"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">Tool/Infra Requirements</label>
+                        <input
+                          type="text"
+                          value={newToolRequirements}
+                          onChange={(e) => setNewToolRequirements(e.target.value)}
+                          className="w-full bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                          placeholder="e.g. AWS, Github, JIRA"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 5. Success Metrics / KPIs */}
+                  <div className="border-t border-brand-primary/20 pt-4">
+                    <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4 text-brand-accent" />
+                      5. Success Metrics / KPIs (Tags)
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Performance Targets */}
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">Performance Targets</label>
+                        <div className="flex gap-2 mb-2">
+                          <input
+                            type="text"
+                            value={performanceTargetsText}
+                            onChange={(e) => setPerformanceTargetsText(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                addTag(performanceTargetsText, setPerformanceTargetsText, newPerformanceTargets, setNewPerformanceTargets);
+                              }
+                            }}
+                            className="flex-1 bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                            placeholder="e.g. Response < 100ms & Enter"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => addTag(performanceTargetsText, setPerformanceTargetsText, newPerformanceTargets, setNewPerformanceTargets)}
+                            className="px-3 bg-brand-primary/30 hover:bg-brand-accent hover:text-brand-dark border border-brand-primary/30 rounded-xl text-xs font-bold text-brand-accent transition-colors"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 min-h-[32px] p-2 bg-brand-primary/5 rounded-xl border border-brand-primary/20">
+                          {newPerformanceTargets.map((tag, idx) => (
+                            <span key={idx} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                              {tag}
+                              <button
+                                type="button"
+                                onClick={() => removeTag(idx, newPerformanceTargets, setNewPerformanceTargets)}
+                                className="hover:text-white ml-1 focus:outline-none font-bold"
+                              >
+                                &times;
+                              </button>
+                            </span>
+                          ))}
+                          {newPerformanceTargets.length === 0 && (
+                            <span className="text-xs text-brand-light/40 italic">None added.</span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* User Adoption */}
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">User Adoption Target</label>
+                        <div className="flex gap-2 mb-2">
+                          <input
+                            type="text"
+                            value={userAdoptionText}
+                            onChange={(e) => setUserAdoptionText(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                addTag(userAdoptionText, setUserAdoptionText, newUserAdoption, setNewUserAdoption);
+                              }
+                            }}
+                            className="flex-1 bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                            placeholder="e.g. 90% migration & Enter"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => addTag(userAdoptionText, setUserAdoptionText, newUserAdoption, setNewUserAdoption)}
+                            className="px-3 bg-brand-primary/30 hover:bg-brand-accent hover:text-brand-dark border border-brand-primary/30 rounded-xl text-xs font-bold text-brand-accent transition-colors"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 min-h-[32px] p-2 bg-brand-primary/5 rounded-xl border border-brand-primary/20">
+                          {newUserAdoption.map((tag, idx) => (
+                            <span key={idx} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                              {tag}
+                              <button
+                                type="button"
+                                onClick={() => removeTag(idx, newUserAdoption, setNewUserAdoption)}
+                                className="hover:text-white ml-1 focus:outline-none font-bold"
+                              >
+                                &times;
+                              </button>
+                            </span>
+                          ))}
+                          {newUserAdoption.length === 0 && (
+                            <span className="text-xs text-brand-light/40 italic">None added.</span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Time/Cost Reduction */}
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">Time/Cost Reduction</label>
+                        <div className="flex gap-2 mb-2">
+                          <input
+                            type="text"
+                            value={timeReductionText}
+                            onChange={(e) => setTimeReductionText(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                addTag(timeReductionText, setTimeReductionText, newTimeReduction, setNewTimeReduction);
+                              }
+                            }}
+                            className="flex-1 bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                            placeholder="e.g. 30% savings & Enter"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => addTag(timeReductionText, setTimeReductionText, newTimeReduction, setNewTimeReduction)}
+                            className="px-3 bg-brand-primary/30 hover:bg-brand-accent hover:text-brand-dark border border-brand-primary/30 rounded-xl text-xs font-bold text-brand-accent transition-colors"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 min-h-[32px] p-2 bg-brand-primary/5 rounded-xl border border-brand-primary/20">
+                          {newTimeReduction.map((tag, idx) => (
+                            <span key={idx} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                              {tag}
+                              <button
+                                type="button"
+                                onClick={() => removeTag(idx, newTimeReduction, setNewTimeReduction)}
+                                className="hover:text-white ml-1 focus:outline-none font-bold"
+                              >
+                                &times;
+                              </button>
+                            </span>
+                          ))}
+                          {newTimeReduction.length === 0 && (
+                            <span className="text-xs text-brand-light/40 italic">None added.</span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Error Reduction */}
+                      <div>
+                        <label className="block text-xs text-brand-light/70 mb-1">Error Reduction</label>
+                        <div className="flex gap-2 mb-2">
+                          <input
+                            type="text"
+                            value={errorReductionText}
+                            onChange={(e) => setErrorReductionText(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                addTag(errorReductionText, setErrorReductionText, newErrorReduction, setNewErrorReduction);
+                              }
+                            }}
+                            className="flex-1 bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-4 py-2 text-white placeholder-brand-light/30 focus:outline-none focus:border-brand-accent text-xs"
+                            placeholder="e.g. 50% fewer bugs & Enter"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => addTag(errorReductionText, setErrorReductionText, newErrorReduction, setNewErrorReduction)}
+                            className="px-3 bg-brand-primary/30 hover:bg-brand-accent hover:text-brand-dark border border-brand-primary/30 rounded-xl text-xs font-bold text-brand-accent transition-colors"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 min-h-[32px] p-2 bg-brand-primary/5 rounded-xl border border-brand-primary/20">
+                          {newErrorReduction.map((tag, idx) => (
+                            <span key={idx} className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                              {tag}
+                              <button
+                                type="button"
+                                onClick={() => removeTag(idx, newErrorReduction, setNewErrorReduction)}
+                                className="hover:text-white ml-1 focus:outline-none font-bold"
+                              >
+                                &times;
+                              </button>
+                            </span>
+                          ))}
+                          {newErrorReduction.length === 0 && (
+                            <span className="text-xs text-brand-light/40 italic">None added.</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Form Actions */}
+                  <div className="flex justify-end gap-3 border-t border-brand-primary/20 pt-4 mt-6">
+                    <button
+                      type="button"
+                      onClick={() => setIsCreateModalOpen(false)}
+                      className="px-5 py-2.5 bg-brand-primary/20 hover:bg-brand-primary/40 border border-brand-primary/30 rounded-xl text-sm font-semibold text-brand-light transition-all"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-5 py-2.5 bg-brand-accent text-brand-dark font-bold rounded-xl text-sm hover:bg-white hover:shadow-lg hover:shadow-brand-accent/20 transition-all"
+                    >
+                      Create Project
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* View Project Details Modal */}
+          {selectedProject && (
+            <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+              <div className="bg-brand-dark border border-brand-primary/40 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 text-white shadow-2xl animate-fade-in flex flex-col relative">
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute top-4 right-4 p-2 text-brand-light/60 hover:text-white hover:bg-brand-primary/20 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                <div className="mb-6 border-b border-brand-primary/20 pb-4">
+                  <span className="text-xs bg-brand-accent/20 text-brand-accent px-2.5 py-1 rounded font-bold uppercase tracking-wider">Project Profile</span>
+                  <h3 className="text-2xl font-extrabold text-white mt-2">{selectedProject.name}</h3>
+                  <p className="text-xs text-brand-light/50 mt-1">Created on {new Date(selectedProject.createdAt).toLocaleDateString()}</p>
+                </div>
+
+                <div className="space-y-6">
+                  {/* Objectives */}
+                  <div className="bg-brand-primary/10 border border-brand-primary/20 rounded-xl p-4">
+                    <h4 className="text-sm font-bold text-brand-accent mb-2.5 flex items-center gap-2">
+                      <Target className="w-4 h-4" />
+                      1. Project Objective
+                    </h4>
+                    <div className="space-y-2 text-sm leading-relaxed">
+                      <p><strong className="text-brand-light">Business Goal:</strong> {selectedProject.objective.businessGoal || 'Not specified'}</p>
+                      <p><strong className="text-brand-light">Expected Outcome:</strong> {selectedProject.objective.expectedOutcome || 'Not specified'}</p>
+                    </div>
+                  </div>
+
+                  {/* Scope */}
+                  <div className="bg-brand-primary/10 border border-brand-primary/20 rounded-xl p-4">
+                    <h4 className="text-sm font-bold text-brand-accent mb-2.5 flex items-center gap-2">
+                      <FileText className="w-4 h-4" />
+                      2. Scope Definition
+                    </h4>
+                    <div className="space-y-3 text-sm leading-relaxed">
+                      <div>
+                        <strong className="text-emerald-400 block mb-1">Included Features:</strong>
+                        <div className="flex flex-wrap gap-1.5 pt-0.5">
+                          {Array.isArray(selectedProject.scope.featuresIncluded) ? (
+                            selectedProject.scope.featuresIncluded.map((tag: string, idx: number) => (
+                              <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 animate-fade-in">
+                                {tag}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-brand-light/60">{selectedProject.scope.featuresIncluded}</span>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <strong className="text-red-400 block mb-1">Excluded Features:</strong>
+                        <div className="flex flex-wrap gap-1.5 pt-0.5">
+                          {Array.isArray(selectedProject.scope.featuresExcluded) ? (
+                            selectedProject.scope.featuresExcluded.map((tag: string, idx: number) => (
+                              <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20 animate-fade-in">
+                                {tag}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-brand-light/60">{selectedProject.scope.featuresExcluded}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stakeholders */}
+                  <div className="bg-brand-primary/10 border border-brand-primary/20 rounded-xl p-4">
+                    <h4 className="text-sm font-bold text-brand-accent mb-2.5 flex items-center gap-2">
+                      <Users className="w-4 h-4" />
+                      3. Stakeholder Register
+                    </h4>
+                    <div className="space-y-3 text-sm leading-relaxed">
+                      <div>
+                        <strong className="text-brand-light block mb-1">Business Owners:</strong>
+                        <div className="flex flex-wrap gap-1.5 pt-0.5">
+                          {Array.isArray(selectedProject.stakeholders.businessOwner) ? (
+                            selectedProject.stakeholders.businessOwner.map((tag: string, idx: number) => (
+                              <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 animate-fade-in">
+                                {tag}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-brand-light/60">{selectedProject.stakeholders.businessOwner}</span>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <strong className="text-brand-light block mb-1">Technical Owners:</strong>
+                        <div className="flex flex-wrap gap-1.5 pt-0.5">
+                          {Array.isArray(selectedProject.stakeholders.technicalOwner) ? (
+                            selectedProject.stakeholders.technicalOwner.map((tag: string, idx: number) => (
+                              <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 animate-fade-in">
+                                {tag}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-brand-light/60">{selectedProject.stakeholders.technicalOwner}</span>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <strong className="text-brand-light block mb-1">End Users:</strong>
+                        <div className="flex flex-wrap gap-1.5 pt-0.5">
+                          {Array.isArray(selectedProject.stakeholders.endUsers) ? (
+                            selectedProject.stakeholders.endUsers.map((tag: string, idx: number) => (
+                              <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 animate-fade-in">
+                                {tag}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-brand-light/60">{selectedProject.stakeholders.endUsers}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Budget */}
+                  <div className="bg-brand-primary/10 border border-brand-primary/20 rounded-xl p-4">
+                    <h4 className="text-sm font-bold text-brand-accent mb-2.5 flex items-center gap-2">
+                      <DollarSign className="w-4 h-4" />
+                      4. Budget & Resource Estimates
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <span className="text-xs text-brand-light/60 block">Team Size</span>
+                        <span className="font-semibold text-brand-light">{selectedProject.budgetResources.teamSize || 'Not specified'}</span>
+                      </div>
+                      <div>
+                        <span className="text-xs text-brand-light/60 block">Cost Estimation</span>
+                        <span className="font-semibold text-brand-light">{selectedProject.budgetResources.costEstimation || 'Not specified'}</span>
+                      </div>
+                      <div>
+                        <span className="text-xs text-brand-light/60 block">Tools & Infrastructure</span>
+                        <span className="font-semibold text-brand-light">{selectedProject.budgetResources.toolRequirements || 'Not specified'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Success Metrics */}
+                  <div className="bg-brand-primary/10 border border-brand-primary/20 rounded-xl p-4">
+                    <h4 className="text-sm font-bold text-brand-accent mb-2.5 flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4" />
+                      5. Success Metrics & KPIs
+                    </h4>
+                    <div className="space-y-3 text-sm leading-relaxed">
+                      <div>
+                        <strong className="text-brand-light block mb-1">Performance Targets:</strong>
+                        <div className="flex flex-wrap gap-1.5 pt-0.5">
+                          {Array.isArray(selectedProject.successMetrics.performanceTargets) ? (
+                            selectedProject.successMetrics.performanceTargets.map((tag: string, idx: number) => (
+                              <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 animate-fade-in">
+                                {tag}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-brand-light/60">{selectedProject.successMetrics.performanceTargets}</span>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <strong className="text-brand-light block mb-1">User Adoption Metrics:</strong>
+                        <div className="flex flex-wrap gap-1.5 pt-0.5">
+                          {Array.isArray(selectedProject.successMetrics.userAdoption) ? (
+                            selectedProject.successMetrics.userAdoption.map((tag: string, idx: number) => (
+                              <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 animate-fade-in">
+                                {tag}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-brand-light/60">{selectedProject.successMetrics.userAdoption}</span>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <strong className="text-brand-light block mb-1">Time/Cost Reduction:</strong>
+                        <div className="flex flex-wrap gap-1.5 pt-0.5">
+                          {Array.isArray(selectedProject.successMetrics.timeReduction) ? (
+                            selectedProject.successMetrics.timeReduction.map((tag: string, idx: number) => (
+                              <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 animate-fade-in">
+                                {tag}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-brand-light/60">{selectedProject.successMetrics.timeReduction}</span>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <strong className="text-brand-light block mb-1">Error / Defect Reduction:</strong>
+                        <div className="flex flex-wrap gap-1.5 pt-0.5">
+                          {Array.isArray(selectedProject.successMetrics.errorReduction) ? (
+                            selectedProject.successMetrics.errorReduction.map((tag: string, idx: number) => (
+                              <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 animate-fade-in">
+                                {tag}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-brand-light/60">{selectedProject.successMetrics.errorReduction}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end mt-6 border-t border-brand-primary/20 pt-4">
+                  <button
+                    onClick={() => setSelectedProject(null)}
+                    className="px-6 py-2.5 bg-brand-accent text-brand-dark font-bold rounded-xl text-sm hover:bg-white transition-colors"
+                  >
+                    Close Profile
+                  </button>
+                </div>
               </div>
             </div>
           )}
