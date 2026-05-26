@@ -6,7 +6,7 @@ import {
   FileText, Activity, TrendingUp, LogOut, Upload, ChevronRight, Bell, Zap, Menu, X, AlertTriangle,
   Folder, Plus, Target, Users, DollarSign
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProjectChatbot from '../components/ProjectChatbot';
 
 interface DashboardProps {
@@ -30,37 +30,52 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Program Manager project storage (runtime only)
-  const [projects, setProjects] = useState<any[]>([
-    {
-      id: '1',
-      name: 'E-Commerce Platform Modernization',
-      objective: {
-        businessGoal: 'Increase online conversion rates by 25% and reduce checkout abandonment.',
-        expectedOutcome: 'A modern, high-speed React-based storefront with an optimized checkout flow.'
-      },
-      scope: {
-        featuresIncluded: ['Payment gateway integration', 'Responsive UI', 'Search auto-complete', 'Product catalog'],
-        featuresExcluded: ['Wholesale client accounts', 'Loyalty points system', 'Native iOS/Android App']
-      },
-      stakeholders: {
-        businessOwner: ['Sarah Jenkins (VP of Digital)', 'Mark R. (Product Lead)'],
-        technicalOwner: ['David Chen (Principal Architect)', 'Elena G. (Dev Lead)'],
-        endUsers: ['Retail consumers', 'Store customer service agents', 'Marketing operators']
-      },
-      budgetResources: {
-        teamSize: '12 members (4 Frontend, 4 Backend, 2 QA, 1 PM, 1 Designer)',
-        costEstimation: '$150,000 USD',
-        toolRequirements: 'Vercel, AWS RDS, Tailwind UI, Datadog'
-      },
-      successMetrics: {
-        performanceTargets: ['LCP < 2.5s', 'TTI < 1.8s', '99.9% API uptime'],
-        userAdoption: ['90% migration in 30 days', 'CSAT score > 4.5/5'],
-        timeReduction: ['Checkout time < 45 seconds', '30% automated return processing'],
-        errorReduction: ['40% fewer checkout crashes', 'Zero payment validation errors']
-      },
-      createdAt: new Date('2026-05-10')
+  const [projects, setProjects] = useState<any[]>(() => {
+    const saved = localStorage.getItem('sdlc_projects');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {
+        console.error('Error parsing saved projects', e);
+      }
     }
-  ]);
+    return [
+      {
+        id: '1',
+        name: 'E-Commerce Platform Modernization',
+        objective: {
+          businessGoal: 'Increase online conversion rates by 25% and reduce checkout abandonment.',
+          expectedOutcome: 'A modern, high-speed React-based storefront with an optimized checkout flow.'
+        },
+        scope: {
+          featuresIncluded: ['Payment gateway integration', 'Responsive UI', 'Search auto-complete', 'Product catalog'],
+          featuresExcluded: ['Wholesale client accounts', 'Loyalty points system', 'Native iOS/Android App']
+        },
+        stakeholders: {
+          businessOwner: ['Sarah Jenkins (VP of Digital)', 'Mark R. (Product Lead)'],
+          technicalOwner: ['David Chen (Principal Architect)', 'Elena G. (Dev Lead)'],
+          endUsers: ['Retail consumers', 'Store customer service agents', 'Marketing operators']
+        },
+        budgetResources: {
+          teamSize: '12 members (4 Frontend, 4 Backend, 2 QA, 1 PM, 1 Designer)',
+          costEstimation: '$150,000 USD',
+          toolRequirements: 'Vercel, AWS RDS, Tailwind UI, Datadog'
+        },
+        successMetrics: {
+          performanceTargets: ['LCP < 2.5s', 'TTI < 1.8s', '99.9% API uptime'],
+          userAdoption: ['90% migration in 30 days', 'CSAT score > 4.5/5'],
+          timeReduction: ['Checkout time < 45 seconds', '30% automated return processing'],
+          errorReduction: ['40% fewer checkout crashes', 'Zero payment validation errors']
+        },
+        createdAt: new Date('2026-05-10')
+      }
+    ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('sdlc_projects', JSON.stringify(projects));
+  }, [projects]);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any | null>(null);

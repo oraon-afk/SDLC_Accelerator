@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { AnalysisResult, AnalysisModules, PriorityLevel, TimeHorizon, UploadedFile } from '../types/intellipm';
 import type { Persona } from '../types';
@@ -48,6 +48,53 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Load projects from localStorage (Runtime only)
+  const [projects] = useState<any[]>(() => {
+    const saved = localStorage.getItem('sdlc_projects');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {
+        console.error('Error parsing saved projects', e);
+      }
+    }
+    // Default seed project
+    return [
+      {
+        id: '1',
+        name: 'E-Commerce Platform Modernization',
+        objective: {
+          businessGoal: 'Increase online conversion rates by 25% and reduce checkout abandonment.',
+          expectedOutcome: 'A modern, high-speed React-based storefront with an optimized checkout flow.'
+        },
+        scope: {
+          featuresIncluded: ['Payment gateway integration', 'Responsive UI', 'Search auto-complete', 'Product catalog'],
+          featuresExcluded: ['Wholesale client accounts', 'Loyalty points system', 'Native iOS/Android App']
+        },
+        stakeholders: {
+          businessOwner: ['Sarah Jenkins (VP of Digital)', 'Mark R. (Product Lead)'],
+          technicalOwner: ['David Chen (Principal Architect)', 'Elena G. (Dev Lead)'],
+          endUsers: ['Retail consumers', 'Store customer service agents', 'Marketing operators']
+        },
+        budgetResources: {
+          teamSize: '12 members (4 Frontend, 4 Backend, 2 QA, 1 PM, 1 Designer)',
+          costEstimation: '$150,000 USD',
+          toolRequirements: 'Vercel, AWS RDS, Tailwind UI, Datadog'
+        },
+        successMetrics: {
+          performanceTargets: ['LCP < 2.5s', 'TTI < 1.8s', '99.9% API uptime'],
+          userAdoption: ['90% migration in 30 days', 'CSAT score > 4.5/5'],
+          timeReduction: ['Checkout time < 45 seconds', '30% automated return processing'],
+          errorReduction: ['40% fewer checkout crashes', 'Zero payment validation errors']
+        },
+        createdAt: new Date('2026-05-10')
+      }
+    ];
+  });
+
+  const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id || '');
 
   // Simulates the multi-step AI processing pipeline
   const runProcessing = useCallback(async () => {
@@ -266,13 +313,35 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
         <div className="max-w-5xl mx-auto">
           {/* Page Title for the current state */}
           {appState === 'workspace' && (
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                <Brain className="w-7 h-7 text-brand-accent" /> Project Health Intelligence
-              </h2>
-              <p className="text-brand-light/60 mt-2 text-sm">
-                Upload your project artifacts and configure the analysis to generate a comprehensive health report.
-              </p>
+            <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 animate-fade-in">
+              <div>
+                <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                  <Brain className="w-7 h-7 text-brand-accent" /> Project Health Intelligence
+                </h2>
+                <p className="text-brand-light/60 mt-2 text-sm">
+                  Upload your project artifacts and configure the analysis to generate a comprehensive health report.
+                </p>
+              </div>
+              
+              {/* Project Selection Dropdown */}
+              <div className="shrink-0 flex items-center gap-2 bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-3 py-2 backdrop-blur-sm">
+                <label htmlFor="project-select" className="text-xs font-bold text-brand-accent uppercase tracking-wider">Select Project:</label>
+                <select
+                  id="project-select"
+                  value={selectedProjectId}
+                  onChange={(e) => setSelectedProjectId(e.target.value)}
+                  className="bg-brand-dark/80 text-white text-sm font-medium border border-brand-primary/30 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-accent cursor-pointer max-w-[240px] focus:ring-1 focus:ring-brand-accent"
+                >
+                  {projects.map((proj) => (
+                    <option key={proj.id} value={proj.id} className="bg-brand-dark text-white">
+                      {proj.name}
+                    </option>
+                  ))}
+                  {projects.length === 0 && (
+                    <option value="" className="bg-brand-dark text-white">No projects available</option>
+                  )}
+                </select>
+              </div>
             </div>
           )}
 
