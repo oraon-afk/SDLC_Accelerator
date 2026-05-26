@@ -112,16 +112,66 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
   }, []);
 
   const handleAnalysisStart = useCallback(
-    (_config: {
+    (config: {
       modules: AnalysisModules;
       priority: PriorityLevel;
       timeHorizon: TimeHorizon;
       files: UploadedFile[];
       notes: string;
     }) => {
+      // Find the details of the currently selected project
+      const selectedProject = projects.find((p) => p.id === selectedProjectId);
+
+      // Build the unified backend JSON analysis payload
+      const payload = {
+        project_id: selectedProjectId,
+        project_name: selectedProject ? selectedProject.name : 'Unknown',
+        project_details: selectedProject ? {
+          objective: selectedProject.objective,
+          scope: selectedProject.scope,
+          stakeholders: selectedProject.stakeholders,
+          budgetResources: selectedProject.budgetResources,
+          successMetrics: selectedProject.successMetrics
+        } : null,
+        analysis_config: {
+          modules: config.modules,
+          priority: config.priority,
+          timeHorizon: config.timeHorizon,
+          notes: config.notes
+        },
+        uploaded_files: config.files.map((file) => ({
+          name: file.name,
+          size: file.size,
+          type: file.type
+        }))
+      };
+
+      // Output constructed JSON structure to console for backend integration
+      console.log('--- CONSTRUCTED LIVE ANALYSIS JSON PAYLOAD ---');
+      console.log(JSON.stringify(payload, null, 2));
+      console.log('----------------------------------------------');
+
+      // Dispatch fetch request to show up in the browser's Network tab
+      try {
+        fetch('http://localhost:8000/api/analysis', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }).catch((err) => {
+          console.warn(
+            'Network request triggered (visible in Network tab). Local API server not yet online:',
+            err
+          );
+        });
+      } catch (err) {
+        console.error('Failed to dispatch fetch request:', err);
+      }
+
       runProcessing();
     },
-    [runProcessing]
+    [runProcessing, projects, selectedProjectId]
   );
 
   const handleBack = () => {
