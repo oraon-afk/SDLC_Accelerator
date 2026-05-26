@@ -174,25 +174,25 @@ function ExportCard({
 }) {
   const btnClass =
     variant === 'primary'
-      ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+      ? 'bg-brand-accent text-brand-dark hover:bg-brand-accent/85 font-semibold'
       : variant === 'warning'
-      ? 'bg-amber-500 hover:bg-amber-600 text-white'
-      : 'bg-slate-700 hover:bg-slate-800 text-white';
+      ? 'bg-amber-500 hover:bg-amber-600 text-white font-medium shadow-sm'
+      : 'bg-brand-primary/45 hover:bg-brand-primary/55 text-brand-light border border-brand-primary/30 font-medium shadow-sm';
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm flex flex-col gap-3">
+    <div className="bg-brand-dark/50 rounded-xl border border-brand-primary/30 p-5 shadow-sm flex flex-col gap-3 backdrop-blur-md">
       <div className="flex items-start gap-3">
-        <div className="p-2.5 rounded-lg bg-slate-100">
-          <Icon className="w-5 h-5 text-slate-700" aria-hidden="true" />
+        <div className="p-2.5 rounded-lg bg-brand-primary/20">
+          <Icon className="w-5 h-5 text-brand-accent" aria-hidden="true" />
         </div>
         <div>
-          <h3 className="text-sm font-bold text-slate-800">{title}</h3>
-          <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{description}</p>
+          <h3 className="text-sm font-bold text-white">{title}</h3>
+          <p className="text-xs text-brand-light/75 mt-0.5 leading-relaxed">{description}</p>
         </div>
       </div>
       <button
         onClick={onClick}
-        className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:ring-offset-1 ${btnClass}`}
+        className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-accent focus-visible:ring-offset-1 focus-visible:ring-offset-brand-dark cursor-pointer ${btnClass}`}
         aria-label={buttonLabel}
       >
         <Download className="w-4 h-4" aria-hidden="true" />
@@ -216,8 +216,8 @@ export default function ExportTab({ result, onRegenerate, isRegenerating }: Prop
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-base font-bold text-slate-800 mb-1">Export & Reports</h2>
-        <p className="text-sm text-slate-500">
+        <h2 className="text-base font-bold text-white mb-1">Export & Reports</h2>
+        <p className="text-sm text-brand-light/70">
           Download the analysis in various formats or regenerate with a different perspective.
         </p>
       </div>
@@ -256,24 +256,24 @@ export default function ExportTab({ result, onRegenerate, isRegenerating }: Prop
       </div>
 
       {/* Copy Report to Clipboard */}
-      <div className="bg-slate-50 rounded-xl border border-slate-200 p-4">
+      <div className="bg-brand-dark/50 rounded-xl border border-brand-primary/30 p-4 shadow-sm backdrop-blur-md">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-semibold text-slate-700">Copy Report to Clipboard</p>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-sm font-semibold text-white">Copy Report to Clipboard</p>
+            <p className="text-xs text-brand-light/70 mt-0.5">
               Copy the full text report to paste into emails, documents, or other tools.
             </p>
           </div>
           <button
             onClick={handleCopyReport}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:ring-offset-1"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border border-brand-primary/30 bg-brand-primary/20 hover:bg-brand-primary/35 text-brand-light transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-accent focus-visible:ring-offset-1 focus-visible:ring-offset-brand-dark cursor-pointer"
             aria-label={copied ? 'Report copied to clipboard' : 'Copy report to clipboard'}
             aria-live="polite"
           >
             {copied ? (
               <>
-                <CheckCircle className="w-4 h-4 text-emerald-600" aria-hidden="true" />
-                <span className="text-emerald-700">Copied!</span>
+                <CheckCircle className="w-4 h-4 text-emerald-400" aria-hidden="true" />
+                <span className="text-emerald-400">Copied!</span>
               </>
             ) : (
               <>
@@ -286,18 +286,18 @@ export default function ExportTab({ result, onRegenerate, isRegenerating }: Prop
       </div>
 
       {/* Regenerate */}
-      <div className="bg-amber-50 rounded-xl border border-amber-200 p-4">
+      <div className="bg-amber-500/10 rounded-xl border border-amber-500/30 p-4 shadow-sm backdrop-blur-md">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-semibold text-amber-800">Regenerate Analysis</p>
-            <p className="text-xs text-amber-700 mt-0.5">
+            <p className="text-sm font-semibold text-amber-400">Regenerate Analysis</p>
+            <p className="text-xs text-amber-300/80 mt-0.5">
               Re-run the analysis with a different temperature (0.4) for an alternative perspective on the same artifacts.
             </p>
           </div>
           <button
             onClick={onRegenerate}
             disabled={isRegenerating}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-amber-500 hover:bg-amber-600 text-white disabled:opacity-60 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-500 focus-visible:ring-offset-1"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-amber-500 hover:bg-amber-600 text-white disabled:opacity-60 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-500 focus-visible:ring-offset-1 focus-visible:ring-offset-brand-dark cursor-pointer"
             aria-label={isRegenerating ? 'Regenerating analysis, please wait' : 'Regenerate analysis with alternative perspective'}
             aria-busy={isRegenerating}
           >
@@ -311,14 +311,14 @@ export default function ExportTab({ result, onRegenerate, isRegenerating }: Prop
       </div>
 
       {/* Source Artifacts Summary */}
-      <section aria-labelledby="export-sources-heading" className="bg-white rounded-xl border border-slate-200 p-4">
-        <h3 id="export-sources-heading" className="text-sm font-bold text-slate-700 mb-2">
+      <section aria-labelledby="export-sources-heading" className="bg-brand-dark/50 rounded-xl border border-brand-primary/30 p-4 shadow-sm backdrop-blur-md">
+        <h3 id="export-sources-heading" className="text-sm font-bold text-white mb-2">
           Artifacts Included in This Analysis
         </h3>
         <ul className="space-y-1.5" aria-label="Source artifacts list">
           {result.source_artifacts.map((a, i) => (
-            <li key={i} className="flex items-center gap-2 text-xs text-slate-700">
-              <CheckCircle className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" aria-hidden="true" />
+            <li key={i} className="flex items-center gap-2 text-xs text-brand-light/95">
+              <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" aria-hidden="true" />
               <span className="font-mono">{a}</span>
             </li>
           ))}

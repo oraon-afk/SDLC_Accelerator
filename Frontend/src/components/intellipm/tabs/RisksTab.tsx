@@ -67,7 +67,7 @@ export default function RisksTab({ risks: initialRisks }: Props) {
   };
 
   const thClass =
-    'px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 cursor-pointer hover:bg-slate-100 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500';
+    'px-4 py-3 text-left text-xs font-semibold text-brand-light/85 uppercase tracking-wider bg-brand-primary/20 hover:bg-brand-primary/35 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent transition-colors';
 
   return (
     <div className="space-y-4">
@@ -78,21 +78,21 @@ export default function RisksTab({ risks: initialRisks }: Props) {
           return (
             <div
               key={level}
-              className="bg-white rounded-xl border border-slate-200 p-3 text-center shadow-sm"
+              className="bg-brand-dark/50 rounded-xl border border-brand-primary/30 p-3 text-center shadow-sm backdrop-blur-md"
               aria-label={`${level} impact: ${count} risk${count !== 1 ? 's' : ''}`}
             >
               <p
                 className={`text-2xl font-bold ${
                   level === 'High'
-                    ? 'text-red-600'
+                    ? 'text-red-400'
                     : level === 'Medium'
-                    ? 'text-amber-600'
-                    : 'text-emerald-600'
+                    ? 'text-amber-400'
+                    : 'text-emerald-400'
                 }`}
               >
                 {count}
               </p>
-              <p className="text-xs text-slate-500 mt-0.5">{level} Impact</p>
+              <p className="text-xs text-brand-light/60 mt-0.5">{level} Impact</p>
             </div>
           );
         })}
@@ -105,42 +105,42 @@ export default function RisksTab({ risks: initialRisks }: Props) {
         aria-label="Risk filters"
       >
         <div>
-          <label htmlFor="filter-impact" className="text-xs font-semibold text-slate-600 mr-1.5">
+          <label htmlFor="filter-impact" className="text-xs font-semibold text-brand-light/80 mr-1.5">
             Impact:
           </label>
           <select
             id="filter-impact"
             value={filterImpact}
             onChange={(e) => setFilterImpact(e.target.value)}
-            className="text-xs rounded-md border border-slate-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="text-xs rounded-md bg-brand-primary/10 border border-brand-primary/30 text-brand-light px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-accent"
           >
             {['All', 'High', 'Medium', 'Low'].map((v) => (
-              <option key={v} value={v}>{v}</option>
+              <option key={v} value={v} className="bg-brand-dark text-brand-light">{v}</option>
             ))}
           </select>
         </div>
         <div>
-          <label htmlFor="filter-prob" className="text-xs font-semibold text-slate-600 mr-1.5">
+          <label htmlFor="filter-prob" className="text-xs font-semibold text-brand-light/80 mr-1.5">
             Probability:
           </label>
           <select
             id="filter-prob"
             value={filterProb}
             onChange={(e) => setFilterProb(e.target.value)}
-            className="text-xs rounded-md border border-slate-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="text-xs rounded-md bg-brand-primary/10 border border-brand-primary/30 text-brand-light px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-accent"
           >
             {['All', 'High', 'Medium', 'Low'].map((v) => (
-              <option key={v} value={v}>{v}</option>
+              <option key={v} value={v} className="bg-brand-dark text-brand-light">{v}</option>
             ))}
           </select>
         </div>
-        <p className="text-xs text-slate-500 ml-auto">
+        <p className="text-xs text-brand-light/60 ml-auto">
           Showing {sorted.length} of {editedRisks.length} risks
         </p>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+      <div className="overflow-x-auto rounded-xl border border-brand-primary/30 shadow-md backdrop-blur-md bg-brand-dark/50">
         <table className="w-full text-sm" role="grid" aria-label="Risk register">
           <caption className="sr-only">
             Risk register with sortable columns. Click column headers to sort.
@@ -148,7 +148,7 @@ export default function RisksTab({ risks: initialRisks }: Props) {
           <thead>
             <tr>
               <th scope="col" className={`${thClass} w-8`}>
-                <ShieldAlert className="w-4 h-4 text-red-500" aria-hidden="true" />
+                <ShieldAlert className="w-4 h-4 text-red-400" aria-hidden="true" />
               </th>
               <th scope="col" className={`${thClass} max-w-xs`}>Risk</th>
               <th
@@ -194,10 +194,10 @@ export default function RisksTab({ risks: initialRisks }: Props) {
               <th scope="col" className={thClass}>Mitigation</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 bg-white">
+          <tbody className="divide-y divide-brand-primary/20 bg-transparent">
             {sorted.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-sm text-slate-500">
+                <td colSpan={7} className="px-4 py-8 text-center text-sm text-brand-light/60">
                   No risks match the current filters.
                 </td>
               </tr>
@@ -208,7 +208,7 @@ export default function RisksTab({ risks: initialRisks }: Props) {
                 return (
                   <tr
                     key={globalIdx}
-                    className="hover:bg-slate-50 transition-colors"
+                    className="hover:bg-brand-primary/10 transition-colors"
                   >
                     <td className="px-4 py-3">
                       <span
@@ -222,7 +222,7 @@ export default function RisksTab({ risks: initialRisks }: Props) {
                         aria-hidden="true"
                       />
                     </td>
-                    <td className="px-4 py-3 font-medium text-slate-800 max-w-xs">
+                    <td className="px-4 py-3 font-medium text-white max-w-xs">
                       {risk.risk}
                     </td>
                     <td className="px-4 py-3">
@@ -231,17 +231,17 @@ export default function RisksTab({ risks: initialRisks }: Props) {
                     <td className="px-4 py-3">
                       <HealthBadge status={risk.probability} size="sm" />
                     </td>
-                    <td className="px-4 py-3 text-slate-700 whitespace-nowrap">{risk.owner}</td>
+                    <td className="px-4 py-3 text-brand-light/90 whitespace-nowrap">{risk.owner}</td>
                     <td className="px-4 py-3">
                       <HealthBadge status={risk.status} size="sm" />
                     </td>
-                    <td className="px-4 py-3 text-slate-600 max-w-xs">
+                    <td className="px-4 py-3 text-brand-light/80 max-w-xs">
                       {isEditing ? (
                         <div className="flex gap-2 items-center">
                           <textarea
                             value={editValue}
                             onChange={(e) => setEditValue(e.target.value)}
-                            className="text-xs border border-indigo-400 rounded p-1 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="text-xs bg-brand-dark border border-brand-accent/50 rounded p-1 w-full text-white focus:outline-none focus:ring-2 focus:ring-brand-accent"
                             rows={2}
                             aria-label="Edit mitigation text"
                             autoFocus
@@ -249,14 +249,14 @@ export default function RisksTab({ risks: initialRisks }: Props) {
                           <div className="flex flex-col gap-1 flex-shrink-0">
                             <button
                               onClick={() => saveEdit(globalIdx)}
-                              className="text-xs bg-indigo-600 text-white px-2 py-0.5 rounded hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                              className="text-xs bg-brand-accent text-brand-dark font-semibold px-2 py-0.5 rounded hover:bg-brand-accent/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
                               aria-label="Save mitigation edit"
                             >
                               Save
                             </button>
                             <button
                               onClick={() => setEditingIdx(null)}
-                              className="text-xs bg-slate-200 text-slate-700 px-2 py-0.5 rounded hover:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                              className="text-xs bg-brand-primary/30 text-brand-light px-2 py-0.5 rounded hover:bg-brand-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
                               aria-label="Cancel mitigation edit"
                             >
                               Cancel
@@ -268,7 +268,7 @@ export default function RisksTab({ risks: initialRisks }: Props) {
                           <span className="text-xs leading-relaxed">{risk.mitigation}</span>
                           <button
                             onClick={() => startEdit(globalIdx, risk.mitigation)}
-                            className="flex-shrink-0 text-xs text-indigo-600 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded transition-opacity"
+                            className="flex-shrink-0 text-xs text-brand-accent opacity-0 group-hover:opacity-100 focus-visible:opacity-100 hover:text-brand-accent/80 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded transition-opacity"
                             aria-label={`Edit mitigation for: ${risk.risk}`}
                           >
                             Edit
