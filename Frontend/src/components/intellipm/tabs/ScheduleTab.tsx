@@ -21,6 +21,17 @@ function getBarWidth(variance: number, max: number): number {
 }
 
 export default function ScheduleTab({ alerts }: Props) {
+  if (!alerts || alerts.length === 0) {
+    return (
+      <div className="space-y-5">
+        <div className="bg-brand-dark/50 rounded-xl border border-brand-primary/30 p-8 shadow-sm backdrop-blur-md text-center">
+          <Calendar className="w-10 h-10 text-brand-light/30 mx-auto mb-3" />
+          <p className="text-sm text-brand-light/60 italic">No schedule alerts available from the analysis.</p>
+        </div>
+      </div>
+    );
+  }
+
   const maxVariance = Math.max(...alerts.map((a) => a.variance_days));
   const criticalCount = alerts.filter((a) => a.critical_path_flag).length;
   const totalVarianceDays = alerts.reduce((s, a) => s + a.variance_days, 0);

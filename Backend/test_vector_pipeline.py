@@ -1,9 +1,8 @@
 import os
-import shutil
 import time
 import sqlite3
 from Model.vector_store import LocalVectorStore
-from project_scheduler import ProjectFileScheduler
+from project_scheduler import ProjectFileScheduler, RESOURCE_DOCS_ROOT
 from Embedd_Model.embed_model_config import get_ollama_embedding
 
 def verify_pipeline():
@@ -11,19 +10,31 @@ def verify_pipeline():
     print("VECTOR INDEXING & SCHEDULER VERIFICATION SYSTEM")
     print("====================================================")
     
-    # 1. Establish project directory and dynamic copy sample files
+    # 1. Resolve paths — Resource Docs is the canonical source
     current_dir = os.path.dirname(os.path.abspath(__file__))
     workspace_root = os.path.dirname(current_dir)
-    sample_src_dir = os.path.join(workspace_root, "Resource Docs", "PLM Program")
+    resource_docs_root = os.path.join(workspace_root, "Resource Docs")
     
-    projects_root = os.path.join(workspace_root, "Projects")
-    test_project_name = "Automotive_PLM_Consolidation"
-    test_project_dir = os.path.join(projects_root, test_project_name)
-    
-    os.makedirs(test_project_dir, exist_ok=True)
     print(f"Workspace Root resolved: {workspace_root}")
-    print(f"Projects Root established: {projects_root}")
-    print(f"Test Project folder established: {test_project_dir}")
+    print(f"Resource Docs Root: {resource_docs_root}")
+    
+    # List available projects (subfolders)
+    if os.path.exists(resource_docs_root):
+        projects = [d for d in os.listdir(resource_docs_root) 
+                     if os.path.isdir(os.path.join(resource_docs_root, d)) and not d.startswith('.')]
+        print(f"Available projects: {projects}")
+    else:
+        print(f"Error: Resource Docs directory not found at {resource_docs_root}")
+        return
+    
+    if not projects:
+        print("Error: No project folders found in Resource Docs.")
+        return
+    
+    # Use the first available project for testing
+    test_project_name = projects[0]
+    test_project_dir = os.path.join(resource_docs_root, test_project_name)
+    print(f"Testing with project: '{test_project_name}' at {test_project_dir}")
     
     # Purge existing SQLite database file to ensure a clean, reliable, and complete indexing run
     db_file = os.path.join(current_dir, "sdlc_vector_store.db")
@@ -33,33 +44,12 @@ def verify_pipeline():
             print("Cleared previous vector database for a fresh, complete indexation run.")
         except Exception as e:
             print(f"Notice: Could not delete database file (active connection): {str(e)}")
-    
-    # Check sample source
-    if not os.path.exists(sample_src_dir):
-        print(f"Error: Sample data directory not found at {sample_src_dir}")
-        return
-        
-    files_to_copy = [
-        "Plm Program Weekly Review Meeting minutes.docx",
-        "Master RAID Tracker.csv"
-    ]
-    
-    print("\n[Copying Test Files to Project folder...]")
-    for file_name in files_to_copy:
-        src_path = os.path.join(sample_src_dir, file_name)
-        dest_path = os.path.join(test_project_dir, file_name)
-        if os.path.exists(src_path):
-            shutil.copy2(src_path, dest_path)
-            print(f"Copied {file_name} -> Projects/{test_project_name}/")
-        else:
-            print(f"Warning: Test source file {file_name} not found at {src_path}")
 
-    # 2. Instantiate and run scheduler indexer synchronously
-    print("\n[Instantiating File Indexer Scheduler...]")
-    scheduler = ProjectFileScheduler(projects_root=projects_root)
+    # 2. Instantiate and run scheduler indexer synchronously against Resource Docs
+    print("\n[Instantiating File Indexer Scheduler on Resource Docs...]")
+    scheduler = ProjectFileScheduler(projects_root=resource_docs_root)
     
     print("\n[Running incremental indexing scan...]")
-    # Run the indexer synchronously to process files
     scheduler.scan_and_index()
     
     # 3. Verify SQLite records
@@ -77,7 +67,7 @@ def verify_pipeline():
     chunks_count = cursor.fetchone()[0]
     print(f"Total Indexed Chunks in SQLite: {chunks_count}")
     
-    cursor.execute("SELECT project_name, file_name, chunk_id, SUBSTR(text_content, 1, 100) FROM vector_chunks LIMIT 5")
+    cursor.execute("SELECT project_name, file_name, chunk_id, SUBSTR(text_content, 1, 120) FROM vector_chunks LIMIT 5")
     sample_chunks = cursor.fetchall()
     print("\n[Sample Indexed Chunks preview (top 5):]")
     for r in sample_chunks:

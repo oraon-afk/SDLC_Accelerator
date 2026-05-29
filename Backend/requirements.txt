@@ -12,3 +12,4 @@ typing_extensions
 uvicorn
 pypdf
 openpyxl
+python-pptx

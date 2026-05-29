@@ -69,15 +69,15 @@ def get_file_hash(file_path: str) -> str:
 
 def on_the_fly_scan_and_index(project_name: str, vector_store: LocalVectorStore) -> List[str]:
     """
-    Scans the specific project directory under 'Projects/project_name/'.
+    Scans the specific project directory under 'Resource Docs/project_name/'.
     If any new or modified document is detected, parses it on-the-fly, 
     chunks it, embeds it via Ollama, and inserts it into SQLite.
     Returns the list of parsed document names.
     """
     backend_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     workspace_root = os.path.dirname(backend_root)
-    projects_root = os.path.join(workspace_root, "Projects")
-    project_dir = os.path.join(projects_root, project_name)
+    resource_docs_root = os.path.join(workspace_root, "Resource Docs")
+    project_dir = os.path.join(resource_docs_root, project_name)
     
     if not os.path.exists(project_dir):
         print(f"[On-the-Fly Pipeline] Directory not found at: {project_dir}. Skipping parsing phase.")
@@ -85,6 +85,9 @@ def on_the_fly_scan_and_index(project_name: str, vector_store: LocalVectorStore)
         
     print(f"[On-the-Fly Pipeline] Scanning project folder: {project_dir}")
     parsed_files = []
+    
+    # Extensions to skip (non-parseable utility or media files)
+    skip_extensions = {'.mp3', '.mp4', '.wav', '.html', '.py', '.js', '.json', '.zip', '.rar', '.exe'}
     
     # Track files already processed in this scan to compare with database
     disk_files = {}
@@ -100,8 +103,12 @@ def on_the_fly_scan_and_index(project_name: str, vector_store: LocalVectorStore)
             file_path = os.path.join(root, file_name)
             _, ext = os.path.splitext(file_name.lower())
             
+            # Skip non-parseable files
+            if ext in skip_extensions:
+                continue
+            
             # Supported file formats
-            if ext in ['.txt', '.docx', '.csv', '.xlsx', '.pdf', '.png', '.jpg', '.jpeg', '.bmp']:
+            if ext in ['.txt', '.docx', '.csv', '.xlsx', '.pdf', '.pptx', '.png', '.jpg', '.jpeg', '.bmp']:
                 try:
                     mtime = os.path.getmtime(file_path)
                     f_hash = get_file_hash(file_path)
@@ -112,6 +119,20 @@ def on_the_fly_scan_and_index(project_name: str, vector_store: LocalVectorStore)
                     }
                 except Exception as e:
                     print(f"[On-the-Fly Pipeline] Error scanning {file_name}: {str(e)}")
+
+    # Deduplicate: skip PDFs that have a .docx counterpart
+    docx_basenames = set()
+    for abs_path, meta in disk_files.items():
+        base_name, ext = os.path.splitext(meta["file_name"])
+        if ext.lower() == '.docx':
+            docx_basenames.add(base_name.lower())
+    
+    pdf_dupes = [p for p, m in disk_files.items() 
+                 if os.path.splitext(m["file_name"])[1].lower() == '.pdf' 
+                 and os.path.splitext(m["file_name"])[0].lower() in docx_basenames]
+    for dup_path in pdf_dupes:
+        print(f"[On-the-Fly Pipeline] Skipping duplicate PDF (docx preferred): {disk_files[dup_path]['file_name']}")
+        del disk_files[dup_path]
 
     # Query tracked files in SQLite
     tracked_files = {os.path.abspath(f["file_path"]): f for f in vector_store.get_all_tracked_files()}
@@ -230,6 +251,7 @@ def analyze_project_payload(payload: AnalysisRequestPayload):
         if db_chunks:
             # Sort and format chunks for complete readability
             doc_context = "\n".join([f"[{c['file_name']} (Segment {c['chunk_id']})]: {c['text_content']}" for c in db_chunks])
+            print(doc_context)
         else:
             print("[Pipeline Warning] No chunks found in Vector DB. Relying on frontend metadata.")
             
@@ -268,6 +290,13 @@ def analyze_project_payload(payload: AnalysisRequestPayload):
         # Phase 3: Build the Deep LLM Prompt
         analysis_prompt = f"""You are an elite Project Management Officer (PMO) AI assistant with deep expertise in analyzing complex project documents, tracking risks, identifying action item owners, and forecasting schedule variances.
 
+### CRITICAL GROUNDING RULES:
+- You MUST base your entire analysis STRICTLY and ONLY on the provided project artifact text below.
+- Do NOT invent, fabricate, or hallucinate any names, dates, milestones, risks, actions, or metrics that are NOT explicitly present in the provided documents.
+- If information for a field is not available in the provided documents, use the value "NA" for text fields, 0 for numeric fields, and empty arrays [] for list fields.
+- Every action item owner, risk description, milestone name, and date you output MUST be directly traceable to a specific passage in the provided documents.
+- Do NOT generate example or placeholder data. Only report what is actually found.
+
 Perform a highly thorough project analysis based on the following project data:
 
 ### PROJECT BASELINE INFO:
@@ -281,10 +310,10 @@ Project Name: {project_name}
 - Custom User Notes & Directives: {custom_notes}
 
 ### PARSED PROJECT ARTIFACTS TEXT (FROM VECTOR DB):
-{doc_context[:25000]} # Limit to protect LLM context windows
+{doc_context[:25000]}
 
 ### INSTRUCTION:
-Analyze the provided document segments to discover:
+Analyze ONLY the provided document segments above to discover:
 1. Overall project health summary (Green, Yellow, Red) and a detailed, context-rich narrative. In this narrative summary, you MUST give a consolidated summary of exactly what is in the uploaded documents (such as the Weekly review meeting minutes highlights, RAID CSV actions, whiteboard timeline descriptions, and audio transcripts), explaining the key program statuses, delayed milestones, active action items, and technical/solution architect staffing risks identified directly from these source documents. Keep the tone professional, objective, and analytical.
 2. Top actions (Action description, Owner name, Due date YYYY-MM-DD, status, age_days, priority High/Medium/Low). Map these to owners mentioned in documents.
 3. Tracked risks (risk description, impact High/Medium/Low, probability High/Medium/Low, mitigation steps, owner name, status).
@@ -293,86 +322,90 @@ Analyze the provided document segments to discover:
 6. Document summaries: A file-by-file breakdown array under "document_summary" containing the "file_name" (e.g. Plm Program Weekly Review Meeting minutes.docx, Master RAID Tracker.csv, Master program plan.png) and a concise, context-rich "summary" of what was discovered in each uploaded file.
 
 ### OUTPUT FORMAT:
-You MUST return a JSON object conforming EXACTLY to the following JSON schema. Do NOT include any markdown code blocks, conversational text, or prefixes outside of the JSON block:
+You MUST return a JSON object conforming EXACTLY to the following JSON schema. Do NOT include any markdown code blocks, conversational text, or prefixes outside of the JSON block.
+IMPORTANT: The placeholder values below (e.g. "<description>") are ONLY to describe the expected data type and meaning. You MUST replace every placeholder with REAL data extracted from the provided documents. Do NOT copy any placeholder text into your output.
 
 {{
   "analysis_timestamp": "{time.strftime('%Y-%m-%dT%H:%M:%SZ')}",
   "priority_level": "{analysis_priority}",
   "project_health_summary": {{
-    "overall_health": "Yellow", // Green, Yellow, or Red
-    "narrative": "Schedule is at risk due to delayed milestones linked to environment setup and vendor approvals... [use real details from documents]",
+    "overall_health": "<Green, Yellow, or Red based on document evidence>",
+    "narrative": "<detailed narrative summarizing the actual project status, milestones, risks, and key findings from the provided documents only>",
     "health_factors": {{
-      "schedule": "At risk",
-      "resources": "Adequate",
-      "quality": "Green"
+      "schedule": "<At risk / On track / Green — based on document evidence>",
+      "resources": "<Adequate / At risk / Green — based on document evidence>",
+      "quality": "<Green / At risk — based on document evidence>"
     }}
   }},
   "top_actions": [
     {{
-      "action": "Complete UAT environment setup",
-      "owner": "Bob Li",
-      "due_date": "2026-06-20",
-      "status": "In Progress", // In Progress, Overdue, Not Started, Complete
-      "age_days": 13,
-      "priority": "High"
+      "action": "<action description extracted from documents>",
+      "owner": "<owner name extracted from documents, or NA if not mentioned>",
+      "due_date": "<YYYY-MM-DD extracted from documents, or NA>",
+      "status": "<In Progress / Overdue / Not Started / Complete — from documents>",
+      "age_days": 0,
+      "priority": "<High / Medium / Low — from documents>"
     }}
   ],
   "action_tracker": {{
-    "total_actions": 12,
-    "open_actions": 6,
-    "overdue_actions": 2,
-    "avg_age_open_days": 5.2,
+    "total_actions": 0,
+    "open_actions": 0,
+    "overdue_actions": 0,
+    "avg_age_open_days": 0,
     "actions_by_owner": {{
-      "Bob Li": 3,
-      "Alice Chen": 2
+      "<owner name from documents>": 0
     }}
   }},
   "document_summary": [
     {{
-      "file_name": "Plm Program Weekly Review Meeting minutes.docx",
-      "summary": "This document highlights a RED program status. Key details involve blocked DevOps testing environment setup causing a 9-day delay in UAT sign-off (moved to April 10), and stakeholder enablement gaps in APQP, ASPICE compliance tracks."
+      "file_name": "<actual file name from source_artifacts>",
+      "summary": "<concise summary of what was found in this specific file>"
     }}
   ],
   "risks": [
     {{
-      "risk": "Testing environment delay impacts UAT start",
-      "impact": "High",
-      "probability": "High",
-      "mitigation": "Procure temporary cloud environment as fallback",
-      "owner": "Bob Li",
-      "status": "Monitoring" // Monitoring, In Progress, Open, Escalated
+      "risk": "<risk description extracted from documents>",
+      "impact": "<High / Medium / Low>",
+      "probability": "<High / Medium / Low>",
+      "mitigation": "<mitigation steps from documents, or NA>",
+      "owner": "<owner name from documents, or NA>",
+      "status": "<Monitoring / In Progress / Open / Escalated>"
     }}
   ],
   "schedule_alerts": [
     {{
-      "milestone": "UAT Sign-off",
-      "baseline_date": "2026-06-01",
-      "forecast_date": "2026-06-10",
-      "variance_days": 9,
-      "reason": "DevOps environment configuration delays",
+      "milestone": "<milestone name from documents>",
+      "baseline_date": "<YYYY-MM-DD from documents>",
+      "forecast_date": "<YYYY-MM-DD from documents>",
+      "variance_days": 0,
+      "reason": "<reason for delay from documents>",
       "critical_path_flag": true
     }}
   ],
 
   "escalation_prediction": {{
-    "likelihood": "Medium", // High, Medium, Low
+    "likelihood": "<High / Medium / Low — based on document evidence>",
     "indicators": [
-      "Schedule slippage across consecutive sprints",
-      "Unmitigated high probability risks"
+      "<indicator extracted from documents>"
     ],
     "recommended_actions": [
-      "Invoke mitigation plan for testing environment setup",
-      "Coordinate war-room sync schedules"
+      "<recommended action based on document findings>"
     ]
   }},
   "confidence_scores": {{
-    "overall": 0.85,
-    "risk_detection": 0.90,
-    "action_tracking": 0.75,
-    "schedule_analysis": 0.80
+    "overall": 0.0,
+    "risk_detection": 0.0,
+    "action_tracking": 0.0,
+    "schedule_analysis": 0.0
   }},
-  "source_artifacts": {json.dumps(analyzed_artifacts if analyzed_artifacts else ["Baseline Specs.txt"])}
+  "source_artifacts": {json.dumps(analyzed_artifacts if analyzed_artifacts else [])}
 }}
+
+CRITICAL REMINDERS:
+- Replace ALL placeholder values (text inside < >) with REAL data extracted from the provided documents.
+- Every owner name, action, risk, milestone, and date MUST come directly from the document text. If not found, use "NA".
+- Do NOT copy the placeholder text or angle brackets into your output.
+- Do NOT invent or fabricate any names, dates, or details that are not in the documents.
 """
 
         # Call local Ollama model to generate the deep analysis response
@@ -404,102 +437,47 @@ You MUST return a JSON object conforming EXACTLY to the following JSON schema. D
         
     except Exception as e:
         print(f"[Pipeline Error] Critical error during parsing/analysis: {str(e)}")
-        print(f"[Pipeline Debug] Raw LLM string tried to parse (first 500 chars): {clean_json_str[:500]}")
+        try:
+            print(f"[Pipeline Debug] Raw LLM string tried to parse (first 500 chars): {clean_json_str[:500]}")
+        except Exception:
+            pass
         
-        # Self-healing Fallback: return dynamically pre-populated template to keep frontend completely stable
-        print("[Pipeline Fallback] Yielding robust, project-scoped baseline template.")
+        # Return NA-valued skeleton — no static/fabricated data
+        print("[Pipeline Fallback] Returning NA-valued empty skeleton (no static data).")
         fallback_data = {
             "analysis_timestamp": time.strftime('%Y-%m-%dT%H:%M:%SZ'),
-            "priority_level": payload.analysis_config.priority if payload.analysis_config else "Medium",
+            "priority_level": payload.analysis_config.priority if payload.analysis_config else "NA",
             "project_health_summary": {
-                "overall_health": "Yellow",
-                "narrative": f"Consolidated document analysis summary for project '{payload.project_name}': The uploaded Weekly Review Minutes indicate the program status is currently RED. Primary bottlenecks are schedule-driven, notably a DevOps testing environment setup delay that has pushed the UAT Sign-off milestone from April 1 to April 10 (a 9-day variance). The parsed RAID CSV Tracker reveals severe staffing gaps for Solution and Technical Architects, alongside delayed CAD data migration parallel tracks. While quality metrics are stable, urgent resource enablement in automotive compliance (APQP, ASPICE) and daily PMO war-room cadences are recommended to stabilize delivery tracks.",
+                "overall_health": "NA",
+                "narrative": f"Analysis could not be completed for project '{payload.project_name}'. The backend LLM service may be offline or returned an unparseable response. Please ensure the Ollama server is running and try again.",
                 "health_factors": {
-                    "schedule": "At risk",
-                    "resources": "Adequate",
-                    "quality": "Green"
+                    "schedule": "NA",
+                    "resources": "NA",
+                    "quality": "NA"
                 }
             },
-            "top_actions": [
-                {
-                    "action": "Complete program review and finalize delivery track scopes",
-                    "owner": "Delivery Team Lead",
-                    "due_date": time.strftime('%Y-%m-%d', time.localtime(time.time() + 86400 * 7)),
-                    "status": "In Progress",
-                    "age_days": 4,
-                    "priority": "High"
-                },
-                {
-                    "action": "Procure temporary testing infrastructure fallback",
-                    "owner": "PMO Analyst",
-                    "due_date": time.strftime('%Y-%m-%d', time.localtime(time.time() + 86400 * 3)),
-                    "status": "Overdue",
-                    "age_days": 8,
-                    "priority": "High"
-                }
-            ],
+            "top_actions": [],
             "action_tracker": {
-                "total_actions": 12,
-                "open_actions": 6,
-                "overdue_actions": 1,
-                "avg_age_open_days": 4.8,
-                "actions_by_owner": {
-                    "PMO Analyst": 2,
-                    "Delivery Team Lead": 3
-                }
+                "total_actions": 0,
+                "open_actions": 0,
+                "overdue_actions": 0,
+                "avg_age_open_days": 0,
+                "actions_by_owner": {}
             },
-            "document_summary": [
-                {
-                    "file_name": "Plm Program Weekly Review Meeting minutes.docx",
-                    "summary": "This Word document details the weekly governance review meeting. It reports a RED program status, DevOps environment setup delays causing a 9-day slippage in UAT sign-offs (rescheduled to April 10), and stakeholder concerns over delivery readiness."
-                },
-                {
-                    "file_name": "Master RAID Tracker.csv",
-                    "summary": "This CSV database logs risks, actions, and decisions. Key items highlight solution and technical architect leadership resource gaps, delayed CAD data migration streams, and cloud pipeline provisioning actions."
-                },
-                {
-                    "file_name": "Master program plan.png",
-                    "summary": "Visual chart timeline whiteboard snapshot outlining the 18-month PLM program roadmap. Highlights overlapping development phases, delayed UAT milestones, and stand-up war-room cadences."
-                }
-            ],
-            "risks": [
-                {
-                    "risk": "Testing environment configuration delays impacting timeline development",
-                    "impact": "High",
-                    "probability": "Medium",
-                    "mitigation": "Establish temporary cloud-backed VMs and utilize synthetic testing data templates",
-                    "owner": "PMO Analyst",
-                    "status": "In Progress"
-                }
-            ],
-            "schedule_alerts": [
-                {
-                    "milestone": "Integration Phase Complete",
-                    "baseline_date": time.strftime('%Y-%m-%d'),
-                    "forecast_date": time.strftime('%Y-%m-%d', time.localtime(time.time() + 86400 * 9)),
-                    "variance_days": 9,
-                    "reason": "Delayed cloud pipeline deployment and environment setup stalls",
-                    "critical_path_flag": True
-                }
-            ],
-
+            "document_summary": [],
+            "risks": [],
+            "schedule_alerts": [],
             "escalation_prediction": {
-                "likelihood": "Medium",
-                "indicators": [
-                    "Consecutive milestones slippages",
-                    "Initial cloud environment procurement stalls"
-                ],
-                "recommended_actions": [
-                    "Escalate cloud VM provisioning delays to steering sponsors",
-                    "Coordinate war-room sync schedules"
-                ]
+                "likelihood": "NA",
+                "indicators": [],
+                "recommended_actions": []
             },
             "confidence_scores": {
-                "overall": 0.85,
-                "risk_detection": 0.88,
-                "action_tracking": 0.70,
-                "schedule_analysis": 0.82
+                "overall": 0,
+                "risk_detection": 0,
+                "action_tracking": 0,
+                "schedule_analysis": 0
             },
-            "source_artifacts": [f["file_name"] for f in v_store.get_all_tracked_files() if f["project_name"] == payload.project_name] or ["Dynamic Setup Core Specs"]
+            "source_artifacts": []
         }
         return fallback_data

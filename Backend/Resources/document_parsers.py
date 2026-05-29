@@ -8,6 +8,7 @@ import hashlib
 from typing import Dict, List, Any
 from pypdf import PdfReader
 from openpyxl import load_workbook
+from pptx import Presentation
 
 # Base64 image encoder
 def encode_image_to_base64(image_path: str) -> str:
@@ -15,36 +16,13 @@ def encode_image_to_base64(image_path: str) -> str:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
 def get_mock_visual_insights(image_path: str) -> str:
+    """Returns a neutral placeholder when no vision model is available. No static/fabricated content."""
     base_name = os.path.basename(image_path)
-    if "program plan" in base_name.lower():
-        return (
-            f"[Visual Analysis for {base_name}] "
-            "A master timeline Gantt chart diagram illustrating the 18-month roadmap of the PLM program. "
-            "Diagram Details:\n"
-            "- Milestones: Kickoff started 15th March. Sprint 4 currently 75% complete.\n"
-            "- Overlapping tracks: Phase-1 discovery is overlapping with sprint development tracks.\n"
-            "- Active Warnings: Delayed UAT milestone sign-off (moved from April 1 to April 10, a variance of 9 days) "
-            "flagged as a critical path threat due to blocked dependencies on the testing environment setup."
-        )
-    elif "recovery slide" in base_name.lower():
-        slide_num = "1"
-        for char in base_name:
-            if char.isdigit():
-                slide_num = char
-                break
-        return (
-            f"[Visual Analysis for {base_name}] "
-            f"August recovery deck slide #{slide_num} whiteboard snapshot.\n"
-            "- Contents: Outlines immediate recovery actions, daily PMO war-room cadences, and developer resource allocations.\n"
-            "- Directives: Priority onboarding of Solution and Technical architects, mandatory automotive enablement starting Monday, "
-            "and active war-room Daily Stand-ups to restore trust and stabilization."
-        )
-    else:
-        return (
-            f"[Visual Analysis for {base_name}] "
-            "Detailed description of visual project artifact. "
-            "Outlines sprint goals, action items, owner tags, and baseline milestones for the PLM Consolidation Program."
-        )
+    return (
+        f"[Image: {base_name}] "
+        "Visual analysis not available — no vision model is currently installed. "
+        "Install a vision-capable model (e.g. llama3.2-vision) in Ollama to enable automatic image analysis."
+    )
 
 # Calls Ollama Llama3.2-Vision to extract detailed text analysis of images
 def get_image_insights(image_path: str, ollama_url: str = "http://127.0.0.1:11434") -> str:
@@ -154,6 +132,31 @@ def parse_pdf(file_path: str) -> str:
     except Exception as e:
         return f"Error parsing PDF document: {str(e)}"
 
+# PPTX PowerPoint parser
+def parse_pptx(file_path: str) -> str:
+    try:
+        prs = Presentation(file_path)
+        slides_data = []
+        for i, slide in enumerate(prs.slides):
+            texts = []
+            for shape in slide.shapes:
+                if shape.has_text_frame:
+                    for para in shape.text_frame.paragraphs:
+                        line = para.text.strip()
+                        if line:
+                            texts.append(line)
+                if shape.has_table:
+                    table = shape.table
+                    for row in table.rows:
+                        row_str = ' | '.join(cell.text.strip() for cell in row.cells)
+                        if row_str.strip():
+                            texts.append(row_str)
+            if texts:
+                slides_data.append(f"--- Slide {i+1} ---\n" + '\n'.join(texts))
+        return '\n\n'.join(slides_data)
+    except Exception as e:
+        return f"Error parsing PowerPoint file: {str(e)}"
+
 # Master router document parser
 def parse_document(file_path: str, project_dir: str, ollama_url: str = "http://127.0.0.1:11434") -> str:
     _, ext = os.path.splitext(file_path.lower())
@@ -168,6 +171,8 @@ def parse_document(file_path: str, project_dir: str, ollama_url: str = "http://1
         return parse_xlsx(file_path)
     elif ext == '.pdf':
         return parse_pdf(file_path)
+    elif ext == '.pptx':
+        return parse_pptx(file_path)
     elif ext in ['.png', '.jpg', '.jpeg', '.bmp']:
         # Establish cache directory inside the specific project folder to cache the vision outputs
         cache_dir = os.path.join(project_dir, ".image_cache")

@@ -5,7 +5,7 @@ import type { Persona } from '../types';
 import { personaInfo, agents } from '../data/agents';
 import IntelliPMWorkspace from '../components/intellipm/IntelliPMWorkspace';
 import ResultsDashboard from '../components/intellipm/ResultsDashboard';
-import { mockAnalysisResult } from '../data/mockAnalysisResult';
+import { emptyAnalysisResult } from '../data/mockAnalysisResult';
 import { Brain, Zap, Home, LogOut, Menu, X, Bell, ClipboardList, Search, Shield, Layers, CheckSquare, FileText } from 'lucide-react';
 
 interface IntelliPMPageProps {
@@ -200,14 +200,14 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
         setResult(liveResult);
         setAppState('results');
       } catch (err: any) {
-        console.warn('Backend live analysis offline or failed. Falling back gracefully:', err);
-        // Fallback to beautiful default mock data
+        console.warn('Backend live analysis offline or failed:', err);
+        // Return NA-valued skeleton — no static fabricated data
         setResult({
-          ...mockAnalysisResult,
+          ...emptyAnalysisResult,
           analysis_timestamp: new Date().toISOString(),
           project_health_summary: {
-            ...mockAnalysisResult.project_health_summary,
-            narrative: `[Offline Fallback] Connection to local AI PMO server failed (${err.message || err}). Displaying baseline model analysis: Schedule is at risk due to delayed milestones linked to environment setup. Resources are adequate and quality metrics remain green.`,
+            ...emptyAnalysisResult.project_health_summary,
+            narrative: `Backend AI service is not reachable (${err.message || err}). No analysis data available. Please ensure the Ollama server is running at http://localhost:8000 and try again.`,
           },
         });
         setAppState('results');
@@ -237,16 +237,16 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
       const data = await res.json();
       setResult(data);
     } catch (err: any) {
-      console.warn('Backend live analysis regeneration offline/failed. Falling back to mock details:', err);
+      console.warn('Backend live analysis regeneration offline/failed:', err);
       // Wait slightly for organic UI flow
       await new Promise((r) => setTimeout(r, 1500));
       setResult({
-        ...mockAnalysisResult,
+        ...emptyAnalysisResult,
         analysis_timestamp: new Date().toISOString(),
         project_health_summary: {
-          ...mockAnalysisResult.project_health_summary,
+          ...emptyAnalysisResult.project_health_summary,
           narrative:
-            'Regenerated analysis (temperature 0.4 fallback): The project shows moderate health with schedule being the primary concern. Two milestones are at risk of slipping, while resources and quality indicators remain stable.',
+            'Regeneration failed — backend AI service is not reachable. No analysis data available. Please check the server connection and try again.',
         },
       });
     }

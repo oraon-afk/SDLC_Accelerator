@@ -73,7 +73,9 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
             ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
             : project_health_summary.overall_health === 'Yellow'
             ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
-            : 'bg-red-500/10 border-red-500/30 text-red-400'
+            : project_health_summary.overall_health === 'Red'
+            ? 'bg-red-500/10 border-red-500/30 text-red-400'
+            : 'bg-slate-500/10 border-slate-500/30 text-slate-400'
         }`}
       >
         <div className="flex flex-wrap items-center gap-3 mb-3">
@@ -193,7 +195,7 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
       </div>
 
       {/* Top 3 Actions */}
-      {top_actions.length > 0 && (
+      {top_actions.length > 0 ? (
         <section aria-labelledby="top-actions-heading">
           <h3
             id="top-actions-heading"
@@ -232,10 +234,18 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
             ))}
           </div>
         </section>
+      ) : (
+        <section className="bg-brand-dark/50 rounded-xl border border-brand-primary/30 p-4 shadow-sm backdrop-blur-md">
+          <h3 className="text-sm font-bold text-white mb-2 flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-brand-accent" aria-hidden="true" />
+            Top Priority Actions
+          </h3>
+          <p className="text-sm text-brand-light/60 italic">No action items available from the analysis.</p>
+        </section>
       )}
 
       {/* Top 3 Risks */}
-      {risks.length > 0 && (
+      {risks.length > 0 ? (
         <section aria-labelledby="top-risks-heading">
           <h3
             id="top-risks-heading"
@@ -273,6 +283,14 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
           >
             View all {risks.length} risks →
           </button>
+        </section>
+      ) : (
+        <section className="bg-brand-dark/50 rounded-xl border border-brand-primary/30 p-4 shadow-sm backdrop-blur-md">
+          <h3 className="text-sm font-bold text-white mb-2 flex items-center gap-2">
+            <ShieldAlert className="w-4 h-4 text-red-400" aria-hidden="true" />
+            Top Risks
+          </h3>
+          <p className="text-sm text-brand-light/60 italic">No risks identified from the analysis.</p>
         </section>
       )}
 
@@ -345,16 +363,20 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
         <h3 id="sources-heading" className="text-sm font-bold text-white mb-2">
           Source Artifacts Analysed
         </h3>
-        <ul className="flex flex-wrap gap-2" aria-label="Source files used in this analysis">
-          {source_artifacts.map((artifact, i) => (
-            <li key={i}>
-              <span className="inline-flex items-center gap-1 text-xs bg-brand-primary/20 text-brand-light border border-brand-primary/30 rounded-md px-2 py-1 font-mono">
-                <FileText className="w-3 h-3 text-brand-accent" aria-hidden="true" />
-                {artifact}
-              </span>
-            </li>
-          ))}
-        </ul>
+        {source_artifacts.length > 0 ? (
+          <ul className="flex flex-wrap gap-2" aria-label="Source files used in this analysis">
+            {source_artifacts.map((artifact, i) => (
+              <li key={i}>
+                <span className="inline-flex items-center gap-1 text-xs bg-brand-primary/20 text-brand-light border border-brand-primary/30 rounded-md px-2 py-1 font-mono">
+                  <FileText className="w-3 h-3 text-brand-accent" aria-hidden="true" />
+                  {artifact}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-sm text-brand-light/60 italic">No source artifacts available.</p>
+        )}
       </section>
     </div>
   );
