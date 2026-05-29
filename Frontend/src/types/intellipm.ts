@@ -3,13 +3,12 @@ export type ImpactLevel = 'High' | 'Medium' | 'Low';
 export type EscalationLikelihood = 'High' | 'Medium' | 'Low';
 export type PriorityLevel = 'High' | 'Medium' | 'Low';
 export type TimeHorizon = 'Next 2 weeks' | '1 month' | 'Entire project';
-export type TabId = 'summary' | 'risks' | 'actions' | 'schedule' | 'budget' | 'export';
+export type TabId = 'summary' | 'risks' | 'actions' | 'schedule' | 'export';
 
 export interface AnalysisModules {
   riskDetection: boolean;
   actionTracking: boolean;
   scheduleAnalysis: boolean;
-  budgetVariance: boolean;
   escalationPrediction: boolean;
 }
 
@@ -49,13 +48,7 @@ export interface ScheduleAlert {
   critical_path_flag: boolean;
 }
 
-export interface BudgetVariance {
-  total_budget: number;
-  actual_to_date: number;
-  forecast_at_completion: number;
-  variance_percent: number;
-  major_variance_reasons: string[];
-}
+
 
 export interface ActionTracker {
   total_actions: number;
@@ -63,6 +56,11 @@ export interface ActionTracker {
   overdue_actions: number;
   avg_age_open_days: number;
   actions_by_owner: Record<string, number>;
+}
+
+export interface DocumentSummaryItem {
+  file_name: string;
+  summary: string;
 }
 
 export interface AnalysisResult {
@@ -73,16 +71,16 @@ export interface AnalysisResult {
     narrative: string;
     health_factors: {
       schedule: string;
-      budget: string;
       resources: string;
       quality: string;
     };
   };
   top_actions: TopAction[];
   action_tracker: ActionTracker;
+  document_summary?: DocumentSummaryItem[];
   risks: Risk[];
   schedule_alerts: ScheduleAlert[];
-  budget_variance: BudgetVariance | null;
+
   escalation_prediction: {
     likelihood: EscalationLikelihood;
     indicators: string[];

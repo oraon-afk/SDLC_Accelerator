@@ -30,7 +30,6 @@ const PROCESSING_STEPS = [
   'Fusing context from all sources…',
   'Detecting risks and actions…',
   'Analysing schedule deviations…',
-  'Computing budget variance…',
   'Predicting escalation likelihood…',
   'Validating JSON output…',
   'Generating confidence scores…',
@@ -48,6 +47,7 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [lastPayload, setLastPayload] = useState<any>(null);
 
   // Load projects from localStorage (Runtime only)
   const [projects] = useState<any[]>(() => {
@@ -55,7 +55,43 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Dynamic data migration to automatically overwrite legacy E-Commerce details in user's browser storage
+          return parsed.map(p => {
+            if (p.id === '1' && (p.name === 'E-Commerce Platform Modernization' || p.objective?.businessGoal?.includes('conversion'))) {
+              return {
+                id: '1',
+                name: 'PLM Program',
+                objective: {
+                  businessGoal: 'Consolidate global legacy PLM program streams into a unified high-performance platform.',
+                  expectedOutcome: 'Reduced pipeline cycle variance, consolidated licensing costs, and streamlined automotive component engineering compliance.'
+                },
+                scope: {
+                  featuresIncluded: ['APQP integration', 'CAD asset migrations', 'Change management workflows', 'ASPICE compliance tooling'],
+                  featuresExcluded: ['Legacy system hotfixes', 'On-prem infrastructure hosting', 'Manual CAD conversions']
+                },
+                stakeholders: {
+                  businessOwner: ['Sarah Jenkins (Customer PM)', 'Global Delivery President'],
+                  technicalOwner: ['David Chen (Tech Arch)', 'QA Lead', 'DevOps Lead'],
+                  endUsers: ['Automotive engineers', 'Component compliance designers', 'QA testers']
+                },
+                budgetResources: {
+                  teamSize: '45 members globally',
+                  costEstimation: '$2,500,000 USD',
+                  toolRequirements: 'Windchill, Siemens Teamcenter, AWS Cloud, Ollama'
+                },
+                successMetrics: {
+                  performanceTargets: ['99% platform availability', 'Migration throughput > 500 components/day'],
+                  userAdoption: ['80% user transition in 60 days', 'CSAT score > 4.6/5'],
+                  timeReduction: ['Engineering compliance approvals reduced by 30%', 'UAT schedule variance < 5 days'],
+                  errorReduction: ['40% fewer migration validation errors', 'Zero security audit compliance failures']
+                },
+                createdAt: p.createdAt || new Date('2026-05-10')
+              };
+            }
+            return p;
+          });
+        }
       } catch (e) {
         console.error('Error parsing saved projects', e);
       }
@@ -64,30 +100,30 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
     return [
       {
         id: '1',
-        name: 'E-Commerce Platform Modernization',
+        name: 'PLM Program',
         objective: {
-          businessGoal: 'Increase online conversion rates by 25% and reduce checkout abandonment.',
-          expectedOutcome: 'A modern, high-speed React-based storefront with an optimized checkout flow.'
+          businessGoal: 'Consolidate global legacy PLM program streams into a unified high-performance platform.',
+          expectedOutcome: 'Reduced pipeline cycle variance, consolidated licensing costs, and streamlined automotive component engineering compliance.'
         },
         scope: {
-          featuresIncluded: ['Payment gateway integration', 'Responsive UI', 'Search auto-complete', 'Product catalog'],
-          featuresExcluded: ['Wholesale client accounts', 'Loyalty points system', 'Native iOS/Android App']
+          featuresIncluded: ['APQP integration', 'CAD asset migrations', 'Change management workflows', 'ASPICE compliance tooling'],
+          featuresExcluded: ['Legacy system hotfixes', 'On-prem infrastructure hosting', 'Manual CAD conversions']
         },
         stakeholders: {
-          businessOwner: ['Sarah Jenkins (VP of Digital)', 'Mark R. (Product Lead)'],
-          technicalOwner: ['David Chen (Principal Architect)', 'Elena G. (Dev Lead)'],
-          endUsers: ['Retail consumers', 'Store customer service agents', 'Marketing operators']
+          businessOwner: ['Sarah Jenkins (Customer PM)', 'Global Delivery President'],
+          technicalOwner: ['David Chen (Tech Arch)', 'QA Lead', 'DevOps Lead'],
+          endUsers: ['Automotive engineers', 'Component compliance designers', 'QA testers']
         },
         budgetResources: {
-          teamSize: '12 members (4 Frontend, 4 Backend, 2 QA, 1 PM, 1 Designer)',
-          costEstimation: '$150,000 USD',
-          toolRequirements: 'Vercel, AWS RDS, Tailwind UI, Datadog'
+          teamSize: '45 members globally',
+          costEstimation: '$2,500,000 USD',
+          toolRequirements: 'Windchill, Siemens Teamcenter, AWS Cloud, Ollama'
         },
         successMetrics: {
-          performanceTargets: ['LCP < 2.5s', 'TTI < 1.8s', '99.9% API uptime'],
-          userAdoption: ['90% migration in 30 days', 'CSAT score > 4.5/5'],
-          timeReduction: ['Checkout time < 45 seconds', '30% automated return processing'],
-          errorReduction: ['40% fewer checkout crashes', 'Zero payment validation errors']
+          performanceTargets: ['99% platform availability', 'Migration throughput > 500 components/day'],
+          userAdoption: ['80% user transition in 60 days', 'CSAT score > 4.6/5'],
+          timeReduction: ['Engineering compliance approvals reduced by 30%', 'UAT schedule variance < 5 days'],
+          errorReduction: ['40% fewer migration validation errors', 'Zero security audit compliance failures']
         },
         createdAt: new Date('2026-05-10')
       }
@@ -96,23 +132,8 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
 
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id || '');
 
-  // Simulates the multi-step AI processing pipeline
-  const runProcessing = useCallback(async () => {
-    setAppState('processing');
-    for (let i = 0; i < PROCESSING_STEPS.length; i++) {
-      setProcessingStep(PROCESSING_STEPS[i]);
-      await new Promise((r) => setTimeout(r, 350 + Math.random() * 300));
-    }
-    // In production this would be the LLM API response
-    setResult({
-      ...mockAnalysisResult,
-      analysis_timestamp: new Date().toISOString(),
-    });
-    setAppState('results');
-  }, []);
-
   const handleAnalysisStart = useCallback(
-    (config: {
+    async (config: {
       modules: AnalysisModules;
       priority: PriorityLevel;
       timeHorizon: TimeHorizon;
@@ -146,32 +167,53 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
         }))
       };
 
-      // Output constructed JSON structure to console for backend integration
+      setLastPayload(payload);
+
       console.log('--- CONSTRUCTED LIVE ANALYSIS JSON PAYLOAD ---');
       console.log(JSON.stringify(payload, null, 2));
       console.log('----------------------------------------------');
 
-      // Dispatch fetch request to show up in the browser's Network tab
+      setAppState('processing');
+      setProcessingStep(PROCESSING_STEPS[0]);
+
       try {
-        fetch('http://localhost:8000/api/analysis', {
+        // Start backend uvicorn analysis query
+        const apiPromise = fetch('http://localhost:8000/api/analysis', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(payload),
-        }).catch((err) => {
-          console.warn(
-            'Network request triggered (visible in Network tab). Local API server not yet online:',
-            err
-          );
+        }).then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
         });
-      } catch (err) {
-        console.error('Failed to dispatch fetch request:', err);
-      }
 
-      runProcessing();
+        // Run through steps concurrently for premium, smooth UI progression
+        for (let i = 0; i < PROCESSING_STEPS.length; i++) {
+          setProcessingStep(PROCESSING_STEPS[i]);
+          await new Promise((r) => setTimeout(r, 300 + Math.random() * 200));
+        }
+
+        // Wait for the backend response to complete
+        const liveResult = await apiPromise;
+        setResult(liveResult);
+        setAppState('results');
+      } catch (err: any) {
+        console.warn('Backend live analysis offline or failed. Falling back gracefully:', err);
+        // Fallback to beautiful default mock data
+        setResult({
+          ...mockAnalysisResult,
+          analysis_timestamp: new Date().toISOString(),
+          project_health_summary: {
+            ...mockAnalysisResult.project_health_summary,
+            narrative: `[Offline Fallback] Connection to local AI PMO server failed (${err.message || err}). Displaying baseline model analysis: Schedule is at risk due to delayed milestones linked to environment setup. Resources are adequate and quality metrics remain green.`,
+          },
+        });
+        setAppState('results');
+      }
     },
-    [runProcessing, projects, selectedProjectId]
+    [projects, selectedProjectId]
   );
 
   const handleBack = () => {
@@ -181,22 +223,33 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
 
   const handleRegenerate = async () => {
     setIsRegenerating(true);
-    await new Promise((r) => setTimeout(r, 2000 + Math.random() * 1000));
-    setResult({
-      ...mockAnalysisResult,
-      analysis_timestamp: new Date().toISOString(),
-      project_health_summary: {
-        ...mockAnalysisResult.project_health_summary,
-        narrative:
-          'Regenerated analysis (temperature 0.4): The project shows moderate health with schedule being the primary concern. Two milestones are at risk of slipping, and the budget is trending toward a 10% overrun. Immediate action is required on the vendor contract and UAT environment. Resource risks need monitoring but are not yet critical.',
-      },
-      confidence_scores: {
-        overall: 0.82,
-        risk_detection: 0.88,
-        action_tracking: 0.78,
-        schedule_analysis: 0.84,
-      },
-    });
+    try {
+      if (!lastPayload) throw new Error("No previous analysis payload found");
+
+      const res = await fetch('http://localhost:8000/api/analysis', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(lastPayload),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      setResult(data);
+    } catch (err: any) {
+      console.warn('Backend live analysis regeneration offline/failed. Falling back to mock details:', err);
+      // Wait slightly for organic UI flow
+      await new Promise((r) => setTimeout(r, 1500));
+      setResult({
+        ...mockAnalysisResult,
+        analysis_timestamp: new Date().toISOString(),
+        project_health_summary: {
+          ...mockAnalysisResult.project_health_summary,
+          narrative:
+            'Regenerated analysis (temperature 0.4 fallback): The project shows moderate health with schedule being the primary concern. Two milestones are at risk of slipping, while resources and quality indicators remain stable.',
+        },
+      });
+    }
     setIsRegenerating(false);
   };
 
@@ -207,7 +260,7 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
 
   return (
     <div className="min-h-screen bg-brand-dark flex overflow-hidden font-sans">
-      
+
       {/* Mobile sidebar overlay */}
       {isSidebarOpen && (
         <div className="fixed inset-0 bg-black/50 z-20 lg:hidden" onClick={() => setIsSidebarOpen(false)} />
@@ -286,7 +339,7 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
             <button className="lg:hidden p-2 text-brand-light/80 hover:bg-brand-primary/20 rounded-lg" onClick={() => setIsSidebarOpen(true)}>
               <Menu className="w-5 h-5" />
             </button>
-            
+
             <div className="ml-auto flex items-center gap-4">
               {/* Powered by badge */}
               <div
@@ -305,136 +358,134 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
           </div>
         </header>
 
-      {/* Breadcrumb / Process Stepper */}
-      <div className="bg-brand-dark border-b border-brand-primary/20" aria-label="Process steps">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2">
-          <ol
-            className="flex items-center gap-1 text-xs text-slate-500"
-            aria-label="Current step in analysis process"
-          >
-            {[
-              { label: 'Workspace', step: 'workspace' },
-              { label: 'Processing', step: 'processing' },
-              { label: 'Results', step: 'results' },
-            ].map(({ label, step }, i, arr) => {
-              const isActive = appState === step;
-              const isPast =
-                (step === 'workspace' && (appState === 'processing' || appState === 'results')) ||
-                (step === 'processing' && appState === 'results');
+        {/* Breadcrumb / Process Stepper */}
+        <div className="bg-brand-dark border-b border-brand-primary/20" aria-label="Process steps">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2">
+            <ol
+              className="flex items-center gap-1 text-xs text-slate-500"
+              aria-label="Current step in analysis process"
+            >
+              {[
+                { label: 'Workspace', step: 'workspace' },
+                { label: 'Processing', step: 'processing' },
+                { label: 'Results', step: 'results' },
+              ].map(({ label, step }, i, arr) => {
+                const isActive = appState === step;
+                const isPast =
+                  (step === 'workspace' && (appState === 'processing' || appState === 'results')) ||
+                  (step === 'processing' && appState === 'results');
 
-              return (
-                <li key={step} className="flex items-center gap-1">
-                  <span
-                    className={`flex items-center gap-1 font-medium ${
-                      isActive
-                        ? 'text-brand-accent'
-                        : isPast
-                        ? 'text-brand-light/80'
-                        : 'text-brand-light/40'
-                    }`}
-                    aria-current={isActive ? 'step' : undefined}
-                  >
+                return (
+                  <li key={step} className="flex items-center gap-1">
                     <span
-                      className={`inline-flex w-5 h-5 rounded-full text-xs items-center justify-center font-bold flex-shrink-0 ${
-                        isActive
-                          ? 'bg-brand-accent text-brand-dark'
+                      className={`flex items-center gap-1 font-medium ${isActive
+                          ? 'text-brand-accent'
                           : isPast
-                          ? 'bg-brand-primary text-brand-light'
-                          : 'bg-brand-dark border border-brand-primary/50 text-brand-light/40'
-                      }`}
-                      aria-hidden="true"
+                            ? 'text-brand-light/80'
+                            : 'text-brand-light/40'
+                        }`}
+                      aria-current={isActive ? 'step' : undefined}
                     >
-                      {isPast ? '✓' : i + 1}
+                      <span
+                        className={`inline-flex w-5 h-5 rounded-full text-xs items-center justify-center font-bold flex-shrink-0 ${isActive
+                            ? 'bg-brand-accent text-brand-dark'
+                            : isPast
+                              ? 'bg-brand-primary text-brand-light'
+                              : 'bg-brand-dark border border-brand-primary/50 text-brand-light/40'
+                          }`}
+                        aria-hidden="true"
+                      >
+                        {isPast ? '✓' : i + 1}
+                      </span>
+                      {label}
                     </span>
-                    {label}
-                  </span>
-                  {i < arr.length - 1 && (
-                    <span className="text-brand-primary/50 mx-0.5" aria-hidden="true">›</span>
-                  )}
-                </li>
-              );
-            })}
-          </ol>
+                    {i < arr.length - 1 && (
+                      <span className="text-brand-primary/50 mx-0.5" aria-hidden="true">›</span>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
         </div>
-      </div>
 
-      {/* Main Content Area Workspace */}
-      <div id="main-content" className="p-6 lg:p-8 max-w-7xl mx-auto w-full">
-        <div className="max-w-5xl mx-auto">
-          {/* Page Title for the current state */}
-          {appState === 'workspace' && (
-            <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 animate-fade-in">
-              <div>
-                <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                  <Brain className="w-7 h-7 text-brand-accent" /> Project Health Intelligence
-                </h2>
-                <p className="text-brand-light/60 mt-2 text-sm">
-                  Upload your project artifacts and configure the analysis to generate a comprehensive health report.
-                </p>
-              </div>
-              
-              {/* Project Selection Dropdown */}
-              <div className="shrink-0 flex items-center gap-2 bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-3 py-2 backdrop-blur-sm">
-                <label htmlFor="project-select" className="text-xs font-bold text-brand-accent uppercase tracking-wider">Select Project:</label>
-                <select
-                  id="project-select"
-                  value={selectedProjectId}
-                  onChange={(e) => setSelectedProjectId(e.target.value)}
-                  className="bg-brand-dark/80 text-white text-sm font-medium border border-brand-primary/30 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-accent cursor-pointer max-w-[240px] focus:ring-1 focus:ring-brand-accent"
-                >
-                  {projects.map((proj) => (
-                    <option key={proj.id} value={proj.id} className="bg-brand-dark text-white">
-                      {proj.name}
-                    </option>
-                  ))}
-                  {projects.length === 0 && (
-                    <option value="" className="bg-brand-dark text-white">No projects available</option>
-                  )}
-                </select>
-              </div>
-            </div>
-          )}
-
-          {appState === 'results' && result && (
-            <div className="mb-5">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                <CheckSquare className="w-7 h-7 text-brand-accent" /> Analysis Results
-              </h2>
-              <p className="text-brand-light/60 mt-2 text-sm">
-                Review the structured health intelligence report below. You can edit fields inline before exporting.
-              </p>
-            </div>
-          )}
-
-          {/* Content Card */}
-          <div className="bg-brand-primary/5 border border-brand-primary/30 rounded-2xl shadow-xl p-5 sm:p-6 lg:p-8 backdrop-blur-md">
+        {/* Main Content Area Workspace */}
+        <div id="main-content" className="p-6 lg:p-8 max-w-7xl mx-auto w-full">
+          <div className="max-w-5xl mx-auto">
+            {/* Page Title for the current state */}
             {appState === 'workspace' && (
-              <IntelliPMWorkspace
-                onAnalysisStart={handleAnalysisStart}
-                isProcessing={false}
-                processingStep={processingStep}
-              />
-            )}
+              <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 animate-fade-in">
+                <div>
+                  <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                    <Brain className="w-7 h-7 text-brand-accent" /> Project Health Intelligence
+                  </h2>
+                  <p className="text-brand-light/60 mt-2 text-sm">
+                    Upload your project artifacts and configure the analysis to generate a comprehensive health report.
+                  </p>
+                </div>
 
-            {appState === 'processing' && (
-              <IntelliPMWorkspace
-                onAnalysisStart={handleAnalysisStart}
-                isProcessing={true}
-                processingStep={processingStep}
-              />
+                {/* Project Selection Dropdown */}
+                <div className="shrink-0 flex items-center gap-2 bg-brand-primary/10 border border-brand-primary/30 rounded-xl px-3 py-2 backdrop-blur-sm">
+                  <label htmlFor="project-select" className="text-xs font-bold text-brand-accent uppercase tracking-wider">Select Project:</label>
+                  <select
+                    id="project-select"
+                    value={selectedProjectId}
+                    onChange={(e) => setSelectedProjectId(e.target.value)}
+                    className="bg-brand-dark/80 text-white text-sm font-medium border border-brand-primary/30 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-accent cursor-pointer max-w-[240px] focus:ring-1 focus:ring-brand-accent"
+                  >
+                    {projects.map((proj) => (
+                      <option key={proj.id} value={proj.id} className="bg-brand-dark text-white">
+                        {proj.name}
+                      </option>
+                    ))}
+                    {projects.length === 0 && (
+                      <option value="" className="bg-brand-dark text-white">No projects available</option>
+                    )}
+                  </select>
+                </div>
+              </div>
             )}
 
             {appState === 'results' && result && (
-              <ResultsDashboard
-                result={result}
-                onBack={handleBack}
-                onRegenerate={handleRegenerate}
-                isRegenerating={isRegenerating}
-              />
+              <div className="mb-5">
+                <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                  <CheckSquare className="w-7 h-7 text-brand-accent" /> Analysis Results
+                </h2>
+                <p className="text-brand-light/60 mt-2 text-sm">
+                  Review the structured health intelligence report below. You can edit fields inline before exporting.
+                </p>
+              </div>
             )}
+
+            {/* Content Card */}
+            <div className="bg-brand-primary/5 border border-brand-primary/30 rounded-2xl shadow-xl p-5 sm:p-6 lg:p-8 backdrop-blur-md">
+              {appState === 'workspace' && (
+                <IntelliPMWorkspace
+                  onAnalysisStart={handleAnalysisStart}
+                  isProcessing={false}
+                  processingStep={processingStep}
+                />
+              )}
+
+              {appState === 'processing' && (
+                <IntelliPMWorkspace
+                  onAnalysisStart={handleAnalysisStart}
+                  isProcessing={true}
+                  processingStep={processingStep}
+                />
+              )}
+
+              {appState === 'results' && result && (
+                <ResultsDashboard
+                  result={result}
+                  onBack={handleBack}
+                  onRegenerate={handleRegenerate}
+                  isRegenerating={isRegenerating}
+                />
+              )}
+            </div>
           </div>
         </div>
-      </div>
       </main>
     </div>
   );

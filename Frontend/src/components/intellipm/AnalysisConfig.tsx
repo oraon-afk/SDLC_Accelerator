@@ -47,16 +47,7 @@ const MODULE_CONFIG = [
     border: 'border-indigo-500/30',
     checkedBg: 'bg-indigo-500/20',
   },
-  {
-    key: 'budgetVariance' as keyof AnalysisModules,
-    label: 'Budget Variance',
-    description: 'Detects cost overruns, resource overspend, and forecast deviations.',
-    Icon: DollarSign,
-    color: 'text-emerald-400',
-    bg: 'bg-emerald-500/10',
-    border: 'border-emerald-500/30',
-    checkedBg: 'bg-emerald-500/20',
-  },
+
   {
     key: 'escalationPrediction' as keyof AnalysisModules,
     label: 'Escalation Prediction',

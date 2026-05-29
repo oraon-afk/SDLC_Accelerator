@@ -35,6 +35,7 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
     source_artifacts,
     analysis_timestamp,
     priority_level,
+    document_summary,
   } = result;
 
   const overdue = action_tracker.overdue_actions;
@@ -89,6 +90,42 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
         </p>
       </section>
 
+      {/* Consolidated Document Summary */}
+      <section
+        aria-labelledby="doc-summary-heading"
+        className="bg-brand-dark/50 rounded-2xl p-5 border border-brand-primary/30 shadow-sm backdrop-blur-md animate-fade-in space-y-4"
+      >
+        <div className="flex items-center gap-2 mb-1">
+          <FileText className="w-5 h-5 text-brand-accent" aria-hidden="true" />
+          <h2
+            id="doc-summary-heading"
+            className="text-lg font-bold text-white"
+          >
+            Consolidated Document Summary
+          </h2>
+        </div>
+        
+        {document_summary && document_summary.length > 0 ? (
+          <div className="space-y-3.5">
+            {document_summary.map((item, idx) => (
+              <div key={idx} className="p-3.5 rounded-xl bg-brand-primary/10 border border-brand-primary/20 space-y-1.5 hover:border-brand-accent transition-all duration-200">
+                <div className="flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-brand-accent flex-shrink-0" />
+                  <span className="text-sm font-bold text-white font-mono truncate">{item.file_name}</span>
+                </div>
+                <p className="text-xs text-brand-light/90 leading-relaxed whitespace-pre-line">
+                  {item.summary}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-brand-light/70 italic leading-relaxed">
+            {project_health_summary.narrative}
+          </p>
+        )}
+      </section>
+
       {/* Health Factors + Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Health Factors */}
@@ -105,7 +142,6 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
           </h3>
           <div>
             <HealthIndicator label="Schedule" value={project_health_summary.health_factors.schedule} />
-            <HealthIndicator label="Budget" value={project_health_summary.health_factors.budget} />
             <HealthIndicator label="Resources" value={project_health_summary.health_factors.resources} />
             <HealthIndicator label="Quality" value={project_health_summary.health_factors.quality} />
           </div>

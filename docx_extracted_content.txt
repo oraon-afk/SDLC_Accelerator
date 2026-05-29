@@ -1,0 +1,1653 @@
+
+Unified SDLC Accelerator
+
+This website helps teams move through the software delivery lifecycle faster. A user chooses their role, opens the right AI agent, uploads project documents, and receives structured outputs such as risks, requirements, fit-gap findings, test cases, and traceability.
+The Unified SDLC Accelerator is a role-based AI workspace for project delivery teams. Instead of every team member manually reading long documents and creating separate trackers, the application guides each  user to the right assistant for their stage of work.
+Select your role, upload the documents you already have, choose the type of analysis needed, let the AI create first-draft work products, then review, refine, export, and use the outputs in your delivery process. 
+
+Website Explained
+The user opens the website and chooses the persona that best matches their job role.
+The application creates a personalized dashboard and shows only the agents relevant to that role.
+The user selects an agent from the sidebar or dashboard.
+The user uploads documents, pastes notes, or sets analysis options.
+The AI reads the input and generates structured outputs for review.
+The user reviews results, uses the outputs in project meetings, and exports or shares the results where supported. 
+The website is an AI-powered delivery assistant for the full software development lifecycle. It does not replace the team; it gives each role a structured starting point and reduces repetitive documentation work.
+Program managers use it to identify risks, action items, schedule issues, and project health
+Business analysts use it to turn discovery notes into user stories, requirements, pain points, meeting summaries, and open questions.
+Process analysts use it to check process documents against compliance frameworks and best practices.
+Solution architects use it to compare requirements against out-of-the-box platform capabilities and estimate customization effort.
+Validation leads use it to create test scenarios, acceptance criteria, and traceability from requirements to tests.
+Main Pages and Functions
+
+Landing Page
+The landing page is the entry point. It asks the user to choose a persona: Program Manager, Business Analyst - Discovery, Business Analyst - Process Intelligence, Solution Architect, or Validation Lead. The system starts by asking who you are in the delivery process, because each role needs different outputs and different AI support.
+
+Dashboard
+After persona selection and Login, the dashboard becomes the user's independent workspace. It shows key objectives, recent activity, the active persona, and the number of enabled agents. The dashboard is the control room. It tells the user what role they are working as and points them to the right AI agents.
+
+5. Agent-by-Agent Functionality
+Agent
+Inputs
+What the Website Does
+Output
+IntellI-PM
+Meeting notes, project plans, action lists, transcripts, CSVs, audio/video files.
+Detects project risks, actions, schedule alerts, budget concerns, and escalation signals.
+Project health summary, top actions, risk dashboard, action tracker, schedule alerts, PDF report.
+BA Discovery Agent
+Workshop notes, interview summaries, transcripts, whiteboard outputs, pasted notes.
+Converts raw discovery material into delivery-ready requirements.
+
+User stories, requirements list, pain points, meeting summary, gaps, follow-up questions.
+
+BA Process Intelligence
+
+Process maps, specs, selected regulations, industry context.
+
+Checks processes against frameworks.
+
+Risk score, compliance checks, process gaps, benchmark comparisons, audit report action.
+
+Solution Fit-Gap Agent
+Requirements documents and platform capability/configuration documents.
+Maps each requirement to platform capabilities and identifies fit, configuration, custom work, or gaps.
+Fit-gap matrix, overall fit score, customizations count, effort estimate, technical feasibility, architecture recommendation.
+Validation Traceability Agent
+Requirements, user stories, specs, Definition of Done, quality standards.
+Creates validation coverage and links requirements to test scenarios.
+Coverage score, test cases, acceptance criteria, export traceability matrix option.
+
+IntellI-PM: Program Manager Agent
+This agent helps to manage delivery health. The user uploads project documents, selects analysis options, and clicks Analyze Documents.
+Document Hub accepts files and shows upload status.
+Analysis Configuration lets the user choose risk detection, action tracking, schedule analysis, budget variance, and escalation prediction.
+Priority Level helps frame the urgency of the analysis.
+Results show project health, executive summary, top actions, risks, action tracker, and schedule alerts.
+The user can export the result as a PDF report. 
+BA Discovery Agent
+This agent helps business analysts turn messy discovery conversations into usable backlog material. The user can upload files or paste direct notes.
+Discovery Materials accepts workshop notes, transcripts, PDFs, DOCX files, TXT files, or whiteboard photos.
+Direct Notes Input lets the user paste raw interview notes immediately.
+Project Context captures project name, industry, phase, and stakeholders.
+Generate Requirements creates user stories, requirements, pain points, meeting summary, and gaps.
+The results screen uses tabs so the user can review one output type at a time. 
+
+
+
+BA Process Intelligence
+This agent checks process documentation against selected regulations and best-practice libraries. It is useful when user need confidence that a process is compliant and efficient.
+Process Documentation accepts process maps, BPMN, Visio exports, specs, PDFs, or DOCX files.
+Compliance Library lets users select GDPR, HIPAA, SOC2, ISO 27001, or ITIL.
+Configuration captures industry context such as Healthcare, Finance, Manufacturing, Tech, or Public Sector.
+Run Intelligence Scan generates risk score, compliance checks, process gaps, and benchmarks.
+Solution Fit-Gap Agent
+This agent helps solution architects decide whether  requirements can be met using existing platform capability, configuration, customization, or whether there is a gap.
+Requirements Input accepts product backlogs, specifications, or PRDs.
+OOTB Capabilities / Solution Stack accepts platform guides, capability lists, API docs, or configuration documents.
+Run Fit-Gap Analysis maps each requirement to a fit status and estimates effort.
+Results include overall fit score, customizations, technical risk, estimated development effort, fit-gap matrix, feasibility, and architecture recommendation.
+Validation Traceability Agent
+This agent supports QA and validation teams by creating test scenarios and proving that requirements are covered by tests.
+Requirements / Stories accepts requirements, user stories, or specifications.
+Definition of Done accepts quality standards, DoD lists, and policies.
+Generate Validation Traceability produces a coverage view, test scenarios, traceability matrix, and acceptance criteria.
+The export action supports traceability matrix handoff for audit and UAT planning.
+
+ Inputs Required
+IntellI-PM Agent:
+Input Needed
+
+Details Required
+
+Preferred Format
+
+Project documents
+project plan, delivery plan, sprint plan, milestone plan, or project charter.
+PDF, DOCX, TXT, CSV
+Meeting notes/transcripts
+Steering committee notes, stand-up notes, project review notes, meeting transcripts, or decision logs.
+PDF, DOCX, TXT
+Action item list
+Open actions with owners, due dates, status, blockers, and priority if available.
+CSV, XLSX, DOCX, TXT
+Risk/issue log
+Known risks, current issues, severity, owner, impact, mitigation, and escalation status.
+CSV, XLSX, DOCX
+Timeline or milestone data
+Key dates, release plan, dependency milestones, sprint/release commitments, and delayed items.
+
+CSV, XLSX, PDF, DOCX
+
+
+BA Discovery Agent:
+Input Needed
+
+Details Required
+
+Preferred Format
+
+Workshop notes
+Raw notes from workshops, discovery sessions, requirement meetings, or design thinking sessions.
+PDF, DOCX, TXT
+Interview summaries
+User interview notes, stakeholder feedback, business pain points, and desired outcomes.
+PDF, DOCX, TXT
+Direct pasted notes
+Text pasted directly into the website when files are not ready.
+Plain text
+Project name
+Name of the project or transformation initiative.
+Plain text
+Industry
+Industry such as Healthcare, Finance, Manufacturing, Retail, or Education.
+Plain text
+Project phase
+
+Current phase: Discovery, Design, or UAT.
+Plain text
+BA Process Intelligence Agent:
+Input Needed
+
+Details Required
+
+Preferred Format
+
+Process documentation
+Current process maps, BPMN diagrams, Visio exports, SOPs, functional specs, or workflow documents.
+PDF, DOCX, TXT
+Industry context
+Industry such as Healthcare, Finance, Manufacturing, Tech, or Public Sector.
+Dropdown selection
+Compliance framework selection
+Relevant frameworks to check, such as GDPR, HIPAA, SOC2, ISO 27001, or ITIL.
+Button selection
+Business process scope
+The process area being assessed, such as onboarding, claims, procurement, billing, service request, incident management, or data handling.
+Text/document context
+Solution Fit-Gap Agent:
+Input Needed
+
+Details Required
+
+Preferred Format
+
+Requirements document
+Business requirements, functional requirements, product backlog, user stories, PRD, or specification document.
+PDF, DOCX, TXT
+capability document
+Platform capability list, standard feature guide, product documentation, solution catalog, or configuration guide.
+PDF, DOCX, TXT
+Solution stack details
+Target platform, modules, integrations, APIs, current architecture, and known technical constraints.
+PDF, DOCX, TXT
+
+Validation Traceability Agent:
+Input Needed
+
+Details Required
+
+Preferred Format
+
+Requirements or user stories
+Approved or draft requirements, user stories, functional specs, process maps, or solution configuration notes.
+PDF, DOCX, TXT
+Existing test cases
+Helps compare generated tests against current coverage.
+CSV, XLSX, DOCX
+Acceptance criteria
+Improves test scenario precision when already available.
+DOCX, TXT
+Defect history
+Helps generate negative and edge-case scenarios.
+CSV, XLSX
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Development Plan
+
+Unified SDLC Accelerator – Development Plan (Configuration → Development → Testing)
+This document provides a full-proof development plan for the Unified SDLC Accelerator, a rolebased AI workspace described in the proposal. The plan covers environment configuration, backend/frontend development, agent implementation, integration, and a comprehensive testing strategy.
+
+1. Project Overview
+The Unified SDLC Accelerator is a web application that helps project delivery teams move faster through the software development lifecycle.Users select a persona (Program Manager, BA Discovery, BA Process Intelligence, Solution Architect, Validation Lead), upload project documents, and receive structured AIgenerated outputs (risks, requirements, fitgap matrices, test cases, traceability).
+Core agents to build:
+IntellIPM – project health, risks, schedule alerts, action tracker
+BA Discovery – user stories, requirements, pain points from raw notes
+BA Process Intelligence – compliance checks (GDPR, HIPAA, SOC2, ISO 27001, ITIL) against process maps
+Solution FitGap – maps requirements to platform capabilities, identifies fit/config/customisation
+Validation Traceability – test scenarios, coverage, traceability matrix from requirements
+
+2. Development Approach
+Agile / Scrum – 2week sprints, MVP first, then iterative enhancements
+DevOps – CI/CD pipeline (GitHub Actions / GitLab CI), containerised deployment (Docker + Kubernetes)
+Tech Stack Recommendation
+Frontend: React / Next.js (TypeScript)
+Backend: Python (FastAPI) or Node.js (NestJS)
+AI: OpenAI GPT4o / Anthropic Claude 3.5 (with fallback), LangChain for prompt orchestration
+Document parsing: PyPDF2, pythondocx, pandas (CSV/XLSX), Whisper (audio/video)
+Database: PostgreSQL (user sessions, upload metadata, output caching)
+Storage: AWS S3 / Azure Blob (for uploaded files)
+Authentication: Auth0 / Firebase Auth
+
+3. Phase 0 – Project Setup & Configuration
+3.1 Environment Configuration
+Set up development, staging, and production environments (cloud VMs or managed Kubernetes).
+Configure CI/CD pipelines: linting, unit tests, security scan, build, deployment.
+Establish secret management (API keys for LLM, storage, database).
+3.2 AI / LLM Configuration
+Choose LLM provider(s), set up API accounts.
+Configure base prompt templates for each agent (rolespecific instructions, output format schemas).
+Implement token limit handling and response streaming for long documents.
+(Optional) Finetune a smaller model for classification tasks (fitgap mapping, risk detection).
+3.3 Document Parsing Configuration
+Integrate parsers for: PDF, DOCX, TXT, CSV, XLSX, audio/video (transcription via Whisper API).
+Configure file validation (size limits, MIME types).
+Implement chunking strategies for large documents (context window management).
+3.4 Compliance Library (for BA Process Intelligence)
+Build a structured knowledge base of compliance frameworks:
+GDPR, HIPAA, SOC2, ISO 27001, ITIL – store as vector embeddings or rulebased checklists.
+Configure industryspecific context mappings (Healthcare → HIPAA + GDPR, Finance → SOC2 + ISO 27001).
+3.5 Authentication & Role Management
+Configure OAuth2 (Google, Microsoft, email/password).
+Define rolebased access: each persona sees only its agents.
+Store user sessions and persona preferences.
+
+4. Phase 1 – Core Platform Development (Foundation)
+4.1 Backend Services
+Service
+Responsibility
+User & Auth
+Login, persona selection, session management
+File Upload
+Multipart uploads to S3, virus scanning, parse & extract text
+Agent Orchestrator
+Routes files + analysis options to correct agent logic
+AI Invoker
+Builds prompts, calls LLM, validates JSON output, caches results
+Export Service
+PDF generation (ReportLab / wkhtmltopdf), CSV/Excel exports
+4.2 Frontend Pages
+Landing Page – Persona selection cards (Program Manager, BA Discovery, etc.).
+Dashboard – Dynamic widgets: active persona, recent agents, quick actions.
+Agent Workspace – Shared layout: document upload zone, analysis config panel (options like risk detection, compliance library selection), results display (tabs, export button).
+4.3 Configuration Deliverables
+Docker Compose file for local development (backend + frontend + DB + Redis).
+Environment variable templates (.env.example).
+API specification (OpenAPI) for all agent endpoints.
+
+5. Phase 2 – Agent Development (Sprint by Sprint)
+Each agent follows the same pattern:
+Implement backend endpoint (POST /agents/{agent_id}/analyze).
+Write agentspecific prompt templates + output schema (Pydantic models).
+Integrate file parsing + field extraction.
+Add analysis configuration UI (checkboxes, dropdowns, etc.).
+Implement result rendering (tables, cards, export).
+Unit tests + integration tests.
+5.1 Sprint 1 – IntellIPM Agent
+Inputs: project plans, meeting notes, action lists, risk logs, timeline data.
+Configuration options: risk detection, action tracking, schedule analysis, budget variance, escalation prediction.
+Prompt engineering: return a structured JSON with project_health_summary, top_actions, risks, action_tracker, schedule_alerts.
+Export: PDF report with charts (using matplotlib / Chart.js).
+5.2 Sprint 2 – BA Discovery Agent
+Inputs: workshop notes, transcripts, pasted notes, whiteboard photos (imagetotext via OCR).
+Output fields: user stories (As a… I want… so that…), requirements list, pain points, meeting summary, gaps, followup questions.
+UI: direct notes input field + file upload.
+Result tabs for each output type.
+5.3 Sprint 3 – BA Process Intelligence Agent
+Inputs: process maps (BPMN, Visio), SOPs, industry context, selected compliance frameworks.
+Configuration: multiselect compliance library (GDPR, HIPAA, etc.) + industry dropdown.
+Output: risk score, compliance checks (pass/fail with evidence), process gaps, benchmark comparisons.
+Backend logic: use embeddings to compare process steps against framework rules.
+5.4 Sprint 4 – Solution FitGap Agent
+Inputs: requirements document, OOTB capabilities / solution stack doc.
+Output: fitgap matrix (requirement → fit/configuration/customisation/gap), overall fit score, customisation count, effort estimate (story points), technical feasibility, architecture recommendation.
+Configuration: allow user to override mapping confidence thresholds.
+5.5 Sprint 5 – Validation Traceability Agent
+Inputs: requirements/user stories, Definition of Done, optional existing test cases, defect history.
+Output: coverage score, test scenarios (stepbystep), traceability matrix (Req ID ↔ Test ID), acceptance criteria.
+Export: traceability matrix as CSV/Excel for audit.
+5.6 Sprint 6 – CrossAgent Enhancements
+Implement shared document hub (reuse uploaded documents across agents).
+Add output versioning and “regenerate” button.
+Implement feedback loop (thumbs up/down on AI outputs for future finetuning).
+
+6. Phase 3 – Integration & Data Flow
+Integration Point
+Description
+Unified upload store
+Any agent can reference previously uploaded files (copyfree).
+User context passing
+Persona + project context (from dashboard) prefills analysis options.
+Export centralisation
+One export service used by all agents (PDF, CSV, JSON).
+Audit logging
+Log all analysis requests, inputs, outputs for compliance & debugging.
+Asynchronous processing
+Large documents → background task with WebSocket / polling for status.
+Deliverable: Endtoend test that a user can select a persona → upload a file → run an agent → download an export.
+
+7. Phase 4 – Testing Strategy
+7.1 Unit Testing
+Backend: test each parser, prompt builder, output validator (pytest).
+Frontend: test React components (Jest + React Testing Library).
+Coverage target: >80% for critical modules (file parsing, AI invocation, export formatting).
+7.2 Integration Testing
+API endpoint tests (FastAPI TestClient) with mocked LLM responses.
+Database & S3 integration: upload, retrieve, delete.
+Auth flow: login → persona → agent access.
+7.3 EndtoEnd (E2E) Testing
+Cypress or Playwright scenarios:
+Landing page → choose “Program Manager” → upload a sample project plan → run IntellIPM → verify export contains risk table.
+BA Process Intelligence: upload a process map, select GDPR → output includes “data retention gap” if missing.
+Test all five agents with representative sample files (provided in test/fixtures).
+7.4 AI Output Validation
+Create groundtruth datasets for each agent (e.g., 10 project plans with manually labelled risks).
+Measure precision/recall of risk detection, fitgap classification accuracy.
+Implement regression tests: changes to prompts must not break previously correct outputs.
+7.5 Performance & Load Testing
+Tool: k6 or JMeter.
+Scenarios:
+50 concurrent users uploading 10 MB PDFs.
+100 concurrent analysis requests (cached vs uncached).
+SLOs: 95th percentile response time < 15s for analysis, < 3s for dashboard load.
+7.6 Security Testing
+Static analysis (SAST): Bandit (Python), ESLint security rules.
+Dependency scanning (Snyk).
+Penetration testing focus: file upload (malicious content), prompt injection, authorisation bypass between personas.
+Ensure all exports are sanitised (no XSS in PDF reports).
+7.7 User Acceptance Testing (UAT)
+Recruit 2 users per persona (total 10).
+Provide test documents & expected outputs.
+Collect feedback on output usefulness, UI clarity, export quality.
+Iterate before production release.
+
+8. Phase 5 – Deployment & Release
+8.1 Staging Environment
+Deploy to staging (same configuration as production).
+Run full regression suite + UAT signoff.
+8.2 Production Release
+Bluegreen deployment to minimise downtime.
+Enable monitoring:
+Application logs (Datadog / ELK)
+LLM API usage & cost tracking
+Error tracking (Sentry)
+Define rollback plan (oneclick revert to previous stable build).
+8.3 PostRelease Configuration
+Set up automated backups for useruploaded documents (30day retention).
+Configure usage quotas per user (to manage LLM costs).
+Provide admin dashboard to view agent usage, success rates, and feedback.
+
+9. Risk Mitigation
+Risk
+Mitigation
+LLM hallucinations in fitgap or compliance checks
+Always include confidence scores; allow manual override; use fewshot examples + grounding with retrieved context.
+Slow parsing of large documents
+Implement async tasks with progress indicators; set file size limit (e.g., 50 MB).
+Compliance framework updates
+Version compliance libraries; provide admin UI to update rules/embeddings without redeploy.
+User data privacy
+Store documents encrypted at rest; process with LLM in VPC / Azure OpenAI private endpoints; sign BAA for HIPAA.
+Agent output inconsistency
+Standardise output schemas; add “regenerate” button with different temperature; store prompt version in output metadata.
+
+10. Acceptance Criteria (for “FullProof” Completion)
+ All five agents produce outputs matching the proposal’s description, verified by UAT.
+ Users can upload all listed file formats (PDF, DOCX, TXT, CSV, XLSX, audio/video) without errors.
+ Export functions (PDF, CSV, traceability matrix) work correctly for every agent.
+ Testing suite passes: unit (>80%), integration, E2E, performance (under load), security (no critical findings).
+ Deployment to production with zerodowntime and monitoring in place.
+ Documentation delivered: user guide, admin guide, API docs, prompt version log.
+
+11. Timeline Estimate (Illustrative)
+Phase
+Duration
+Phase 0 – Setup & Configuration
+2 weeks
+Phase 1 – Core Platform
+3 weeks
+Phase 2 – 5 Agents (parallelised)
+6 weeks (2 per sprint)
+Phase 3 – Integration
+1 week
+Phase 4 – Testing (incl. UAT)
+3 weeks
+Phase 5 – Deployment & Golive
+1 week
+Total
+16 weeks
+Adjust based on team size and available AI infrastructure.
+
+12. Conclusion
+This development plan transforms the Unified SDLC Accelerator proposal into an actionable roadmap. By following the phases – from LLM configuration and core platform setup, through iterative agent development, to rigorous testing – the project can be delivered with high quality, meeting the expectations of rolebased AI assistance for software delivery teams.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Described Development Plan
+
+Unified SDLC Accelerator – InDepth Development Plan (Configuration → Development → Testing)
+This document is an expanded, detailed version of the development plan for the Unified SDLC Accelerator. It breaks down every phase and every sprint into specific tasks, technical decisions, deliverables, and validation criteria.
+
+Table of Contents
+Phase 0 – Project Setup & Configuration
+0.1 Environment & Infrastructure
+0.2 LLM & AI Configuration
+0.3 Document Parsing Pipeline
+0.4 Compliance Knowledge Base
+0.5 Authentication & Role Management
+Phase 1 – Core Platform Development
+Sprint 1.1 – Backend Foundation
+Sprint 1.2 – Frontend Foundation
+Sprint 1.3 – Shared Services & Integration
+Phase 2 – Agent Development (Sprints)
+Sprint 2.1 – IntellIPM (Program Manager Agent)
+Sprint 2.2 – BA Discovery Agent
+Sprint 2.3 – BA Process Intelligence Agent
+Sprint 2.4 – Solution FitGap Agent
+Sprint 2.5 – Validation Traceability Agent
+Sprint 2.6 – CrossAgent Enhancements & Optimisation
+Phase 3 – Integration & Data Flow
+Phase 4 – Testing Strategy (InDepth)
+4.1 Unit Testing
+4.2 Integration Testing
+4.3 EndtoEnd (E2E) Testing
+4.4 AI Output Validation & Regression
+4.5 Performance & Load Testing
+4.6 Security Testing
+4.7 User Acceptance Testing (UAT)
+Phase 5 – Deployment & Release
+Timeline & Milestones
+Risk Mitigation (Detailed)
+Acceptance Criteria
+
+Phase 0 – Project Setup & Configuration
+Goal: Establish all foundational components, thirdparty integrations, and development environments. No userfacing features yet.
+0.1 Environment & Infrastructure
+Task
+Details
+Deliverable
+Cloud provider setup
+Choose AWS (preferred) or Azure. Create separate VPCs for dev, staging, prod.
+Account configured, IAM roles, networking.
+Kubernetes cluster
+Deploy EKS (AWS) or AKS (Azure) – 3 nodes min. Configure autoscaling.
+Cluster ready with kubectl access.
+CI/CD pipeline
+GitHub Actions or GitLab CI: trigger on push to main/develop. Stages: lint, test, build, push to registry, deploy to dev/staging.
+Working pipeline with status badges.
+Container registry
+ECR (AWS) or ACR (Azure).
+Registry accessible from CI.
+Database
+PostgreSQL 15+ managed (RDS/Azure DB). Enable pointintime recovery.
+Database instance, schema migration tool (Alembic).
+Cache / queue
+Redis (ElastiCache) – for rate limiting, job queues (RQ/Celery).
+Redis endpoint.
+Object storage
+S3 bucket (private) for uploaded documents. Lifecycle policy: delete after 30 days.
+Bucket with signed URL generation.
+Monitoring & logging
+Deploy Prometheus + Grafana (metrics) and Loki (logs) inside cluster.
+Dashboards for CPU, memory, request latency.
+0.2 LLM & AI Configuration
+Task
+Details
+Deliverable
+LLM provider selection
+Use OpenAI GPT4o as primary, Anthropic Claude 3.5 as fallback. Both via LangChain.
+API keys stored in secrets manager (AWS Secrets Manager).
+Prompt template management
+Store prompts as versioned YAML files in a prompts/ folder. Include system prompts, user templates, output schemas (JSON Schema).
+Prompt registry with ability to rollback.
+Output schema definitions
+Define Pydantic models for each agent output (e.g., PMRiskOutput, FitGapMatrix). Validate LLM responses against these.
+schemas/ directory with unit tests.
+Cost & token tracking
+Implement middleware that logs tokens used per request, cost, and model. Store in PostgreSQL.
+Admin dashboard (later) to view usage.
+Finetuning preparation
+Collect synthetic data for fitgap classification and risk detection for future finetuning.
+Data collection script & storage bucket.
+0.3 Document Parsing Pipeline
+Task
+Details
+Deliverable
+Text extraction from PDF
+Use pypdf + pdfplumber for tables. Fallback to OCR (Tesseract) for scanned PDFs.
+pdf_parser.py with unit tests.
+DOCX parsing
+python-docx – extract paragraphs, tables, headers.
+docx_parser.py.
+CSV / XLSX parsing
+pandas – convert to markdown tables for LLM context.
+tabular_parser.py.
+Audio / video transcription
+Upload to S3 → trigger AWS Transcribe or Whisper API (OpenAI). Return transcript as text.
+Async transcription job with webhook.
+Image text (whiteboard photos)
+Use Tesseract OCR or GPT4V (vision) to extract handwritten/diagram text.
+image_parser.py.
+Chunking strategy
+Split large documents into overlapping chunks (512 tokens, 10% overlap) using langchain.text_splitter.
+Chunking service with metadata (page number, section).
+0.4 Compliance Knowledge Base (for BA Process Intelligence)
+Task
+Details
+Deliverable
+Framework rule extraction
+For GDPR, HIPAA, SOC2, ISO 27001, ITIL – create structured checklists (JSON) with: rule_id, description, keywords, required_controls.
+compliance_rules/ folder.
+Vector embeddings
+Embed each rule using text-embedding-3-small. Store in Pinecone or pgvector (PostgreSQL extension).
+Vector index ready for similarity search.
+Industry mapping
+Map industries to relevant frameworks: Healthcare → HIPAA + GDPR, Finance → SOC2 + ISO 27001, etc.
+Lookup table in DB.
+0.5 Authentication & Role Management
+Task
+Details
+Deliverable
+Auth provider
+Auth0 (or Firebase Auth). Enable Google, Microsoft, email/password.
+Auth0 tenant configured.
+User roles & personas
+After login, user selects a persona. Store persona in JWT claim or session. Middleware restricts agent access.
+Rolebased access control (RBAC) middleware.
+Session management
+Use HTTPonly cookies (secure, SameSite=Lax) with refresh tokens. Backend validates token on each request.
+Login/logout endpoints, protected routes.
+
+Phase 1 – Core Platform Development
+Goal: Build the foundational backend and frontend services that all agents will reuse.
+Sprint 1.1 – Backend Foundation (1 week)
+Objective: Set up API skeleton, database models, file upload, and basic agent orchestration.
+Tasks:
+API framework – FastAPI (Python) with OpenAPI docs at /docs.
+Database models – SQLAlchemy: User, Project, Document, AgentSession, Output.
+File upload endpoint – POST /upload → store in S3, parse text, save metadata to DB. Return document_id.
+Agent orchestrator – POST /agents/{agent_name}/run – accepts document_ids[], config (JSON). Validates persona access.
+Background task queue – RQ (Redis Queue) for longrunning LLM calls. Returns task_id for polling.
+Unit tests – at least 70% coverage for upload, DB, orchestrator.
+Deliverables:
+FastAPI application skeleton.
+Database schema (Alembic migration).
+Upload endpoint working with S3.
+Simple orchestrator that calls a dummy LLM.
+Validation:
+curl upload of a PDF → success response.
+curl run agent → returns task_id.
+Poll GET /task/{task_id} → returns status and result.
+
+Sprint 1.2 – Frontend Foundation (1 week)
+Objective: Build React/Next.js application with landing page, dashboard, and agent workspace layout.
+Tasks:
+Next.js project – TypeScript, Tailwind CSS, shadcn/ui components.
+Authentication integration – Auth0 React SDK, protect routes.
+Landing page – Persona selection cards (Program Manager, BA Discovery, BA Process Intelligence, Solution Architect, Validation Lead).
+Dashboard page – After persona selection, show:
+Active persona (can switch).
+Recent agent runs.
+Quick actions (upload document, run last agent).
+Agent workspace shell – Shared layout: sidebar with agent list (only current persona’s agents), main area (upload zone, config panel, results tabs).
+State management – React Query for API calls, Zustand for UI state (selected agent, current documents).
+Deliverables:
+Deployed frontend to dev environment.
+User can login, choose persona, see dashboard, navigate to agent workspace.
+API integration (placeholder – mock data for now).
+Validation:
+E2E test: login → select “Program Manager” → dashboard shows “IntellIPM” in sidebar.
+Click agent → workspace loads with upload zone.
+
+Sprint 1.3 – Shared Services & Integration (1 week)
+Objective: Connect frontend to real backend, implement export service, and add audit logging.
+Tasks:
+Frontend API client – generated from OpenAPI (orchestrator, upload, task polling).
+WebSocket / polling – implement realtime status updates for long tasks (use react-query with interval).
+Export service –
+PDF generation: weasyprint or reportlab (Python).
+CSV generation: Python csv module.
+Endpoint: POST /export/{session_id}?format=pdf → returns file.
+Audit logging – Log every API request (user, action, input length, output length, latency). Store in separate table.
+Error handling – Standard error responses (RFC 7807). Frontend toast notifications.
+Docker Compose for dev – backend + frontend + postgres + redis + s3 local (MinIO).
+Deliverables:
+Full integration: upload a document via UI, run a dummy agent, see results, export PDF.
+Audit logs visible in DB.
+Local development environment with one command (docker-compose up).
+Validation:
+Endtoend: upload → run → export works.
+Audit log records the session.
+
+Phase 2 – Agent Development (Sprints)
+Each sprint builds one agent completely: backend logic, prompt engineering, UI configuration, result rendering, export.
+Sprint 2.1 – IntellIPM (Program Manager Agent) – 5 days
+Objective: Deliver agent that detects project risks, actions, schedule alerts from uploaded documents.
+Backend Tasks:
+Input parsing – extract text from uploaded files, merge multiple files into one context.
+Prompt design –
+System: “You are a senior program manager. Identify risks, actions, schedule alerts, budget variances.”
+User: {documents_text}\n\nPriority level: {priority}.
+Output schema (JSON):
+{
+  "project_health_summary": "string",
+  "top_actions": [{"action": "string", "owner": "string", "due_date": "string"}],
+  "risks": [{"risk": "string", "impact": "high/medium/low", "mitigation": "string"}],
+  "action_tracker": [{"id": "string", "status": "open/closed", "age_days": "int"}],
+  "schedule_alerts": [{"milestone": "string", "expected_date": "string", "variance_days": "int"}]
+}
+Configuration UI options (passed in config):
+Risk detection (boolean)
+Action tracking (boolean)
+Schedule analysis (boolean)
+Budget variance (boolean)
+Escalation prediction (boolean)
+Priority level: Low / Medium / High (default Medium)
+LLM invocation – with temperature=0.2, max_tokens=2000. Retry on malformed JSON (up to 2 times).
+Result caching – store output in DB.
+Frontend Tasks:
+Agent workspace UI –
+Upload zone (accepts PDF, DOCX, TXT, CSV).
+Configuration panel with checkboxes and priority dropdown.
+“Run Analysis” button.
+Results display – tabbed view:
+Project Health Summary (card)
+Top Actions (table)
+Risks (table with impact badges)
+Action Tracker (table)
+Schedule Alerts (table)
+Export – “Export as PDF” button that calls export service.
+Testing:
+Unit: prompt builder, JSON validator.
+Integration: mock LLM returns known JSON, verify parsed correctly.
+E2E: upload sample project_plan.docx, run agent, verify output tables contain expected risks.
+Deliverable: Fully functional IntellIPM agent.
+
+Sprint 2.2 – BA Discovery Agent – 5 days
+Objective: Convert raw discovery notes into user stories, requirements, pain points, gaps.
+Backend Tasks:
+Inputs – files (PDF, DOCX, TXT, images) + direct notes input (plain text).
+Prompt –
+System: “You are a business analyst. Extract user stories (As a… I want… so that…), requirements, pain points, meeting summary, gaps, followup questions.”
+Output schema:
+{
+  "user_stories": [{"as_a": "string", "i_want": "string", "so_that": "string"}],
+  "requirements": [{"id": "R1", "description": "string"}],
+  "pain_points": ["string"],
+  "meeting_summary": "string",
+  "gaps": [{"gap": "string", "impact": "string"}],
+  "follow_up_questions": ["string"]
+}
+Configuration – project context: project name, industry, phase (Discovery, Design, UAT) – used to customise prompt.
+OCR for whiteboard photos – if image uploaded, run Tesseract or GPT4V to transcribe.
+Frontend Tasks:
+Direct Notes Input – textarea for pasting interview notes.
+Project Context fields – three text inputs + phase dropdown.
+Results – separate tabs for each output type.
+Export – CSV for requirements/user stories.
+Testing:
+Provide a sample workshop transcript, verify LLM extracts at least 3 user stories.
+Test image upload with whiteboard photo → text extraction.
+Deliverable: BA Discovery Agent ready for UAT.
+
+Sprint 2.3 – BA Process Intelligence Agent – 5 days
+Objective: Compliance checking of process documentation against selected frameworks.
+Backend Tasks:
+Compliance library integration – load selected frameworks (GDPR, HIPAA, SOC2, ISO 27001, ITIL).
+Process extraction – from BPMN/Visio files (use bpmn-python or convert to text via XML parsing).
+Retrieval pipeline –
+Chunk process document.
+For each framework rule, run similarity search against chunks.
+Use LLM to judge if the process satisfies the rule (yes/no/partial) with evidence.
+Prompt – combine relevant chunks and rule description → ask for compliance decision and risk score.
+Output –
+{
+  "risk_score": "0-100",
+  "compliance_checks": [{"rule_id": "GDPR-5", "status": "pass/fail/partial", "evidence": "string"}],
+  "process_gaps": ["string"],
+  "benchmark_comparisons": "string"
+}
+Industry context – inject industryspecific guidance into prompt.
+Frontend Tasks:
+Compliance framework multiselect – buttons/toggles.
+Industry dropdown – Healthcare, Finance, Manufacturing, Tech, Public Sector.
+Results – risk score gauge (chart.js), compliance check table, gaps list.
+Export – audit report (PDF with all details).
+Testing:
+Provide a mock process document that clearly violates GDPR data retention → agent must flag it.
+Use precomputed ground truth for 5 processes.
+Deliverable: BA Process Intelligence Agent.
+
+Sprint 2.4 – Solution FitGap Agent – 5 days
+Objective: Map requirements to OOTB platform capabilities, identify fit/config/customisation/gap.
+Backend Tasks:
+Requirement extraction – from PRD, backlog, user stories.
+Capability extraction – from platform documentation.
+Matching pipeline –
+Embed each requirement and each capability.
+For each requirement, find top3 most similar capabilities (cosine similarity).
+Use LLM to decide fit status: fit, configuration, customisation, gap. Also provide reasoning.
+Effort estimation – based on fit status:
+Fit → 0 story points
+Configuration → 1-3 points
+Customisation → 5-13 points
+Gap → 13+ points (or not feasible)
+Output –
+{
+  "overall_fit_score": 0.75,
+  "fit_gap_matrix": [{"requirement": "string", "fit_status": "string", "effort_estimate": "int", "reason": "string"}],
+  "customizations_count": 0,
+  "technical_risk": "low/medium/high",
+  "architecture_recommendation": "string"
+}
+Frontend Tasks:
+Two upload zones – Requirements document + Capabilities document.
+Configuration – threshold slider for similarity matching (default 0.7).
+Results – matrix table with colour coding (green=fit, yellow=config, orange=custom, red=gap).
+Export – Excel matrix.
+Testing:
+Known pair: requirement “login with email/password” vs capability “user authentication” → fit.
+Requirement “fingerprint scanner” vs no capability → gap.
+Deliverable: Solution FitGap Agent.
+
+Sprint 2.5 – Validation Traceability Agent – 5 days
+Objective: Create test scenarios, acceptance criteria, and traceability matrix from requirements.
+Backend Tasks:
+Requirement parsing – user stories, functional specs.
+Existing test cases (optional) – used to avoid duplication.
+Defect history (optional) – to generate negative/edge case tests.
+Test generation –
+For each requirement, prompt LLM to generate:
+Happy path test scenario (steps, expected result)
+Negative test scenario (if defect history indicates issues)
+Acceptance criteria in Gherkin format (Given/When/Then).
+Traceability matrix – build mapping: Requirement ID ↔ Test ID.
+Coverage score – (number of requirements with at least one test) / total requirements.
+Output –
+{
+  "coverage_score": 0.85,
+  "test_scenarios": [{"id": "T1", "requirement_id": "R1", "steps": ["..."], "expected": "..."}],
+  "traceability_matrix": [{"requirement_id": "R1", "test_ids": ["T1","T2"]}],
+  "acceptance_criteria": ["Given... When... Then..."]
+}
+Frontend Tasks:
+Upload requirements – file or direct text.
+Optional inputs – existing test cases (CSV), defect history (CSV).
+Results – coverage score (progress bar), test scenarios table, traceability matrix editable table.
+Export – traceability matrix as CSV, test cases as Excel.
+Testing:
+Requirements document with 10 items → ensure each gets at least one test.
+Upload existing test cases → agent should avoid duplicate test names.
+Deliverable: Validation Traceability Agent.
+
+Sprint 2.6 – CrossAgent Enhancements & Optimisation – 5 days
+Objective: Improve user experience, performance, and consistency across all agents.
+Tasks:
+Shared document hub – users can upload a document once and reuse across agents (select from dropdown).
+Output versioning – store previous runs, allow “compare with previous version”.
+Regenerate button – rerun same analysis with slightly higher temperature (0.4) to get alternative outputs.
+Feedback loop – thumbs up/down on each agent output. Store feedback for future finetuning.
+Prompt optimisation – A/B test prompt variants (using LangSmith) to improve output quality.
+Caching improvements – cache LLM responses based on input hash (documents + config) for 24 hours.
+Cost controls – set monthly token budget per user; show warning when approaching limit.
+Deliverable: A polished, productionready multiagent platform.
+
+Phase 3 – Integration & Data Flow
+Goal: Ensure seamless data flow between frontend, backend, agents, and external services. Build final endtoend integration.
+Tasks (1 week):
+Area
+Details
+Unified file store
+All agents read from the same S3 bucket. Metadata table stores document_id, original_name, parsed_text, uploaded_by, project_id.
+Project context
+User can create a “Project” (name, description). All agent runs are linked to a project. Dashboard shows projectspecific activity.
+Crossagent data reuse
+Output from BA Discovery (requirements) can be fed directly into Solution FitGap agent (oneclick).
+Audit trail
+Complete history: who uploaded what, which agent ran when, what output was exported.
+Asynchronous processing
+For large documents (>10 pages), agent run goes to background queue. Frontend polls status and shows progress spinner.
+API gateway
+(Optional) Expose public API for external integrations – authenticated with API keys.
+Deliverable: Integrated system where a user can: upload a requirements doc → run BA Discovery → take the generated requirements → run Solution FitGap on them → download fitgap matrix.
+Validation:
+Endtoend integration test covering all five agents in sequence (using a realistic project dataset).
+
+Phase 4 – Testing Strategy (InDepth)
+4.1 Unit Testing
+Component
+Framework
+Coverage Target
+Key Tests
+Parsers (PDF, DOCX, CSV)
+pytest
+90%
+Extract text from malformed files; handle empty files.
+Prompt builders
+pytest
+90%
+Ensure all variables are interpolated; correct JSON schema.
+Output validators
+pytest
+95%
+Reject invalid JSON; accept extra fields.
+Fitgap matcher (similarity)
+pytest
+80%
+Cosine similarity calculation; threshold filtering.
+Auth middleware
+pytest
+100%
+Block unauthorised persona access.
+4.2 Integration Testing
+Test Scenario
+Tools
+Expected Result
+Upload → run agent → retrieve result
+FastAPI TestClient, mock LLM
+Task status updates from PENDING → SUCCESS.
+Compliance agent with real Pinecone
+pytest + testcontainers
+Vector search returns relevant rules.
+Export service (PDF/CSV)
+request + file comparison
+Output file has correct MIME type and content.
+Auth flow
+Auth0 test tenant
+JWT validation passes; roles enforced.
+4.3 EndtoEnd (E2E) Testing
+Framework: Playwright (or Cypress)
+Test Suites (one per agent + crosscutting):
+Suite
+Critical Path
+Assertion
+IntellIPM
+Upload project plan → run → export PDF
+PDF contains risk table with at least 1 row.
+BA Discovery
+Paste notes → generate → copy user story
+Clipboard contains “As a…”.
+BA Process Intelligence
+Upload BPMN, select GDPR → run → risk score < 50?
+Compliance checks table displays at least 3 rows.
+FitGap
+Upload reqs and capabilities → run → matrix shows “fit” for obvious match.
+Row colour green.
+Traceability
+Upload user stories → run → coverage score > 0.
+Traceability matrix export has 2 columns.
+Crossagent
+BA Discovery output → Feed to FitGap
+FitGap loads the output automatically.
+Test Data:
+Store sample documents in tests/fixtures/ (nonconfidential synthetic data).
+4.4 AI Output Validation & Regression
+Ground Truth Datasets:
+For each agent, create 1020 inputoutput pairs with manually reviewed “golden” outputs.
+Metrics:
+Precision/Recall for risk detection (IntellIPM).
+Exact match accuracy for fit status classification (FitGap).
+BLEU/ROUGE for summarisation tasks (BA Discovery meeting summary).
+Regression Suite:
+Run golden tests on every PR. If score drops below threshold (e.g., 80% accuracy), fail the build.
+Store prompt versions – rollback to previous prompt if regression occurs.
+4.5 Performance & Load Testing
+Tool: k6
+Scenarios:
+Scenario
+Load
+SLO
+Concurrent file uploads
+50 users, 5MB PDF each
+95% < 3s response time.
+Agent analysis (cached)
+100 requests, cached result
+95% < 2s.
+Agent analysis (uncached, LLM)
+20 concurrent, 10s timeout each
+No timeout, queue length < 5.
+Export PDF generation
+30 concurrent
+95% < 5s.
+Monitoring during test: CPU, memory, LLM API latency, database connections.
+4.6 Security Testing
+Type
+Tools
+Focus Areas
+SAST
+Bandit (Python), ESLint with security plugin
+No hardcoded secrets, SQL injection, unsafe deserialisation.
+DAST
+OWASP ZAP
+Scan deployed staging environment – file upload, authentication bypass.
+Dependency scanning
+Snyk / pip-audit
+Weekly scan, fail build on critical vulnerabilities.
+Penetration testing (manual)
+Burp Suite
+Prompt injection (try to override system prompt), privilege escalation (change persona in JWT).
+Data privacy
+–
+Ensure uploaded documents are not leaked in logs; encrypt at rest.
+4.7 User Acceptance Testing (UAT)
+Participants: 2 users from each persona (total 10). Recruit from internal PMs, BAs, architects, QA.
+UAT Script:
+Provide login credentials and sample project documents (e.g., ecommerce platform rollout).
+Ask each user to perform 3 tasks relevant to their role.
+Collect feedback via survey:
+Output usefulness (15)
+UI ease of use (15)
+Export quality (15)
+Openended suggestions.
+Acceptance criteria for UAT:
+Average score >= 4.0 for each persona.
+No critical usability blockers.
+Iteration: Fix top 5 userreported issues before production.
+
+Phase 5 – Deployment & Release
+Tasks (1 week):
+Stage
+Activities
+Staging environment
+Deploy latest code to staging (identical to production). Run full regression tests.
+Database migration
+Apply Alembic migrations with backup and rollback plan.
+Secrets & config
+Inject production API keys (LLM, S3, Auth0) via Kubernetes secrets.
+Bluegreen deployment
+Two production environments (blue = current, green = new). Switch traffic using load balancer.
+Smoke tests
+After switch, run critical E2E tests (login → IntellIPM → export).
+Monitoring golive
+Set up alerts on error rate > 1%, latency > 10s, LLM quota exceed.
+Rollback plan
+Oneclick to revert to blue environment; database rollback script (if schema changed).
+PostRelease:
+Oncall rotation for first week.
+Weekly review of LLM costs and user feedback.
+Schedule monthly retraining / prompt updates.
+
+Timeline & Milestones
+Phase
+Duration
+Cumulative
+Phase 0 – Setup
+2 weeks
+Week 2
+Phase 1 – Core Platform (3 sprints)
+3 weeks
+Week 5
+Phase 2 – Agents (6 sprints)
+6 weeks
+Week 11
+Phase 3 – Integration
+1 week
+Week 12
+Phase 4 – Testing (incl. UAT)
+3 weeks
+Week 15
+Phase 5 – Deployment
+1 week
+Week 16
+Buffer
+2 weeks
+Week 18
+Total: 18 weeks (with buffer). Without buffer: 16 weeks.
+
+Risk Mitigation (Detailed)
+Risk
+Probability
+Impact
+Mitigation
+LLM output hallucination (fitgap misclassification)
+Medium
+High
+Use retrievalaugmented generation (RAG) with capability embeddings; show confidence score; manual override.
+Document parsing fails for proprietary formats (BPMN, Visio)
+Low
+Medium
+Provide user guidance: export as PDF or text. Implement fallback to raw text extraction.
+Compliance library becomes outdated (GDPR changes)
+Low
+High
+Admin UI to update rules without deployment; version control rules; notify admin every 6 months.
+High LLM cost due to abuse
+Medium
+Medium
+Rate limiting per user (100 requests/day); caching; token budget alerts.
+Slow response for large documents (>100 pages)
+Medium
+Medium
+Asynchronous processing with progress indicator; enforce max 200 pages.
+Data privacy breach (customer documents)
+Low
+Critical
+Encrypt at rest; use VPC endpoints for LLM API; sign BAA with OpenAI for HIPAA; audit logs.
+User rejects AI output (lack of trust)
+Medium
+Medium
+Provide “regenerate”, “edit manually”, and “export as draft”. Show reasoning from LLM (chainofthought).
+
+Acceptance Criteria
+ All five agents produce outputs that match the schema and are useful for real project scenarios (UAT signoff).
+ Upload supports all promised formats (PDF, DOCX, TXT, CSV, XLSX, audio, video, images).
+ Export works for each agent: PDF reports, CSV matrices, traceability Excel.
+ Test suite passes with 80%+ unit coverage, zero critical integration/E2E failures.
+ Performance SLOs met: 95th percentile analysis < 15s (uncached).
+ Security scan no critical or high findings.
+ Deployed to production with zerodowntime and monitoring.
+ Documentation: user manual, admin guide, API reference, prompt version log.
+
+
+
+
+
+Agent 1 IntellIPM (Program Manager Agent) – Functional Document
+1. Purpose & Scope
+The IntellIPM Agent is a core component of the Unified SDLC Accelerator. It assists Program Managers, Delivery Leads, and Project Managers in continuously assessing project health, surfacing risks, tracking actions, and identifying schedule or budget deviations.
+The agent consumes multiple heterogeneous artifacts (documents, spreadsheets, transcripts, images, audio) and produces a structured, actionable intelligence report. It does not replace the project manager but provides a firstdraft analysis that accelerates decisionmaking and reduces manual consolidation effort.
+
+2. User Persona & Goals
+Persona
+Primary Goal
+Typical Inputs
+Desired Output
+Program Manager
+Monitor delivery health across multiple workstreams
+Project plan, steering committee notes, risk log, action tracker, meeting recordings, whiteboard photos of timeline
+Dashboard of top risks, overdue actions, schedule alerts, budget variance signals
+Delivery Lead
+Identify escalation triggers before they become critical
+Sprint reports, milestone data, team velocity charts (images/PDF)
+Escalation prediction, recommended interventions
+PMO Analyst
+Aggregate status from many sources
+Weekly status reports (Word/PDF/CSV), Jira exports (CSV/JSON)
+Executive summary, action tracker with owners, compliance to milestones
+
+3. Functional Overview
+The agent follows a pipeline:
+Ingestion – User uploads one or more artifacts (any mix of PDF, DOCX, TXT, CSV, XLSX, JSON, images, audio).
+Transformation – Each artifact is parsed into plain text and metadata. Audio is transcribed; images undergo OCR/diagram analysis.
+Context Fusion – All extracted texts are combined into a coherent context window, preserving source attribution.
+Analysis Configuration – User selects which analyses to run (risk detection, action tracking, schedule analysis, budget variance, escalation prediction).
+LLM Processing – The agent prompts a large language model (GPT4o / Claude 3.5) with the combined context and analysis options, requesting a structured JSON output.
+Postprocessing – Validate JSON, compute derived metrics (e.g., overdue action count), attach confidence scores.
+Presentation – Results displayed in a tabbed dashboard (health summary, risks, actions, schedule alerts, budget insights).
+Export – Generate PDF report (for stakeholders) or CSV action tracker.
+
+4. Detailed Functional Requirements
+4.1 Input Artifacts – Supported Types & Processing
+Artifact Type
+File Extensions
+Processing Steps
+PDF
+.pdf
+Extract text (pypdf/pdfplumber); if scanned, OCR (Tesseract). Preserve tables as markdown.
+Word
+.docx
+Extract paragraphs, tables, headers (python-docx).
+Text
+.txt
+Read raw UTF8 text.
+CSV / Spreadsheet
+.csv, .xlsx, .xls
+Parse with pandas; convert to markdown tables for LLM. Also extract column headers for action/risk logs (e.g., “Owner”, “Due Date”, “Status”).
+JSON
+.json
+Validate structure (e.g., Jira export, transcript). Flatten to keyvalue pairs for LLM consumption.
+Image
+.png, .jpg, .jpeg, .bmp
+OCR (Tesseract) for whiteboard text; optionally use GPT4V (vision) to interpret Gantt charts or handwritten notes.
+Audio
+.mp3, .wav, .m4a, .ogg
+Transcribe with Whisper API (or AWS Transcribe). Output transcript is treated as meeting notes.
+Requirement: The agent must gracefully handle partial failures (e.g., one corrupt file) and still analyse the rest.
+4.2 Analysis Configuration (UserSelectable)
+The user can toggle which analysis modules to include:
+Module
+Description
+When to Use
+Risk Detection
+Identifies explicit or latent risks from logs, meeting notes, or status reports.
+Weekly project health check.
+Action Tracking
+Extracts open actions, owners, due dates, status. Flags overdue and aging actions.
+After monthly steering committee.
+Schedule Analysis
+Finds milestone delays, dependencies at risk, critical path deviations.
+Before release planning.
+Budget Variance
+Detects cost overruns, resource overspend, forecast deviations.
+Monthly financial review.
+Escalation Prediction
+Uses sentiment, delays, unresolved risks to predict likelihood of escalation (Low/Med/High).
+For executive reporting.
+Priority Level (Low / Medium / High) – influences the LLM’s sensitivity: High priority returns more granular alerts, low priority summarises only critical items.
+4.3 Output Schema (JSON)
+The agent must return a validated JSON object with the following structure (example):
+{
+  "analysis_timestamp": "2025-03-18T10:30:00Z",
+  "priority_level": "Medium",
+  "project_health_summary": {
+    "overall_health": "Yellow",
+    "narrative": "Schedule is at risk due to two delayed milestones, but budget and risks are under control.",
+    "health_factors": {
+      "schedule": "At risk",
+      "budget": "On track",
+      "resources": "Adequate",
+      "quality": "Green"
+    }
+  },
+  "top_actions": [
+    {
+      "action": "Finalize vendor contract for cloud migration",
+      "owner": "Alice Chen",
+      "due_date": "2025-03-25",
+      "status": "In progress",
+      "age_days": 8,
+      "priority": "High"
+    }
+  ],
+  "action_tracker": {
+    "total_actions": 24,
+    "open_actions": 12,
+    "overdue_actions": 3,
+    "avg_age_open_days": 5.2,
+    "actions_by_owner": {
+      "Alice Chen": 4,
+      "Bob Li": 2
+    }
+  },
+  "risks": [
+    {
+      "risk": "Key developer may leave before release",
+      "impact": "High",
+      "probability": "Medium",
+      "mitigation": "Crosstrain backup resource",
+      "owner": "HR Lead",
+      "status": "Monitoring"
+    }
+  ],
+  "schedule_alerts": [
+    {
+      "milestone": "UAT Signoff",
+      "baseline_date": "2025-04-01",
+      "forecast_date": "2025-04-10",
+      "variance_days": 9,
+      "reason": "Testing environment delayed",
+      "critical_path_flag": true
+    }
+  ],
+  "budget_variance": {
+    "total_budget": 1250000,
+    "actual_to_date": 620000,
+    "forecast_at_completion": 1380000,
+    "variance_percent": 10.4,
+    "major_variance_reasons": ["Overtime costs for API integration"]
+  },
+  "escalation_prediction": {
+    "likelihood": "Medium",
+    "indicators": ["Repeated schedule slippage", "Unresolved risk #R12"],
+    "recommended_actions": ["Escalate to steering committee at next meeting"]
+  },
+  "confidence_scores": {
+    "overall": 0.85,
+    "risk_detection": 0.9,
+    "action_tracking": 0.75,
+    "schedule_analysis": 0.8
+  },
+  "source_artifacts": ["project_plan.pdf", "meeting_notes.docx", "risk_log.csv"]
+}
+4.4 User Interface Flows
+Step 1 – Agent Workspace (Program Manager persona)
+Title: “IntellIPM – Project Health Intelligence”
+Upload Area – Draganddrop multiple files (supports all types). Progress indicators per file. After upload, each file shows a green check.
+Direct Notes / Paste – Text area for raw meeting notes (alternative to file upload). Max 10,000 characters.
+Analysis Configuration – Checkboxes for 5 modules; Priority dropdown (Low/Medium/High). Optional: “Time horizon” (Next 2 weeks / 1 month / Entire project).
+Run Analysis button – triggers background processing.
+Step 2 – Results Dashboard (Tabs)
+Executive Summary – Overall health, narrative, escalation likelihood, top 3 actions, top 3 risks.
+Risks – Table with sort/filter by impact, probability, owner.
+Action Tracker – Table + summary cards (overdue count). Export as CSV.
+Schedule Alerts – Ganttstyle bar chart (simple HTML/CSS) or table.
+Budget Insights – Variance chart (planned vs actual) using Chart.js.
+Export – Button “Generate PDF Report” (PDF includes all sections). Separate “Export Action CSV”.
+Step 3 – Review & Refine
+User can edit any output field (e.g., change risk mitigation text) before export.
+“Regenerate” button – rerun analysis with same inputs (different temperature = 0.4) for alternative perspective.
+4.5 AI Processing Logic (Backend)
+The agent uses a RAGlike approach:
+Concatenate Context – All extracted texts from uploaded artifacts are concatenated with labels:[Document: project_plan.pdf] ... content ...[Image: whiteboard_timeline.png – OCR text] ...
+System Prompt (defined per analysis modules selected):
+You are an expert Program Manager assistant. Analyze the provided project documents.
+Identify risks, actions, schedule deviations, budget variances, and escalation signals.
+Output ONLY valid JSON matching the schema.
+If information is missing for a field, omit it or set to null.
+User Prompt includes the concatenated context and explicit instructions:
+Priority level: {priority}
+Risk detection: {enabled/disabled}
+Action tracking: {enabled/disabled}
+...
+Context:
+{context}
+LLM Call – Temperature = 0.2 for deterministic output; max_tokens = 4000.
+Postprocessing – Validate JSON against Pydantic model. If validation fails, attempt repair with a second LLM call (fix prompt). After 2 failures, return partial results with error flag.
+Confidence Scoring – The LLM is asked to provide a confidence score (01) per section. Alternatively, a heuristic is used: higher if multiple sources corroborate.
+4.6 Special Handling for Unstructured Data
+Input Type
+Special Logic
+Audio
+After transcription, the transcript is fed as if it were a meeting notes document. The agent will extract actions and decisions from the conversation.
+Image (whiteboard, timeline)
+OCR for text; if diagram (e.g., Gantt chart), use vision model to extract milestone names and dates. Fallback: ask LLM to interpret based on user description in direct notes.
+CSV (Jira export)
+Map standard columns: “Summary” → potential actions, “Priority” → urgency, “Assignee” → owner, “Due date” → due_date.
+JSON (structured transcript)
+Assume it has utterances with speaker and text. Convert to pseudotranscript.
+
+5. Edge Cases & Error Handling
+Scenario
+System Behaviour
+No files uploaded, only direct notes
+Analyse notes alone.
+Empty or corrupted file
+Skip that file, log warning, continue with remaining. Show warning to user.
+No action items found (but module enabled)
+Return empty array, set action_tracker.total_actions = 0, flag “No actions detected”.
+LLM output malformed JSON
+Attempt repair up to 2 times. If still invalid, show generic error and suggest simplifying inputs.
+Very large context (> 128k tokens)
+Automatically summarise each artifact individually before concatenation, then secondpass analysis.
+Missing data for budget analysis
+Omit budget section from output, do not crash.
+
+6. NonFunctional Requirements
+Requirement
+Target
+Response time
+95% of analyses complete within 15 seconds (excluding LLM API latency).
+Concurrent users
+Support up to 20 simultaneous analyses without queue overflow.
+File size limit
+Total uploaded size per run ≤ 50 MB; individual file ≤ 20 MB.
+Supported audio length
+≤ 30 minutes (to keep transcription cost reasonable).
+Data retention
+Uploaded files and outputs stored for 30 days, then deleted.
+Access control
+Only users with “Program Manager” persona can access this agent.
+
+7. Example Usage Scenarios
+Scenario 1 – Weekly Health Check
+Inputs:
+project_plan_v2.pdf (milestones, resources)
+risk_log.xlsx (8 risks)
+meeting_notes_2025-03-15.docx (decision to delay testing)
+User selects: All 5 analysis modules, Priority = High.
+Output: Overall health = Yellow, top risk = “Testing delay impacts release”, overdue actions = 2, schedule alert for UAT milestone.
+Scenario 2 – PostSteering Committee Meeting
+Inputs:
+Audio recording of 45minute steering committee (.mp3)
+Whiteboard photo of updated timeline (.jpg)
+User selects: Action tracking + Schedule analysis only.
+Output: Extracted actions (e.g., “CFO to approve budget supplement”), schedule changes (milestone “Beta launch” moved from April 1 to April 15).
+
+8. Success Metrics (Acceptance Criteria)
+ Agent can ingest all supported artifact types (PDF, DOCX, CSV, XLSX, JSON, image, audio) without errors.
+ For a given sample project document set (golden standard), the agent correctly identifies at least 80% of explicitly mentioned risks and actions.
+ Output JSON always validates against the schema.
+ UI allows toggling analysis modules and shows results accordingly.
+ Export PDF includes all sections and is readable on A4 paper.
+ Average analysis time < 20 seconds for 5 documents (total 20 pages).
+
+9. Technical Dependencies
+Parsing: pypdf, python-docx, pandas, openpyxl, Pillow, pytesseract, whisper (OpenAI)
+LLM: OpenAI GPT4o / Anthropic Claude 3.5 (API)
+Backend: FastAPI, Redis queue for async processing
+Frontend: React + Tailwind CSS, Chart.js for budget/schedule graphs
+Storage: S3 for uploaded files, PostgreSQL for metadata and cached outputs
+
+10. Future Enhancements (Out of Initial Scope)
+Integration with Jira / Azure DevOps – Pull live action/risk data via API.
+Predictive analytics – Use historical data to forecast risk occurrence probability.
+Natural language Q&A – “Why is the budget overrun?” using retrieval from source documents.
+Autogenerated action reminders – Send email to action owners when due date approaches.
+
+11. Conclusion
+The IntellIPM agent is a powerful, multimodal analysis engine tailored for program managers. By ingesting a wide variety of artifacts (documents, spreadsheets, images, audio) and producing a structured health intelligence report, it reduces the manual effort of synthesising project status and accelerates proactive decisionmaking. This functional document serves as the blueprint for development, testing, and deployment of the agent within the Unified SDLC Accelerator.
+
+
+Agent 1 Markdown text
+
+
+
+# IntellIPM (Program Manager Agent) – Functional Document
+
+## 1. Purpose & Scope
+
+The **IntellIPM Agent** is a core component of the Unified SDLC Accelerator. It assists Program Managers, Delivery Leads, and Project Managers in continuously assessing project health, surfacing risks, tracking actions, and identifying schedule or budget deviations.
+
+The agent consumes **multiple heterogeneous artifacts** (documents, spreadsheets, transcripts, images, audio) and produces a structured, actionable intelligence report. It does not replace the project manager but provides a firstdraft analysis that accelerates decisionmaking and reduces manual consolidation effort.
+
+---
+
+## 2. User Persona & Goals
+
+| Persona | Primary Goal | Typical Inputs | Desired Output |
+|---------|--------------|----------------|----------------|
+| Program Manager | Monitor delivery health across multiple workstreams | Project plan, steering committee notes, risk log, action tracker, meeting recordings, whiteboard photos of timeline | Dashboard of top risks, overdue actions, schedule alerts, budget variance signals |
+| Delivery Lead | Identify escalation triggers before they become critical | Sprint reports, milestone data, team velocity charts (images/PDF) | Escalation prediction, recommended interventions |
+| PMO Analyst | Aggregate status from many sources | Weekly status reports (Word/PDF/CSV), Jira exports (CSV/JSON) | Executive summary, action tracker with owners, compliance to milestones |
+
+---
+
+## 3. Functional Overview
+
+The agent follows a **pipeline**:
+
+1. **Ingestion** – User uploads one or more artifacts (any mix of PDF, DOCX, TXT, CSV, XLSX, JSON, images, audio).  
+2. **Transformation** – Each artifact is parsed into plain text and metadata. Audio is transcribed; images undergo OCR/diagram analysis.  
+3. **Context Fusion** – All extracted texts are combined into a coherent context window, preserving source attribution.  
+4. **Analysis Configuration** – User selects which analyses to run (risk detection, action tracking, schedule analysis, budget variance, escalation prediction).  
+5. **LLM Processing** – The agent prompts a large language model (GPT4o / Claude 3.5) with the combined context and analysis options, requesting a structured JSON output.  
+6. **Postprocessing** – Validate JSON, compute derived metrics (e.g., overdue action count), attach confidence scores.  
+7. **Presentation** – Results displayed in a tabbed dashboard (health summary, risks, actions, schedule alerts, budget insights).  
+8. **Export** – Generate PDF report (for stakeholders) or CSV action tracker.
+
+---
+
+## 4. Detailed Functional Requirements
+
+### 4.1 Input Artifacts – Supported Types & Processing
+
+| Artifact Type | File Extensions | Processing Steps |
+|---------------|----------------|------------------|
+| **PDF** | `.pdf` | Extract text (`pypdf`/`pdfplumber`); if scanned, OCR (Tesseract). Preserve tables as markdown. |
+| **Word** | `.docx` | Extract paragraphs, tables, headers (`python-docx`). |
+| **Text** | `.txt` | Read raw UTF8 text. |
+| **CSV / Spreadsheet** | `.csv`, `.xlsx`, `.xls` | Parse with pandas; convert to markdown tables for LLM. Also extract column headers for action/risk logs (e.g., “Owner”, “Due Date”, “Status”). |
+| **JSON** | `.json` | Validate structure (e.g., Jira export, transcript). Flatten to keyvalue pairs for LLM consumption. |
+| **Image** | `.png`, `.jpg`, `.jpeg`, `.bmp` | OCR (Tesseract) for whiteboard text; optionally use GPT4V (vision) to interpret Gantt charts or handwritten notes. |
+| **Audio** | `.mp3`, `.wav`, `.m4a`, `.ogg` | Transcribe with Whisper API (or AWS Transcribe). Output transcript is treated as meeting notes. |
+
+**Requirement:** The agent must gracefully handle partial failures (e.g., one corrupt file) and still analyse the rest.
+
+### 4.2 Analysis Configuration (UserSelectable)
+
+The user can toggle which analysis modules to include:
+
+| Module | Description | When to Use |
+|--------|-------------|--------------|
+| **Risk Detection** | Identifies explicit or latent risks from logs, meeting notes, or status reports. | Weekly project health check. |
+| **Action Tracking** | Extracts open actions, owners, due dates, status. Flags overdue and aging actions. | After monthly steering committee. |
+| **Schedule Analysis** | Finds milestone delays, dependencies at risk, critical path deviations. | Before release planning. |
+| **Budget Variance** | Detects cost overruns, resource overspend, forecast deviations. | Monthly financial review. |
+| **Escalation Prediction** | Uses sentiment, delays, unresolved risks to predict likelihood of escalation (Low/Med/High). | For executive reporting. |
+
+**Priority Level** (Low / Medium / High) – influences the LLM’s sensitivity: High priority returns more granular alerts, low priority summarises only critical items.
+
+### 4.3 Output Schema (JSON)
+
+The agent must return a validated JSON object with the following structure (example):
+
+```json
+{
+  "analysis_timestamp": "2025-03-18T10:30:00Z",
+  "priority_level": "Medium",
+  "project_health_summary": {
+    "overall_health": "Yellow",
+    "narrative": "Schedule is at risk due to two delayed milestones, but budget and risks are under control.",
+    "health_factors": {
+      "schedule": "At risk",
+      "budget": "On track",
+      "resources": "Adequate",
+      "quality": "Green"
+    }
+  },
+  "top_actions": [
+    {
+      "action": "Finalize vendor contract for cloud migration",
+      "owner": "Alice Chen",
+      "due_date": "2025-03-25",
+      "status": "In progress",
+      "age_days": 8,
+      "priority": "High"
+    }
+  ],
+  "action_tracker": {
+    "total_actions": 24,
+    "open_actions": 12,
+    "overdue_actions": 3,
+    "avg_age_open_days": 5.2,
+    "actions_by_owner": {
+      "Alice Chen": 4,
+      "Bob Li": 2
+    }
+  },
+  "risks": [
+    {
+      "risk": "Key developer may leave before release",
+      "impact": "High",
+      "probability": "Medium",
+      "mitigation": "Crosstrain backup resource",
+      "owner": "HR Lead",
+      "status": "Monitoring"
+    }
+  ],
+  "schedule_alerts": [
+    {
+      "milestone": "UAT Signoff",
+      "baseline_date": "2025-04-01",
+      "forecast_date": "2025-04-10",
+      "variance_days": 9,
+      "reason": "Testing environment delayed",
+      "critical_path_flag": true
+    }
+  ],
+  "budget_variance": {
+    "total_budget": 1250000,
+    "actual_to_date": 620000,
+    "forecast_at_completion": 1380000,
+    "variance_percent": 10.4,
+    "major_variance_reasons": ["Overtime costs for API integration"]
+  },
+  "escalation_prediction": {
+    "likelihood": "Medium",
+    "indicators": ["Repeated schedule slippage", "Unresolved risk #R12"],
+    "recommended_actions": ["Escalate to steering committee at next meeting"]
+  },
+  "confidence_scores": {
+    "overall": 0.85,
+    "risk_detection": 0.9,
+    "action_tracking": 0.75,
+    "schedule_analysis": 0.8
+  },
+  "source_artifacts": ["project_plan.pdf", "meeting_notes.docx", "risk_log.csv"]
+}
+```
+
+### 4.4 User Interface Flows
+
+#### Step 1 – Agent Workspace (Program Manager persona)
+- Title: “IntellIPM – Project Health Intelligence”
+- **Upload Area** – Draganddrop multiple files (supports all types). Progress indicators per file. After upload, each file shows a green check.
+- **Direct Notes / Paste** – Text area for raw meeting notes (alternative to file upload). Max 10,000 characters.
+- **Analysis Configuration** – Checkboxes for 5 modules; Priority dropdown (Low/Medium/High). Optional: “Time horizon” (Next 2 weeks / 1 month / Entire project).
+- **Run Analysis** button – triggers background processing.
+
+#### Step 2 – Results Dashboard (Tabs)
+- **Executive Summary** – Overall health, narrative, escalation likelihood, top 3 actions, top 3 risks.
+- **Risks** – Table with sort/filter by impact, probability, owner.
+- **Action Tracker** – Table + summary cards (overdue count). Export as CSV.
+- **Schedule Alerts** – Ganttstyle bar chart (simple HTML/CSS) or table.
+- **Budget Insights** – Variance chart (planned vs actual) using Chart.js.
+- **Export** – Button “Generate PDF Report” (PDF includes all sections). Separate “Export Action CSV”.
+
+#### Step 3 – Review & Refine
+- User can edit any output field (e.g., change risk mitigation text) before export.
+- “Regenerate” button – rerun analysis with same inputs (different temperature = 0.4) for alternative perspective.
+
+### 4.5 AI Processing Logic (Backend)
+
+The agent uses a **RAGlike** approach:
+
+1. **Concatenate Context** – All extracted texts from uploaded artifacts are concatenated with labels:  
+   `[Document: project_plan.pdf] ... content ...`  
+   `[Image: whiteboard_timeline.png – OCR text] ...`  
+
+2. **System Prompt** (defined per analysis modules selected):
+   ```
+   You are an expert Program Manager assistant. Analyze the provided project documents.
+   Identify risks, actions, schedule deviations, budget variances, and escalation signals.
+   Output ONLY valid JSON matching the schema.
+   If information is missing for a field, omit it or set to null.
+   ```
+
+3. **User Prompt** includes the concatenated context and explicit instructions:
+   ```
+   Priority level: {priority}
+   Risk detection: {enabled/disabled}
+   Action tracking: {enabled/disabled}
+   ...
+   Context:
+   {context}
+   ```
+
+4. **LLM Call** – Temperature = 0.2 for deterministic output; max_tokens = 4000.
+
+5. **Postprocessing** – Validate JSON against Pydantic model. If validation fails, attempt repair with a second LLM call (fix prompt). After 2 failures, return partial results with error flag.
+
+6. **Confidence Scoring** – The LLM is asked to provide a confidence score (01) per section. Alternatively, a heuristic is used: higher if multiple sources corroborate.
+
+### 4.6 Special Handling for Unstructured Data
+
+| Input Type | Special Logic |
+|------------|----------------|
+| **Audio** | After transcription, the transcript is fed as if it were a meeting notes document. The agent will extract actions and decisions from the conversation. |
+| **Image (whiteboard, timeline)** | OCR for text; if diagram (e.g., Gantt chart), use vision model to extract milestone names and dates. Fallback: ask LLM to interpret based on user description in direct notes. |
+| **CSV (Jira export)** | Map standard columns: “Summary” → potential actions, “Priority” → urgency, “Assignee” → owner, “Due date” → due_date. |
+| **JSON (structured transcript)** | Assume it has `utterances` with `speaker` and `text`. Convert to pseudotranscript. |
+
+---
+
+## 5. Edge Cases & Error Handling
+
+| Scenario | System Behaviour |
+|----------|------------------|
+| No files uploaded, only direct notes | Analyse notes alone. |
+| Empty or corrupted file | Skip that file, log warning, continue with remaining. Show warning to user. |
+| No action items found (but module enabled) | Return empty array, set `action_tracker.total_actions` = 0, flag “No actions detected”. |
+| LLM output malformed JSON | Attempt repair up to 2 times. If still invalid, show generic error and suggest simplifying inputs. |
+| Very large context (> 128k tokens) | Automatically summarise each artifact individually before concatenation, then secondpass analysis. |
+| Missing data for budget analysis | Omit budget section from output, do not crash. |
+
+---
+
+## 6. NonFunctional Requirements
+
+| Requirement | Target |
+|-------------|--------|
+| **Response time** | 95% of analyses complete within 15 seconds (excluding LLM API latency). |
+| **Concurrent users** | Support up to 20 simultaneous analyses without queue overflow. |
+| **File size limit** | Total uploaded size per run ≤ 50 MB; individual file ≤ 20 MB. |
+| **Supported audio length** | ≤ 30 minutes (to keep transcription cost reasonable). |
+| **Data retention** | Uploaded files and outputs stored for 30 days, then deleted. |
+| **Access control** | Only users with “Program Manager” persona can access this agent. |
+
+---
+
+## 7. Example Usage Scenarios
+
+### Scenario 1 – Weekly Health Check
+- **Inputs:**  
+  - `project_plan_v2.pdf` (milestones, resources)  
+  - `risk_log.xlsx` (8 risks)  
+  - `meeting_notes_2025-03-15.docx` (decision to delay testing)  
+- **User selects:** All 5 analysis modules, Priority = High.  
+- **Output:** Overall health = Yellow, top risk = “Testing delay impacts release”, overdue actions = 2, schedule alert for UAT milestone.
+
+### Scenario 2 – PostSteering Committee Meeting
+- **Inputs:**  
+  - Audio recording of 45minute steering committee (`.mp3`)  
+  - Whiteboard photo of updated timeline (`.jpg`)  
+- **User selects:** Action tracking + Schedule analysis only.  
+- **Output:** Extracted actions (e.g., “CFO to approve budget supplement”), schedule changes (milestone “Beta launch” moved from April 1 to April 15).
+
+---
+
+## 8. Success Metrics (Acceptance Criteria)
+
+- [ ] Agent can ingest all supported artifact types (PDF, DOCX, CSV, XLSX, JSON, image, audio) without errors.  
+- [ ] For a given sample project document set (golden standard), the agent correctly identifies at least 80% of explicitly mentioned risks and actions.  
+- [ ] Output JSON always validates against the schema.  
+- [ ] UI allows toggling analysis modules and shows results accordingly.  
+- [ ] Export PDF includes all sections and is readable on A4 paper.  
+- [ ] Average analysis time < 20 seconds for 5 documents (total 20 pages).  
+
+---
+
+## 9. Technical Dependencies
+
+- **Parsing:** `pypdf`, `python-docx`, `pandas`, `openpyxl`, `Pillow`, `pytesseract`, `whisper` (OpenAI)  
+- **LLM:** OpenAI GPT4o / Anthropic Claude 3.5 (API)  
+- **Backend:** FastAPI, Redis queue for async processing  
+- **Frontend:** React + Tailwind CSS, Chart.js for budget/schedule graphs  
+- **Storage:** S3 for uploaded files, PostgreSQL for metadata and cached outputs  
+
+---
+
+## 10. Future Enhancements (Out of Initial Scope)
+
+- **Integration with Jira / Azure DevOps** – Pull live action/risk data via API.  
+- **Predictive analytics** – Use historical data to forecast risk occurrence probability.  
+- **Natural language Q&A** – “Why is the budget overrun?” using retrieval from source documents.  
+- **Autogenerated action reminders** – Send email to action owners when due date approaches.  
+
+---
+
+## 11. Conclusion
+
+The IntellIPM agent is a powerful, multimodal analysis engine tailored for program managers. By ingesting a wide variety of artifacts (documents, spreadsheets, images, audio) and producing a structured health intelligence report, it reduces the manual effort of synthesising project status and accelerates proactive decisionmaking. This functional document serves as the blueprint for development, testing, and deployment of the agent within the Unified SDLC Accelerator.
+
+
+
+

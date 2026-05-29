@@ -6,10 +6,9 @@ export const mockAnalysisResult: AnalysisResult = {
   project_health_summary: {
     overall_health: 'Yellow',
     narrative:
-      'Schedule is at risk due to two delayed milestones linked to the testing environment delay and pending vendor approvals. Budget remains under control but a 10.4% overrun is forecast at completion. Resources are adequate but the risk of a key developer departure needs immediate attention. Quality metrics remain green with no defect spike observed.',
+      'Schedule is at risk due to two delayed milestones linked to the testing environment delay and pending vendor approvals. Resources are adequate but key developer departure risks and CAD migration timeline bottlenecks need immediate attention. Quality metrics remain green with no defect spike observed.',
     health_factors: {
       schedule: 'At risk',
-      budget: 'Watch',
       resources: 'Adequate',
       quality: 'Green',
     },
@@ -40,7 +39,7 @@ export const mockAnalysisResult: AnalysisResult = {
       priority: 'Medium',
     },
     {
-      action: 'Submit budget supplement request to CFO',
+      action: 'Acquire engineering licenses for CAD tool migration track',
       owner: 'Sarah Kim',
       due_date: '2025-03-22',
       status: 'Overdue',
@@ -100,10 +99,10 @@ export const mockAnalysisResult: AnalysisResult = {
       status: 'Escalated',
     },
     {
-      risk: 'Budget overrun due to overtime costs for API integration',
+      risk: 'Late delivery of CAD migration templates impacting engineering schedule',
       impact: 'Medium',
       probability: 'High',
-      mitigation: 'Implement scope freeze and review resource allocation with delivery lead',
+      mitigation: 'Utilize temporary legacy CAD scripts as alternative automation fallback',
       owner: 'Sarah Kim',
       status: 'Open',
     },
@@ -158,28 +157,18 @@ export const mockAnalysisResult: AnalysisResult = {
       critical_path_flag: false,
     },
   ],
-  budget_variance: {
-    total_budget: 1250000,
-    actual_to_date: 620000,
-    forecast_at_completion: 1380000,
-    variance_percent: 10.4,
-    major_variance_reasons: [
-      'Overtime costs for API integration team',
-      'Unplanned cloud infrastructure procurement',
-      'Additional QA resources for regression testing',
-    ],
-  },
+
   escalation_prediction: {
     likelihood: 'Medium',
     indicators: [
       'Repeated schedule slippage across 3 consecutive sprints',
       'Unresolved risk R12 (vendor dependency) aging beyond 14 days',
-      'Budget forecast exceeding approved threshold by 10.4%',
+      'Staffing deficits in critical automotive compliance tracks',
       'Negative sentiment detected in steering committee transcripts',
     ],
     recommended_actions: [
       'Escalate vendor contract delay to steering committee at next meeting',
-      'Request emergency budget review with CFO by end of this week',
+      'Accelerate hiring and onboarding for certified APQP compliance auditors',
       'Invoke risk mitigation plan for testing environment delay',
     ],
   },

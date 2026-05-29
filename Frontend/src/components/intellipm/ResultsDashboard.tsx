@@ -4,14 +4,13 @@ import ExecutiveSummary from './tabs/ExecutiveSummary';
 import RisksTab from './tabs/RisksTab';
 import ActionTrackerTab from './tabs/ActionTrackerTab';
 import ScheduleTab from './tabs/ScheduleTab';
-import BudgetTab from './tabs/BudgetTab';
+
 import ExportTab from './tabs/ExportTab';
 import {
   LayoutDashboard,
   ShieldAlert,
   ClipboardList,
   Calendar,
-  DollarSign,
   Download,
   ArrowLeft,
 } from 'lucide-react';
@@ -57,13 +56,7 @@ const TABS: {
     icon: Calendar,
     badge: (r) => r.schedule_alerts.length,
   },
-  {
-    id: 'budget',
-    label: 'Budget Insights',
-    shortLabel: 'Budget',
-    icon: DollarSign,
-    badge: (r) => r.budget_variance ? `${r.budget_variance.variance_percent.toFixed(1)}%` : null,
-  },
+
   {
     id: 'export',
     label: 'Export',
@@ -240,18 +233,7 @@ export default function ResultsDashboard({ result, onBack, onRegenerate, isRegen
           {activeTab === 'schedule' && <ScheduleTab alerts={result.schedule_alerts} />}
         </div>
 
-        <div
-          id="tabpanel-budget"
-          role="tabpanel"
-          aria-labelledby="tab-budget"
-          tabIndex={0}
-          hidden={activeTab !== 'budget'}
-          className={activeTab === 'budget' ? 'block focus:outline-none' : 'hidden'}
-        >
-          {activeTab === 'budget' && (
-            <BudgetTab budget={result.budget_variance} />
-          )}
-        </div>
+
 
         <div
           id="tabpanel-export"

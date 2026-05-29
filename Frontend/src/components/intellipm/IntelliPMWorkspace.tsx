@@ -29,7 +29,6 @@ const DEFAULT_MODULES: AnalysisModules = {
   riskDetection: true,
   actionTracking: true,
   scheduleAnalysis: true,
-  budgetVariance: true,
   escalationPrediction: true,
 };
 
@@ -102,7 +101,7 @@ export default function IntelliPMWorkspace({ onAnalysisStart, isProcessing, proc
             </li>
             <li className="flex items-start gap-2 text-sm text-brand-light/70">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-shrink-0 shadow-[0_0_8px_rgba(251,191,36,0.6)]"></span>
-              <span>Budget variance of 4% detected in latest vendor invoice processing.</span>
+              <span>Resource bandwidth constraints identified in automotive compliance tracks.</span>
             </li>
           </ul>
         </div>

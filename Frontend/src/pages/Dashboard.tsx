@@ -35,7 +35,43 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Dynamic data migration to automatically overwrite legacy E-Commerce details in user's browser storage
+          return parsed.map(p => {
+            if (p.id === '1' && (p.name === 'E-Commerce Platform Modernization' || p.objective?.businessGoal?.includes('conversion'))) {
+              return {
+                id: '1',
+                name: 'PLM Program',
+                objective: {
+                  businessGoal: 'Consolidate global legacy PLM program streams into a unified high-performance platform.',
+                  expectedOutcome: 'Reduced pipeline cycle variance, consolidated licensing costs, and streamlined automotive component engineering compliance.'
+                },
+                scope: {
+                  featuresIncluded: ['APQP integration', 'CAD asset migrations', 'Change management workflows', 'ASPICE compliance tooling'],
+                  featuresExcluded: ['Legacy system hotfixes', 'On-prem infrastructure hosting', 'Manual CAD conversions']
+                },
+                stakeholders: {
+                  businessOwner: ['Sarah Jenkins (Customer PM)', 'Global Delivery President'],
+                  technicalOwner: ['David Chen (Tech Arch)', 'QA Lead', 'DevOps Lead'],
+                  endUsers: ['Automotive engineers', 'Component compliance designers', 'QA testers']
+                },
+                budgetResources: {
+                  teamSize: '45 members globally',
+                  costEstimation: '$2,500,000 USD',
+                  toolRequirements: 'Windchill, Siemens Teamcenter, AWS Cloud, Ollama'
+                },
+                successMetrics: {
+                  performanceTargets: ['99% platform availability', 'Migration throughput > 500 components/day'],
+                  userAdoption: ['80% user transition in 60 days', 'CSAT score > 4.6/5'],
+                  timeReduction: ['Engineering compliance approvals reduced by 30%', 'UAT schedule variance < 5 days'],
+                  errorReduction: ['40% fewer migration validation errors', 'Zero security audit compliance failures']
+                },
+                createdAt: p.createdAt || new Date('2026-05-10')
+              };
+            }
+            return p;
+          });
+        }
       } catch (e) {
         console.error('Error parsing saved projects', e);
       }
@@ -43,30 +79,30 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
     return [
       {
         id: '1',
-        name: 'E-Commerce Platform Modernization',
+        name: 'PLM Program',
         objective: {
-          businessGoal: 'Increase online conversion rates by 25% and reduce checkout abandonment.',
-          expectedOutcome: 'A modern, high-speed React-based storefront with an optimized checkout flow.'
+          businessGoal: 'Consolidate global legacy PLM program streams into a unified high-performance platform.',
+          expectedOutcome: 'Reduced pipeline cycle variance, consolidated licensing costs, and streamlined automotive component engineering compliance.'
         },
         scope: {
-          featuresIncluded: ['Payment gateway integration', 'Responsive UI', 'Search auto-complete', 'Product catalog'],
-          featuresExcluded: ['Wholesale client accounts', 'Loyalty points system', 'Native iOS/Android App']
+          featuresIncluded: ['APQP integration', 'CAD asset migrations', 'Change management workflows', 'ASPICE compliance tooling'],
+          featuresExcluded: ['Legacy system hotfixes', 'On-prem infrastructure hosting', 'Manual CAD conversions']
         },
         stakeholders: {
-          businessOwner: ['Sarah Jenkins (VP of Digital)', 'Mark R. (Product Lead)'],
-          technicalOwner: ['David Chen (Principal Architect)', 'Elena G. (Dev Lead)'],
-          endUsers: ['Retail consumers', 'Store customer service agents', 'Marketing operators']
+          businessOwner: ['Sarah Jenkins (Customer PM)', 'Global Delivery President'],
+          technicalOwner: ['David Chen (Tech Arch)', 'QA Lead', 'DevOps Lead'],
+          endUsers: ['Automotive engineers', 'Component compliance designers', 'QA testers']
         },
         budgetResources: {
-          teamSize: '12 members (4 Frontend, 4 Backend, 2 QA, 1 PM, 1 Designer)',
-          costEstimation: '$150,000 USD',
-          toolRequirements: 'Vercel, AWS RDS, Tailwind UI, Datadog'
+          teamSize: '45 members globally',
+          costEstimation: '$2,500,000 USD',
+          toolRequirements: 'Windchill, Siemens Teamcenter, AWS Cloud, Ollama'
         },
         successMetrics: {
-          performanceTargets: ['LCP < 2.5s', 'TTI < 1.8s', '99.9% API uptime'],
-          userAdoption: ['90% migration in 30 days', 'CSAT score > 4.5/5'],
-          timeReduction: ['Checkout time < 45 seconds', '30% automated return processing'],
-          errorReduction: ['40% fewer checkout crashes', 'Zero payment validation errors']
+          performanceTargets: ['99% platform availability', 'Migration throughput > 500 components/day'],
+          userAdoption: ['80% user transition in 60 days', 'CSAT score > 4.6/5'],
+          timeReduction: ['Engineering compliance approvals reduced by 30%', 'UAT schedule variance < 5 days'],
+          errorReduction: ['40% fewer migration validation errors', 'Zero security audit compliance failures']
         },
         createdAt: new Date('2026-05-10')
       }
