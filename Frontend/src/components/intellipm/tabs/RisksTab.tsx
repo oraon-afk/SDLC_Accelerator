@@ -223,7 +223,14 @@ export default function RisksTab({ risks: initialRisks }: Props) {
                       />
                     </td>
                     <td className="px-4 py-3 font-medium text-white max-w-xs">
-                      {risk.risk}
+                      <div>{risk.risk}</div>
+                      {risk.source_file && risk.source_file !== 'NA' && (
+                        <div className="mt-1">
+                          <span className="text-[10px] bg-brand-primary/45 text-brand-accent px-1.5 py-0.5 rounded font-mono border border-brand-primary/30">
+                            Source: {risk.source_file}
+                          </span>
+                        </div>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       <HealthBadge status={risk.impact} size="sm" />

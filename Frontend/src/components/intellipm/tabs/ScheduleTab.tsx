@@ -111,9 +111,18 @@ export default function ScheduleTab({ alerts }: Props) {
                         aria-label="Critical path milestone"
                       />
                     )}
-                    <span className="text-sm font-semibold text-white">
-                      {alert.milestone}
-                    </span>
+                    <div>
+                      <span className="text-sm font-semibold text-white">
+                        {alert.milestone}
+                      </span>
+                      {alert.source_file && alert.source_file !== 'NA' && (
+                        <div className="mt-0.5">
+                          <span className="text-[10px] bg-brand-primary/45 text-brand-accent px-1.5 py-0.5 rounded font-mono border border-brand-primary/30">
+                            Source: {alert.source_file}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
                     {alert.critical_path_flag && (
@@ -198,12 +207,21 @@ export default function ScheduleTab({ alerts }: Props) {
               {alerts.map((alert, i) => (
                 <tr key={i} className={`hover:bg-brand-primary/10 transition-colors ${alert.critical_path_flag ? 'bg-red-500/5' : ''}`}>
                   <td className="px-4 py-3 font-semibold text-white">
-                    <span className="flex items-center gap-1.5">
-                      {alert.critical_path_flag && (
-                        <Flag className="w-3.5 h-3.5 text-red-400 flex-shrink-0" aria-hidden="true" />
+                    <div className="flex flex-col gap-1">
+                      <span className="flex items-center gap-1.5">
+                        {alert.critical_path_flag && (
+                          <Flag className="w-3.5 h-3.5 text-red-400 flex-shrink-0" aria-hidden="true" />
+                        )}
+                        {alert.milestone}
+                      </span>
+                      {alert.source_file && alert.source_file !== 'NA' && (
+                        <div>
+                          <span className="text-[10px] bg-brand-primary/45 text-brand-accent px-1.5 py-0.5 rounded font-mono border border-brand-primary/30">
+                            Source: {alert.source_file}
+                          </span>
+                        </div>
                       )}
-                      {alert.milestone}
-                    </span>
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-brand-light/80 font-mono text-xs whitespace-nowrap">
                     {formatDate(alert.baseline_date)}

@@ -311,14 +311,23 @@ export default function ActionTrackerTab({ actions: initialActions, tracker }: P
                           <button onClick={() => setEditIdx(null)} className="text-xs bg-brand-primary/30 text-brand-light px-2 py-1 rounded whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent cursor-pointer">Cancel</button>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-2 group">
-                          {isOverdue && <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500" aria-hidden="true" />}
-                          <span className="text-xs leading-relaxed">{action.action}</span>
-                          <button
-                            onClick={() => { setEditIdx(globalIdx); setEditValue(action.action); }}
-                            className="flex-shrink-0 text-xs text-brand-accent opacity-0 group-hover:opacity-100 focus-visible:opacity-100 hover:text-brand-accent/80 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded transition-opacity cursor-pointer"
-                            aria-label={`Edit action: ${action.action}`}
-                          >Edit</button>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 group">
+                            {isOverdue && <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500" aria-hidden="true" />}
+                            <span className="text-xs leading-relaxed">{action.action}</span>
+                            <button
+                              onClick={() => { setEditIdx(globalIdx); setEditValue(action.action); }}
+                              className="flex-shrink-0 text-xs text-brand-accent opacity-0 group-hover:opacity-100 focus-visible:opacity-100 hover:text-brand-accent/80 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded transition-opacity cursor-pointer"
+                              aria-label={`Edit action: ${action.action}`}
+                            >Edit</button>
+                          </div>
+                          {action.source_file && action.source_file !== 'NA' && (
+                            <div>
+                              <span className="text-[10px] bg-brand-primary/45 text-brand-accent px-1.5 py-0.5 rounded font-mono border border-brand-primary/30">
+                                Source: {action.source_file}
+                              </span>
+                            </div>
+                          )}
                         </div>
                       )}
                     </td>

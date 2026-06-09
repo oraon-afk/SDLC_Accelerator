@@ -28,6 +28,7 @@ export interface TopAction {
   status: string;
   age_days: number;
   priority: string;
+  source_file?: string;
 }
 
 export interface Risk {
@@ -37,6 +38,7 @@ export interface Risk {
   mitigation: string;
   owner: string;
   status: string;
+  source_file?: string;
 }
 
 export interface ScheduleAlert {
@@ -46,6 +48,7 @@ export interface ScheduleAlert {
   variance_days: number;
   reason: string;
   critical_path_flag: boolean;
+  source_file?: string;
 }
 
 

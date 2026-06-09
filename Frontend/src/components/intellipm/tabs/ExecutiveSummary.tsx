@@ -225,6 +225,13 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
                     <span className="font-medium text-brand-light">{action.due_date}</span>
                     {' · '}Age: <span className="font-medium text-brand-light">{action.age_days}d</span>
                   </p>
+                  {action.source_file && action.source_file !== 'NA' && (
+                    <div className="mt-1">
+                      <span className="text-[10px] bg-brand-primary/45 text-brand-accent px-1.5 py-0.5 rounded font-mono border border-brand-primary/30">
+                        Source: {action.source_file}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <HealthBadge status={action.status} size="sm" />
@@ -273,6 +280,13 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
                 <p className="text-xs text-brand-light/85">
                   <span className="font-medium text-brand-accent">Mitigation:</span> {risk.mitigation}
                 </p>
+                {risk.source_file && risk.source_file !== 'NA' && (
+                  <div className="mt-1.5">
+                    <span className="text-[10px] bg-brand-primary/45 text-brand-accent px-1.5 py-0.5 rounded font-mono border border-brand-primary/30">
+                      Source: {risk.source_file}
+                    </span>
+                  </div>
+                )}
               </div>
             ))}
           </div>

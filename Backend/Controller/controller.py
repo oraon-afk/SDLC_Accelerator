@@ -714,100 +714,105 @@ Project Name: {project_name}
 {doc_context[:25000]}
 
 ### INSTRUCTION:
-Analyze ONLY the provided document segments above to discover:
-1. Overall project health summary (Green, Yellow, Red) and a detailed, context-rich narrative. In this narrative summary, you MUST give a consolidated summary of exactly what is in the uploaded documents (such as the Weekly review meeting minutes highlights, RAID CSV actions, whiteboard timeline descriptions, and audio transcripts), explaining the key program statuses, delayed milestones, active action items, and technical/solution architect staffing risks identified directly from these source documents. Keep the tone professional, objective, and analytical.
-2. Top actions (Action description, Owner name, Due date YYYY-MM-DD, status, age_days, priority High/Medium/Low). Map these to owners mentioned in documents.
-3. Tracked risks (risk description, impact High/Medium/Low, probability High/Medium/Low, mitigation steps, owner name, status).
-4. Schedule milestones alerts & forecast variances (Milestone name, baseline date, forecast date, variance delay in days, reason for variance delay, and critical path flag).
-5. Escalation predictions (likelihood High/Medium/Low, key triggers/indicators, recommended preemptive actions).
-6. Document summaries: A file-by-file breakdown array under "document_summary" containing the "file_name" (e.g. Plm Program Weekly Review Meeting minutes.docx, Master RAID Tracker.csv, Master program plan.png) and a concise, context-rich "summary" of what was discovered in each uploaded file.
+        Analyze ONLY the provided document segments above to discover:
+        1. Overall project health summary (Green, Yellow, Red) and a detailed, context-rich narrative. In this narrative summary, you MUST give a consolidated summary of exactly what is in the uploaded documents (such as the Weekly review meeting minutes highlights, RAID CSV actions, whiteboard timeline descriptions, and audio transcripts), explaining the key program statuses, delayed milestones, active action items, and technical/solution architect staffing risks identified directly from these source documents. Keep the tone professional, objective, and analytical.
+        2. Top actions (Action description, Owner name, Due date YYYY-MM-DD, status, age_days, priority High/Medium/Low). Map these to owners mentioned in documents.
+        3. Tracked risks (risk description, impact High/Medium/Low, probability High/Medium/Low, mitigation steps, owner name, status).
+        4. Schedule milestones alerts & forecast variances (Milestone name, baseline date, forecast date, variance delay in days, reason for variance delay, and critical path flag).
+        5. Escalation predictions (likelihood High/Medium/Low, key triggers/indicators, recommended preemptive actions).
+        6. Document summaries: A file-by-file breakdown array under "document_summary" containing the "file_name" (e.g. Plm Program Weekly Review Meeting minutes.docx, Master RAID Tracker.csv, Master program plan.png) and a concise, context-rich "summary" of what was discovered in each uploaded file.
 
-### OUTPUT FORMAT:
-You MUST return a JSON object conforming EXACTLY to the following JSON schema. Do NOT include any markdown code blocks, conversational text, or prefixes outside of the JSON block.
-IMPORTANT: The placeholder values below (e.g. "<description>") are ONLY to describe the expected data type and meaning. You MUST replace every placeholder with REAL data extracted from the provided documents. Do NOT copy any placeholder text into your output.
+        For each top_actions item, risks item, and schedule_alerts item, identify the source file name from the context segment headers (formatted like `[file_name.ext (Segment ID)]: ...` at the start of each text chunk) where that item was found, and specify it in the `source_file` field. If not found or unknown, default to 'NA'.
 
-{{
-  "analysis_timestamp": "{time.strftime('%Y-%m-%dT%H:%M:%SZ')}",
-  "priority_level": "{analysis_priority}",
-  "project_health_summary": {{
-    "overall_health": "<Green, Yellow, or Red based on document evidence>",
-    "narrative": "<detailed narrative summarizing the actual project status, milestones, risks, and key findings from the provided documents only>",
-    "health_factors": {{
-      "schedule": "<At risk / On track / Green - based on document evidence>",
-      "resources": "<Adequate / At risk / Green - based on document evidence>",
-      "quality": "<Green / At risk - based on document evidence>"
-    }}
-  }},
-  "top_actions": [
-    {{
-      "action": "<action description extracted from documents>",
-      "owner": "<owner name extracted from documents, or NA if not mentioned>",
-      "due_date": "<YYYY-MM-DD extracted from documents, or NA>",
-      "status": "<In Progress / Overdue / Not Started / Complete - from documents>",
-      "age_days": 0,
-      "priority": "<High / Medium / Low - from documents>"
-    }}
-  ],
-  "action_tracker": {{
-    "total_actions": 0,
-    "open_actions": 0,
-    "overdue_actions": 0,
-    "avg_age_open_days": 0,
-    "actions_by_owner": {{
-      "<owner name from documents>": 0
-    }}
-  }},
-  "document_summary": [
-    {{
-      "file_name": "<actual file name from source_artifacts>",
-      "summary": "<concise summary of what was found in this specific file>"
-    }}
-  ],
-  "risks": [
-    {{
-      "risk": "<risk description extracted from documents>",
-      "impact": "<High / Medium / Low>",
-      "probability": "<High / Medium / Low>",
-      "mitigation": "<mitigation steps from documents, or NA>",
-      "owner": "<owner name from documents, or NA>",
-      "status": "<Monitoring / In Progress / Open / Escalated>"
-    }}
-  ],
-  "schedule_alerts": [
-    {{
-      "milestone": "<milestone name from documents>",
-      "baseline_date": "<YYYY-MM-DD from documents>",
-      "forecast_date": "<YYYY-MM-DD from documents>",
-      "variance_days": 0,
-      "reason": "<reason for delay from documents>",
-      "critical_path_flag": true
-    }}
-  ],
+        ### OUTPUT FORMAT:
+        You MUST return a JSON object conforming EXACTLY to the following JSON schema. Do NOT include any markdown code blocks, conversational text, or prefixes outside of the JSON block.
+        IMPORTANT: The placeholder values below (e.g. "<description>") are ONLY to describe the expected data type and meaning. You MUST replace every placeholder with REAL data extracted from the provided documents. Do NOT copy any placeholder text into your output.
 
-  "escalation_prediction": {{
-    "likelihood": "<High / Medium / Low - based on document evidence>",
-    "indicators": [
-      "<indicator extracted from documents>"
-    ],
-    "recommended_actions": [
-      "<recommended action based on document findings>"
-    ]
-  }},
-  "confidence_scores": {{
-    "overall": 0.0,
-    "risk_detection": 0.0,
-    "action_tracking": 0.0,
-    "schedule_analysis": 0.0
-  }},
-  "source_artifacts": {json.dumps(analyzed_artifacts if analyzed_artifacts else [])}
-}}
+        {{
+          "analysis_timestamp": "{time.strftime('%Y-%m-%dT%H:%M:%SZ')}",
+          "priority_level": "{analysis_priority}",
+          "project_health_summary": {{
+            "overall_health": "<Green, Yellow, or Red based on document evidence>",
+            "narrative": "<detailed narrative summarizing the actual project status, milestones, risks, and key findings from the provided documents only>",
+            "health_factors": {{
+              "schedule": "<At risk / On track / Green - based on document evidence>",
+              "resources": "<Adequate / At risk / Green - based on document evidence>",
+              "quality": "<Green / At risk - based on document evidence>"
+            }}
+          }},
+          "top_actions": [
+            {{
+              "action": "<action description extracted from documents>",
+              "owner": "<owner name extracted from documents, or NA if not mentioned>",
+              "due_date": "<YYYY-MM-DD extracted from documents, or NA>",
+              "status": "<In Progress / Overdue / Not Started / Complete - from documents>",
+              "age_days": 0,
+              "priority": "<High / Medium / Low - from documents>",
+              "source_file": "<exact file name where this action item was found, or NA>"
+            }}
+          ],
+          "action_tracker": {{
+            "total_actions": 0,
+            "open_actions": 0,
+            "overdue_actions": 0,
+            "avg_age_open_days": 0,
+            "actions_by_owner": {{
+              "<owner name from documents>": 0
+            }}
+          }},
+          "document_summary": [
+            {{
+              "file_name": "<actual file name from source_artifacts>",
+              "summary": "<concise summary of what was found in this specific file>"
+            }}
+          ],
+          "risks": [
+            {{
+              "risk": "<risk description extracted from documents>",
+              "impact": "<High / Medium / Low>",
+              "probability": "<High / Medium / Low>",
+              "mitigation": "<mitigation steps from documents, or NA>",
+              "owner": "<owner name from documents, or NA>",
+              "status": "<Monitoring / In Progress / Open / Escalated>",
+              "source_file": "<exact file name where this risk was found, or NA>"
+            }}
+          ],
+          "schedule_alerts": [
+            {{
+              "milestone": "<milestone name from documents>",
+              "baseline_date": "<YYYY-MM-DD from documents>",
+              "forecast_date": "<YYYY-MM-DD from documents>",
+              "variance_days": 0,
+              "reason": "<reason for delay from documents>",
+              "critical_path_flag": true,
+              "source_file": "<exact file name where this milestone alert was found, or NA>"
+            }}
+          ],
 
-CRITICAL REMINDERS:
-- Replace ALL placeholder values (text inside < >) with REAL data extracted from the provided documents.
-- Every owner name, action, risk, milestone, and date MUST come directly from the document text. If not found, use "NA".
-- Do NOT copy the placeholder text or angle brackets into your output.
-- Do NOT invent or fabricate any names, dates, or details that are not in the documents.
-"""
+          "escalation_prediction": {{
+            "likelihood": "<High / Medium / Low - based on document evidence>",
+            "indicators": [
+              "<indicator extracted from documents>"
+            ],
+            "recommended_actions": [
+              "<recommended action based on document findings>"
+            ]
+          }},
+          "confidence_scores": {{
+            "overall": 0.0,
+            "risk_detection": 0.0,
+            "action_tracking": 0.0,
+            "schedule_analysis": 0.0
+          }},
+          "source_artifacts": {json.dumps(analyzed_artifacts if analyzed_artifacts else [])}
+        }}
+
+        CRITICAL REMINDERS:
+        - Replace ALL placeholder values (text inside < >) with REAL data extracted from the provided documents.
+        - Every owner name, action, risk, milestone, and date MUST come directly from the document text. If not found, use "NA".
+        - Do NOT copy the placeholder text or angle brackets into your output.
+        - Do NOT invent or fabricate any names, dates, or details that are not in the documents.
+        """
 
         # Call local Ollama model to generate the deep analysis response
         print(f"[Pipeline] Dispatching analysis request to local LLM ({llm_model_config.resolve_active_text_model()})...")
@@ -832,6 +837,18 @@ CRITICAL REMINDERS:
         
         # Attempt to parse into python dictionary to ensure validity
         analysis_data = json.loads(clean_json_str)
+        
+        # Post-process to ensure every KPI has a source_file attribute
+        for item in analysis_data.get("top_actions", []):
+            if "source_file" not in item:
+                item["source_file"] = "NA"
+        for item in analysis_data.get("risks", []):
+            if "source_file" not in item:
+                item["source_file"] = "NA"
+        for item in analysis_data.get("schedule_alerts", []):
+            if "source_file" not in item:
+                item["source_file"] = "NA"
+                
         print(f"[PIPELINE COMPLETED] Dynamic project analysis compiled successfully.")
         print(f"====================================================\n")
         return analysis_data
