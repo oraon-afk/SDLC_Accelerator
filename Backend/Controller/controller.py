@@ -3,7 +3,8 @@ import os
 import time
 import hashlib
 import json
-from typing import Optional, Dict, List, Any
+from typing import Optional, Dict, List, Any, TypedDict
+from langgraph.graph import StateGraph, END
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -194,17 +195,417 @@ def root():
         "message": "SDLC Accelerator Vector Indexing and LLM analysis server running successfully."
     }
 
+# Define LangGraph State Schema
+class ChatbotState(TypedDict):
+    prompt: str
+    project_name: Optional[str]
+    project_details: Optional[Dict[str, Any]]
+    all_projects: Optional[List[Dict[str, Any]]]
+    intent: Optional[str]
+    extracted_project_name: Optional[str]
+    extracted_file_name: Optional[str]
+    project_files: Optional[List[str]]
+    doc_context: Optional[str]
+    response: Optional[str]
+
+# Node 1: Classify Intent & Extract Project Entity
+def classify_intent_node(state: ChatbotState) -> Dict[str, Any]:
+    prompt = state["prompt"]
+    all_projects = state.get("all_projects") or []
+    
+    # Extract names of available projects and files
+    project_names = [p.get("name") for p in all_projects if p.get("name")]
+    v_store = LocalVectorStore()
+    all_tracked = []
+    try:
+        all_tracked = v_store.get_all_tracked_files()
+    except Exception:
+        pass
+        
+    if not project_names:
+        try:
+            import sqlite3
+            conn = sqlite3.connect(v_store.db_path)
+            cursor = conn.cursor()
+            cursor.execute("SELECT DISTINCT project_name FROM indexed_files UNION SELECT DISTINCT project_name FROM vector_chunks")
+            project_names = [r[0] for r in cursor.fetchall() if r[0]]
+            conn.close()
+        except Exception:
+            pass
+            
+    if not project_names:
+        project_names = ["PLM Program"]
+        
+    projects_list_str = ", ".join(f"'{p}'" for p in project_names)
+    
+    # Compile files list to assist extraction
+    file_names = [f["file_name"] for f in all_tracked if f.get("file_name")]
+    files_list_str = ", ".join(f"'{f}'" for f in file_names)
+    
+    # LLM Classification Prompt
+    classification_prompt = f"""You are a query classifier and entity extractor.
+Analyze the user prompt below and classify it into one of these intents:
+1. 'general_chat': General questions, greetings, or questions about what you can do/capabilities.
+2. 'document_list': Requests to list, show, or find the files/documents available for a project (e.g., "what are the documents available to project 'PLM Program'", "show files for PLM Program").
+3. 'file_query': Requests asking about a specific file's content, summaries of a file, or questions about what is in a particular file (e.g. "what is in the file Plm Program Weekly Review Meeting minutes.docx?", "what is in the file Master Raid.xlsx" , "summarize Plm Program Weekly Review Summary transcript.docx").
+4. 'project_query': Inquiries about a specific project's details, requirements, actions, risks, timeline, or milestones.
+5. 'project_health': Specific requests asking how a project is going, its health status (e.g. status, overall health, progress).
+6. 'out_of_scope': General chit-chat, programming, or topics completely unrelated to project management or available projects.
+
+Also, extract:
+- project name: Choose from [{projects_list_str}]. If no project is mentioned, return null.
+- file name: If the user is asking about a specific file, extract the file name from the prompt. Match it against these available files if possible: [{files_list_str}]. If no specific file is mentioned, return null.
+
+User Prompt: "{prompt}"
+
+You MUST respond with a raw JSON object and nothing else. Do NOT include markdown code blocks. Follow this format:
+{{
+  "intent": "general_chat" | "document_list" | "file_query" | "project_query" | "project_health" | "out_of_scope",
+  "extracted_project_name": "exact project name from available list, or null",
+  "extracted_file_name": "exact file name from available list, or null"
+}}
+"""
+    # Call local Ollama
+    payload = llm_model_config.RequestData(
+        content_type="text",
+        file="",
+        content="",
+        prompt=classification_prompt
+    )
+    
+    intent = "project_query"
+    extracted_project_name = None
+    extracted_file_name = None
+    try:
+        raw_response = llm_model_config.process_request(payload).strip()
+        
+        # Clean JSON wrapper if present
+        clean_json_str = raw_response
+        start_idx = clean_json_str.find('{')
+        end_idx = clean_json_str.rfind('}')
+        if start_idx != -1 and end_idx != -1:
+            clean_json_str = clean_json_str[start_idx:end_idx+1]
+            
+        data = json.loads(clean_json_str)
+        intent = data.get("intent") or "project_query"
+        extracted_project_name = data.get("extracted_project_name")
+        extracted_file_name = data.get("extracted_file_name")
+
+        print("file_name====", extracted_file_name)
+        print("project_name====", extracted_project_name)
+        print("intent====", intent)
+    except Exception as e:
+        print(f"[LangGraph Chatbot] Error in classification: {str(e)}")
+        
+    # Fallback keyword matching in case LLM fails extraction
+    lower_prompt = prompt.lower()
+    for proj_name in project_names:
+        if proj_name.lower() in lower_prompt:
+            extracted_project_name = proj_name
+            break
+            
+    # Fallback keyword matching for file names
+    if not extracted_file_name:
+        for f_name in file_names:
+            base, _ = os.path.splitext(f_name.lower())
+            if base in lower_prompt or f_name.lower() in lower_prompt:
+                extracted_file_name = f_name
+                break
+            
+    return {
+        "intent": intent,
+        "extracted_project_name": extracted_project_name,
+        "extracted_file_name": extracted_file_name
+    }
+
+# Node 2: Fetch DB Context and Project Metadata
+def fetch_context_node(state: ChatbotState) -> Dict[str, Any]:
+    project_name = state.get("extracted_project_name") or state.get("project_name") or "PLM Program"
+    v_store = LocalVectorStore()
+    
+    # Retrieve context from vector store for this project
+    db_chunks = v_store.get_project_chunks(project_name)
+    doc_context = ""
+    if db_chunks:
+        doc_context = "\n".join([f"[{c['file_name']}]: {c['text_content']}" for c in db_chunks])
+        
+    # Resolve metadata details
+    project_details = state.get("project_details")
+    all_projects = state.get("all_projects") or []
+    
+    # Map matching project details if not provided or mismatching
+    if all_projects and (not project_details or project_details.get("name") != project_name):
+        for p in all_projects:
+            if p.get("name") == project_name:
+                project_details = p
+                break
+                
+    return {
+        "doc_context": doc_context,
+        "project_details": project_details,
+        "extracted_project_name": project_name
+    }
+
+# Node 2b: Fetch Documents List
+def fetch_documents_node(state: ChatbotState) -> Dict[str, Any]:
+    project_name = state.get("extracted_project_name") or state.get("project_name") or "PLM Program"
+    v_store = LocalVectorStore()
+    
+    try:
+        all_tracked = v_store.get_all_tracked_files()
+        project_files = [f["file_name"] for f in all_tracked if f["project_name"].lower() == project_name.lower()]
+    except Exception as e:
+        print(f"[LangGraph Chatbot] Error in fetch_documents_node: {str(e)}")
+        project_files = []
+        
+    return {
+        "project_files": project_files,
+        "extracted_project_name": project_name
+    }
+
+# Node 2c: Fetch File Context Chunks
+def fetch_file_context_node(state: ChatbotState) -> Dict[str, Any]:
+    project_name = state.get("extracted_project_name") or state.get("project_name") or "PLM Program"
+    file_name = state.get("extracted_file_name")
+    v_store = LocalVectorStore()
+    
+    project_files = []
+    try:
+        all_tracked = v_store.get_all_tracked_files()
+        # print("all", all_tracked)
+        print("selected: ", project_name)
+        project_files = [f["file_name"] for f in all_tracked if f["project_name"].lower() == project_name.lower()]
+        print("total: ",project_files )
+    except Exception:
+        pass
+        
+    matched_file_name = None
+    if file_name:
+        file_name_lower = file_name.lower()
+        for f in project_files:
+
+            print("file: ", f )
+            if file_name_lower == f.lower() or file_name_lower in f.lower() or f.lower() in file_name_lower:
+                matched_file_name = f
+                break
+                
+    if not matched_file_name and project_files:
+        # Substring / manual match in the prompt as fallback
+        prompt_lower = state["prompt"].lower()
+        for f in project_files:
+            base, _ = os.path.splitext(f.lower())
+            if base in prompt_lower or f.lower() in prompt_lower:
+                matched_file_name = f
+                break
+                
+    doc_context = ""
+    if matched_file_name:
+        try:
+            db_chunks = v_store.get_file_chunks(project_name, matched_file_name)
+            if db_chunks:
+                doc_context = "\n".join([c['text_content'] for c in db_chunks])
+                print(f"[LangGraph Chatbot] Retrieved {len(db_chunks)} chunks for file '{matched_file_name}'")
+            else:
+                doc_context = f"No content chunks found for file '{matched_file_name}' in the database."
+        except Exception as e:
+            doc_context = f"Error retrieving chunks for file '{matched_file_name}': {str(e)}"
+    else:
+        doc_context = "Could not identify the specific file requested. Available files are: " + ", ".join(project_files)
+        
+    return {
+        "doc_context": doc_context,
+        "extracted_file_name": matched_file_name or file_name,
+        "extracted_project_name": project_name
+    }
+
+# Node 3: Generate Guided AI Response
+def generate_response_node(state: ChatbotState) -> Dict[str, Any]:
+    intent = state.get("intent") or "project_query"
+    project_name = state.get("extracted_project_name") or state.get("project_name") or "PLM Program"
+    doc_context = state.get("doc_context") or ""
+    meta = state.get("project_details")
+    prompt = state["prompt"]
+    all_projects = state.get("all_projects") or []
+    
+    # Compile available projects
+    all_projects_names = [p.get("name") for p in all_projects if p.get("name")]
+    if not all_projects_names:
+        try:
+            v_store = LocalVectorStore()
+            import sqlite3
+            conn = sqlite3.connect(v_store.db_path)
+            cursor = conn.cursor()
+            cursor.execute("SELECT DISTINCT project_name FROM indexed_files UNION SELECT DISTINCT project_name FROM vector_chunks")
+            all_projects_names = [r[0] for r in cursor.fetchall() if r[0]]
+            conn.close()
+        except Exception:
+            pass
+    if not all_projects_names:
+        all_projects_names = ["PLM Program"]
+    all_projects_str = ", ".join(f"'{p}'" for p in all_projects_names)
+    
+    # Compile metadata string
+    meta_str = ""
+    if meta:
+        objective = meta.get("objective") or {}
+        scope = meta.get("scope") or {}
+        stakeholders = meta.get("stakeholders") or {}
+        budget = meta.get("budgetResources") or {}
+        metrics = meta.get("successMetrics") or {}
+        
+        meta_str = (
+            f"- Business Goal: {objective.get('businessGoal') or ''}\n"
+            f"- Expected Outcome: {objective.get('expectedOutcome') or ''}\n"
+            f"- Features Included: {', '.join(scope.get('featuresIncluded', [])) if isinstance(scope.get('featuresIncluded'), list) else (scope.get('featuresIncluded') or '')}\n"
+            f"- Features Excluded: {', '.join(scope.get('featuresExcluded', [])) if isinstance(scope.get('featuresExcluded'), list) else (scope.get('featuresExcluded') or '')}\n"
+            f"- Team Resources: {budget.get('teamSize') or ''}\n"
+            f"- Budget Cost: {budget.get('costEstimation') or ''}\n"
+            f"- Tool Requirements: {budget.get('toolRequirements') or ''}\n"
+            f"- Success Metrics Performance: {', '.join(metrics.get('performanceTargets', [])) if isinstance(metrics.get('performanceTargets'), list) else (metrics.get('performanceTargets') or '')}\n"
+            f"- User Adoption Targets: {', '.join(metrics.get('userAdoption', [])) if isinstance(metrics.get('userAdoption'), list) else (metrics.get('userAdoption') or '')}\n"
+        )
+        
+    if intent == "general_chat":
+        system_instruction = f"""You are an elite Project Management Officer (PMO) AI assistant.
+The user is asking about your capabilities, greeting you, or initiating general project chat.
+You MUST reply keeping strictly to the scope of this application:
+1. Explain that you will assist the user regarding the available projects in the system.
+2. List the currently available projects in the system: [{all_projects_str}].
+3. Detail how you can help them analyze the status, overall health, timeline, milestones, risks, and actions of these projects.
+4. Keep the tone helpful, professional, and aligned with your PMO role.
+"""
+    elif intent == "out_of_scope":
+        system_instruction = f"""You are an elite Project Management Officer (PMO) AI assistant.
+The user's query is completely unrelated to project management, software delivery lifecycle, or available projects.
+You MUST politely decline to answer, explaining that your scope is limited strictly to assisting with the available projects in this SDLC Accelerator system (currently: [{all_projects_str}]).
+"""
+    elif intent == "document_list":
+        project_files = state.get("project_files") or []
+        files_list = "\n".join([f"- {f}" for f in project_files]) if project_files else "No documents found."
+        system_instruction = f"""You are an elite Project Management Officer (PMO) AI assistant.
+Your task is to list the documents/files available in the database for the project '{project_name}'.
+
+Here are the documents currently available in the database for '{project_name}':
+{files_list}
+
+Please list these documents clearly for the user. Mention that these are the files indexed in the vector store database for this project. Keep it concise, helpful, and professional.
+"""
+    elif intent == "file_query":
+        file_name = state.get("extracted_file_name")
+        system_instruction = f"""You are an elite Project Management Officer (PMO) AI assistant.
+Your task is to answer the user's question about the specific file '{file_name}' inside the project '{project_name}'.
+
+CRITICAL RULES:
+1. Ground your answer strictly in the provided document context below, which contains the content chunks of the file. Do not invent details.
+2. If the user's question cannot be answered using the provided file content, state that clearly.
+3. Keep the response professional and focused on the file content.
+
+CONTENT CHUNKS FOR FILE '{file_name}':
+{doc_context[:20000]}
+"""
+    elif intent == "project_health":
+        system_instruction = f"""You are an elite Project Management Officer (PMO) AI assistant.
+Your task is to analyze and guide the user on how the project '{project_name}' is going, specifically focusing on its status, progress, overall health, milestones, and health factors.
+
+Available projects in the system: [{all_projects_str}]
+
+CRITICAL RULES:
+1. Ground your answer strictly in the provided project context (metadata and document chunks). Do not invent details.
+2. If the user did not explicitly specify a project name in their health query, begin your response by stating: "I am analyzing the health of the currently focused project '{project_name}'. (Note: The available projects in the system are: [{all_projects_str}]. If you wanted to check another project, please specify its name.)"
+3. Ground your analysis on delay factors, staffing gaps (Solution Architect, Technical Architect, Data Migration Lead), and downstream risks mentioned in the documents.
+
+PROJECT METADATA FOR '{project_name}':
+{meta_str}
+
+PROJECT '{project_name}' DOCUMENT CONTEXT (FROM VECTOR DB):
+{doc_context[:20000]}
+"""
+    else: # project_query
+        system_instruction = f"""You are an elite Project Management Officer (PMO) AI assistant.
+Your task is to assist the user by answering their query about the project '{project_name}' based strictly on the metadata and context provided below.
+
+CRITICAL RULES:
+1. Ground your answers strictly in the provided context. Do not invent details.
+2. If the information is not present, state that it is not available in the project documents.
+
+PROJECT METADATA FOR '{project_name}':
+{meta_str}
+
+PROJECT '{project_name}' DOCUMENT CONTEXT (FROM VECTOR DB):
+{doc_context[:20000]}
+"""
+
+    payload = llm_model_config.RequestData(
+        content_type="text",
+        file="",
+        content=system_instruction,
+        prompt=prompt
+    )
+    ai_response = llm_model_config.process_request(payload)
+    return {
+        "response": ai_response
+    }
+
+# Build the LangGraph StateGraph
+workflow = StateGraph(ChatbotState)
+
+workflow.add_node("classify_intent", classify_intent_node)
+workflow.add_node("fetch_context", fetch_context_node)
+workflow.add_node("fetch_documents", fetch_documents_node)
+workflow.add_node("fetch_file_context", fetch_file_context_node)
+workflow.add_node("generate_response", generate_response_node)
+
+workflow.set_entry_point("classify_intent")
+
+def route_intent(state: ChatbotState) -> str:
+    intent = state.get("intent")
+    if intent == "document_list":
+        return "fetch_documents"
+    elif intent == "file_query":
+        return "fetch_file_context"
+    elif intent in ["project_query", "project_health"]:
+        return "fetch_context"
+    else:
+        return "generate_response"
+
+workflow.add_conditional_edges(
+    "classify_intent",
+    route_intent,
+    {
+        "fetch_documents": "fetch_documents",
+        "fetch_file_context": "fetch_file_context",
+        "fetch_context": "fetch_context",
+        "generate_response": "generate_response"
+    }
+)
+
+workflow.add_edge("fetch_documents", "generate_response")
+workflow.add_edge("fetch_file_context", "generate_response")
+workflow.add_edge("fetch_context", "generate_response")
+workflow.add_edge("generate_response", END)
+
+chatbot_app = workflow.compile()
+
 @app.post("/query", tags=["AI_Analysis"])
 def query(request: prompt_request):
     try:
-        payload = llm_model_config.RequestData(
-            content_type="text",
-            file="",
-            content="",
-            prompt=request.prompt
+        # Initialize LangGraph Chatbot State
+        initial_state = ChatbotState(
+            prompt=request.prompt,
+            project_name=None,
+            project_details=None,
+            all_projects=None,
+            intent=None,
+            extracted_project_name=None,
+            extracted_file_name=None,
+            project_files=None,
+            doc_context=None,
+            response=None
         )
-        ai_response = llm_model_config.process_request(payload)
-        return {"message": ai_response}
+        
+        # Invoke Compiled LangGraph App
+        final_state = chatbot_app.invoke(initial_state)
+        return {"message": final_state.get("response") or "No response could be generated."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -332,9 +733,9 @@ IMPORTANT: The placeholder values below (e.g. "<description>") are ONLY to descr
     "overall_health": "<Green, Yellow, or Red based on document evidence>",
     "narrative": "<detailed narrative summarizing the actual project status, milestones, risks, and key findings from the provided documents only>",
     "health_factors": {{
-      "schedule": "<At risk / On track / Green — based on document evidence>",
-      "resources": "<Adequate / At risk / Green — based on document evidence>",
-      "quality": "<Green / At risk — based on document evidence>"
+      "schedule": "<At risk / On track / Green - based on document evidence>",
+      "resources": "<Adequate / At risk / Green - based on document evidence>",
+      "quality": "<Green / At risk - based on document evidence>"
     }}
   }},
   "top_actions": [
@@ -342,9 +743,9 @@ IMPORTANT: The placeholder values below (e.g. "<description>") are ONLY to descr
       "action": "<action description extracted from documents>",
       "owner": "<owner name extracted from documents, or NA if not mentioned>",
       "due_date": "<YYYY-MM-DD extracted from documents, or NA>",
-      "status": "<In Progress / Overdue / Not Started / Complete — from documents>",
+      "status": "<In Progress / Overdue / Not Started / Complete - from documents>",
       "age_days": 0,
-      "priority": "<High / Medium / Low — from documents>"
+      "priority": "<High / Medium / Low - from documents>"
     }}
   ],
   "action_tracker": {{
@@ -384,7 +785,7 @@ IMPORTANT: The placeholder values below (e.g. "<description>") are ONLY to descr
   ],
 
   "escalation_prediction": {{
-    "likelihood": "<High / Medium / Low — based on document evidence>",
+    "likelihood": "<High / Medium / Low - based on document evidence>",
     "indicators": [
       "<indicator extracted from documents>"
     ],

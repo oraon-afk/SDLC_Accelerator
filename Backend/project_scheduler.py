@@ -209,7 +209,7 @@ class ProjectFileScheduler:
                 stats["chunks_indexed"] += chunks_count
 
         # 5. Print scan summary
-        print(f"\n[Watcher] ── Scan Summary ──────────────────────────")
+        print(f"\n[Watcher] == Scan Summary ==========================")
         print(f"  Files found:        {stats['files_found']}")
         print(f"  New indexed:        {stats['new']}")
         print(f"  Modified reindexed: {stats['modified']}")
@@ -217,7 +217,7 @@ class ProjectFileScheduler:
         print(f"  Duplicate PDFs skipped: {stats['skipped_duplicate']}")
         print(f"  Unsupported skipped:    {stats['skipped_unsupported']}")
         print(f"  Total chunks indexed:   {stats['chunks_indexed']}")
-        print(f"[Watcher] ────────────────────────────────────────\n")
+        print(f"[Watcher] ========================================\n")
 
     def _index_file(self, file_path: str, meta: Dict[str, Any]) -> int:
         """Parse, chunk, embed and store a file. Returns the number of chunks indexed."""
@@ -272,7 +272,7 @@ class ProjectFileScheduler:
 # Self-running entry point
 if __name__ == "__main__":
     print("====================================================")
-    print("  SDLC Accelerator — Resource Docs File Watcher")
+    print("  SDLC Accelerator - Resource Docs File Watcher")
     print("====================================================")
     watcher = ProjectFileScheduler()
     watcher.start()

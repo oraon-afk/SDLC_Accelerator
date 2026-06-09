@@ -1,0 +1,1 @@
+[Image: Master program plan.png] Visual analysis not available - no vision model is currently installed. Install a vision-capable model (e.g. llama3.2-vision) in Ollama to enable automatic image analysis.

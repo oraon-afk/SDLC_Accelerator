@@ -20,7 +20,7 @@ def get_mock_visual_insights(image_path: str) -> str:
     base_name = os.path.basename(image_path)
     return (
         f"[Image: {base_name}] "
-        "Visual analysis not available — no vision model is currently installed. "
+        "Visual analysis not available - no vision model is currently installed. "
         "Install a vision-capable model (e.g. llama3.2-vision) in Ollama to enable automatic image analysis."
     )
 

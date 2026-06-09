@@ -23,12 +23,29 @@ const MOCK_SUMMARY = `Based on the latest 'Sprint 4 Planning.docx' and 'Architec
 
 Would you like me to elaborate on the risks or the budget variance?`;
 
-export default function ProjectChatbot() {
+interface ProjectChatbotProps {
+  projectName?: string;
+  projectDetails?: any;
+  allProjects?: any[];
+}
+
+export default function ProjectChatbot({ projectName = 'PLM Program', projectDetails, allProjects }: ProjectChatbotProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
+  
+  const getInitialMessage = (name: string): Message => ({
+    id: '1',
+    sender: 'bot',
+    text: `Hi! I'm your PM Assistant. I will assist you regarding the available projects in the system (currently: **${name}**). Ask me how a project is going, or ask "What can you do?" to learn more!`,
+  });
+
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMessages([getInitialMessage(projectName)]);
+  }, [projectName]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -59,7 +76,9 @@ export default function ProjectChatbot() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: text }),
+        body: JSON.stringify({ 
+          prompt: text
+        }),
       });
 
       if (!response.ok) {
@@ -84,14 +103,50 @@ export default function ProjectChatbot() {
       setTimeout(() => {
         setIsTyping(false);
         const lowerInput = text.toLowerCase();
-        let botResponse = "I can help summarize the project documents, identify risks, or provide schedule updates. Just ask!";
+        
+        // Scope validation for PM / Project related questions
+        const isProjectRelated = 
+          lowerInput.includes('what can you do') ||
+          lowerInput.includes('capability') ||
+          lowerInput.includes('help') ||
+          lowerInput.includes('summar') || 
+          lowerInput.includes('document') || 
+          lowerInput.includes('project') || 
+          lowerInput.includes('risk') || 
+          lowerInput.includes('status') || 
+          lowerInput.includes('health') || 
+          lowerInput.includes('action') || 
+          lowerInput.includes('milestone') || 
+          lowerInput.includes('schedule') || 
+          lowerInput.includes('timeline') || 
+          lowerInput.includes('pmo') || 
+          lowerInput.includes('pm') || 
+          lowerInput.includes('plm');
+
+        const projectNames = allProjects && allProjects.length > 0 
+          ? allProjects.map(p => p.name).join(', ') 
+          : projectName;
+
+        let botResponse = `As a Project Management Officer (PMO) AI assistant, I will assist you regarding the available projects in the system (like **${projectNames}**). I can guide you on how each project is going, its status, health, and documents. Please ask a project-related question.`;
         let isSummary = false;
 
-        if (lowerInput.includes('summar') || lowerInput.includes('document') || lowerInput.includes('project')) {
-          botResponse = MOCK_SUMMARY;
-          isSummary = true;
-        } else if (lowerInput.includes('risk')) {
-          botResponse = "The main risk right now is the blocked API integration. The backend team is currently waiting on vendor credentials, which might push the schedule back by 3-5 days.";
+        if (isProjectRelated) {
+          if (lowerInput.includes('what can you do') || lowerInput.includes('capability') || lowerInput.includes('help')) {
+            botResponse = `I am a PMO AI Assistant. I will assist you regarding the available projects in the system (currently: **${projectNames}**). I can guide you on:
+- How each project is going (overall health status)
+- Key project risks and mitigation actions
+- Critical milestone dates and schedule alerts/variances
+- Action item tracking and pending owners`;
+          } else if (lowerInput.includes('summar') || lowerInput.includes('document') || lowerInput.includes('project')) {
+            botResponse = MOCK_SUMMARY;
+            isSummary = true;
+          } else if (lowerInput.includes('risk')) {
+            botResponse = "The main risk right now is the blocked API integration. The backend team is currently waiting on vendor credentials, which might push the schedule back by 3-5 days.";
+          } else if (lowerInput.includes('status') || lowerInput.includes('health')) {
+            botResponse = `The project status for '${projectName}' is currently classified as **RED** due to delayed critical milestones, technical architect vacancies, and automotive domain enablement readiness gaps. Close monitoring is underway.`;
+          } else {
+            botResponse = `I can help summarize the project documents, identify risks, or provide schedule updates for '${projectName}'. Just ask!`;
+          }
         }
 
         const newBotMessage: Message = {

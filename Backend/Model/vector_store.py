@@ -175,3 +175,25 @@ class LocalVectorStore:
                 "text_content": r[2]
             } for r in rows
         ]
+
+    def get_file_chunks(self, project_name: str, file_name: str) -> List[Dict[str, Any]]:
+        """
+        Fetches all text chunks indexed under the given project_name and file_name 
+        directly from SQLite.
+        """
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT chunk_id, text_content 
+            FROM vector_chunks 
+            WHERE project_name = ? AND file_name = ?
+            ORDER BY chunk_id ASC
+        """, (project_name, file_name))
+        rows = cursor.fetchall()
+        conn.close()
+        return [
+            {
+                "chunk_id": r[0],
+                "text_content": r[1]
+            } for r in rows
+        ]

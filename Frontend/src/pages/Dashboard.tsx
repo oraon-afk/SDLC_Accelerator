@@ -1298,7 +1298,11 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
         </div>
       </main>
 
-      <ProjectChatbot />
+      <ProjectChatbot 
+        projectName={projects[0]?.name} 
+        projectDetails={projects[0]} 
+        allProjects={projects}
+      />
     </div>
   );
 }
