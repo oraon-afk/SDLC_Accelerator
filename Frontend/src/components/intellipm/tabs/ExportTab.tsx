@@ -54,7 +54,7 @@ function exportTextReport(result: AnalysisResult): string {
     '',
     `Analysis Date:   ${ts}`,
     `Priority Level:  ${result.priority_level}`,
-    `Source Files:    ${result.source_artifacts.join(', ')}`,
+    `Source Files:    ${(result.source_artifacts ?? []).join(', ')}`,
     '',
     '----------------------------------------------------------------',
     '1. EXECUTIVE SUMMARY',
@@ -316,7 +316,7 @@ export default function ExportTab({ result, onRegenerate, isRegenerating }: Prop
           Artifacts Included in This Analysis
         </h3>
         <ul className="space-y-1.5" aria-label="Source artifacts list">
-          {result.source_artifacts.map((a, i) => (
+          {(result.source_artifacts ?? []).map((a, i) => (
             <li key={i} className="flex items-center gap-2 text-xs text-brand-light/95">
               <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" aria-hidden="true" />
               <span className="font-mono">{a}</span>

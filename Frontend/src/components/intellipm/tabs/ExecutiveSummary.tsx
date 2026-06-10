@@ -62,7 +62,7 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
         <span>·</span>
         <span>Priority: <strong className="text-white">{priority_level}</strong></span>
         <span>·</span>
-        <span>Sources: <strong className="text-white">{source_artifacts.length} artifact{source_artifacts.length !== 1 ? 's' : ''}</strong></span>
+        <span>Sources: <strong className="text-white">{(source_artifacts ?? []).length} artifact{(source_artifacts ?? []).length !== 1 ? 's' : ''}</strong></span>
       </div>
 
       {/* Overall Health Banner */}
@@ -107,7 +107,7 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
           </h2>
         </div>
         
-        {document_summary && document_summary.length > 0 ? (
+        {document_summary && document_summary.length > 0 && !(document_summary.length === 1 && document_summary[0].file_name === 'NA') ? (
           <div className="space-y-3.5">
             {document_summary.map((item, idx) => (
               <div key={idx} className="p-3.5 rounded-xl bg-brand-primary/10 border border-brand-primary/20 space-y-1.5 hover:border-brand-accent transition-all duration-200">
@@ -122,8 +122,8 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-brand-light/70 italic leading-relaxed">
-            {project_health_summary.narrative}
+          <p className="text-sm text-brand-light/60 italic leading-relaxed">
+            NA
           </p>
         )}
       </section>
@@ -377,9 +377,9 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
         <h3 id="sources-heading" className="text-sm font-bold text-white mb-2">
           Source Artifacts Analysed
         </h3>
-        {source_artifacts.length > 0 ? (
+        {(source_artifacts ?? []).length > 0 ? (
           <ul className="flex flex-wrap gap-2" aria-label="Source files used in this analysis">
-            {source_artifacts.map((artifact, i) => (
+            {(source_artifacts ?? []).map((artifact, i) => (
               <li key={i}>
                 <span className="inline-flex items-center gap-1 text-xs bg-brand-primary/20 text-brand-light border border-brand-primary/30 rounded-md px-2 py-1 font-mono">
                   <FileText className="w-3 h-3 text-brand-accent" aria-hidden="true" />

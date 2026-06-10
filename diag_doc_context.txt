@@ -1,0 +1,454 @@
+[Master RAID Tracker.csv (Segment 0)]: [Project: PLM Program] [File: Master RAID Tracker.csv] ID | Track | Type | Description | Owner | Date Logged | Due for Closure on | Status | Impact | Mitigation
+A1 | Program | Action Item | Finalize and onboard Solution Architect | Global Delivery President | 15-May-26 | 20-May-26 | Open |  | 
+A2 | Program | Action Item | Finalize and onboard Technical Architect | Global Delivery President | 15-May-26 | 20-May-26 | Open |  | 
+A3 | Program | Action Item | Finalize and onboard Data Migration Lead | Global Delivery President | 15-May-26 | 20-May-26 | Open |  | 
+A4 | Program | Action Item | Share named resource profiles and availability confirmation | Implementation Program Manager | 15-May-26 | 18-May-26 | Open |  | 
+A5 | Program | Action Item | Launch automotive domain enablement sessions for all delivery members | Implementation Program Manager | 15-May-26 | 20-May-26 | Open |  | 
+A6 | Program | Action Item | Deploy automotive domain consultant into discovery workshops | Global Delivery President | 15-May-26 | 20-May-26 | Open |  | 
+A7 | Pr
+[Master RAID Tracker.csv (Segment 0)]: [Project: PLM Program] [File: Master RAID Tracker.csv] ID | Track | Type | Description | Owner | Date Logged | Due for Closure on | Status | Impact | Mitigation
+A1 | Program | Action Item | Finalize and onboard Solution Architect | Global Delivery President | 15-May-26 | 20-May-26 | Open |  | 
+A2 | Program | Action Item | Finalize and onboard Technical Architect | Global Delivery President | 15-May-26 | 20-May-26 | Open |  | 
+A3 | Program | Action Item | Finalize and onboard Data Migration Lead | Global Delivery President | 15-May-26 | 20-May-26 | Open |  | 
+A4 | Program | Action Item | Share named resource profiles and availability confirmation | Implementation Program Manager | 15-May-26 | 18-May-26 | Open |  | 
+A5 | Program | Action Item | Launch automotive domain enablement sessions for all delivery members | Implementation Program Manager | 15-May-26 | 20-May-26 | Open |  | 
+A6 | Program | Action Item | Deploy automotive domain consultant into discovery workshops | Global Delivery President | 15-May-26 | 20-May-26 | Open |  | 
+A7 | Pr
+[Master RAID Tracker.csv (Segment 1)]: [Project: PLM Program] [File: Master RAID Tracker.csv]  | 15-May-26 | 20-May-26 | Open |  | 
+A6 | Program | Action Item | Deploy automotive domain consultant into discovery workshops | Global Delivery President | 15-May-26 | 20-May-26 | Open |  | 
+A7 | Program | Action Item | Publish revised discovery and POC recovery plan | Implementation Program Manager | 15-May-26 | 19-May-26 | Open |  | 
+A8 | Program | Action Item | Establish daily internal war-room governance | Implementation Program Manager | 15-May-26 | 16-May-26 | In Progress |  | 
+A9
+
+[Master RAID Tracker.xlsx (Segment 0)]: [Project: PLM Program] [File: Master RAID Tracker.xlsx] --- Sheet: Master RAID Tracker ---
+ID | Track | Type | Description | Owner | Date Logged | Due for Closure on | Status | Impact | Mitigation
+A1 | Program | Action Item | Finalize and onboard Solution Architect | Global Delivery President | 2026-05-15 00:00:00 | 2026-05-20 00:00:00 | Open |  | 
+A2 | Program | Action Item | Finalize and onboard Technical Architect | Global Delivery President | 2026-05-15 00:00:00 | 2026-05-20 00:00:00 | Open |  | 
+A3 | Program | Action Item | Finalize and onboard Data Migration Lead | Global Delivery President | 2026-05-15 00:00:00 | 2026-05-20 00:00:00 | Open |  | 
+A4 | Program | Action Item | Share named resource profiles and availability confirmation | Implementation Program Manager | 2026-05-15 00:00:00 | 2026-05-18 00:00:00 | Open |  | 
+A5 | Program | Action Item | Launch automotive domain enablement sessions for all delivery members | Implementation Program Manager | 2026-05-15 00:00:00 | 2026-05-20 00:00:00 | Open |  | 
+A6 | Program | Action Item 
+[Master RAID Tracker.xlsx (Segment 0)]: [Project: PLM Program] [File: Master RAID Tracker.xlsx] --- Sheet: Master RAID Tracker ---
+ID | Track | Type | Description | Owner | Date Logged | Due for Closure on | Status | Impact | Mitigation
+A1 | Program | Action Item | Finalize and onboard Solution Architect | Global Delivery President | 2026-05-15 00:00:00 | 2026-05-20 00:00:00 | Open |  | 
+A2 | Program | Action Item | Finalize and onboard Technical Architect | Global Delivery President | 2026-05-15 00:00:00 | 2026-05-20 00:00:00 | Open |  | 
+A3 | Program | Action Item | Finalize and onboard Data Migration Lead | Global Delivery President | 2026-05-15 00:00:00 | 2026-05-20 00:00:00 | Open |  | 
+A4 | Program | Action Item | Share named resource profiles and availability confirmation | Implementation Program Manager | 2026-05-15 00:00:00 | 2026-05-18 00:00:00 | Open |  | 
+A5 | Program | Action Item | Launch automotive domain enablement sessions for all delivery members | Implementation Program Manager | 2026-05-15 00:00:00 | 2026-05-20 00:00:00 | Open |  | 
+A6 | Program | Action Item 
+[Master RAID Tracker.xlsx (Segment 1)]: [Project: PLM Program] [File: Master RAID Tracker.xlsx] ction Item | Launch automotive domain enablement sessions for all delivery members | Implementation Program Manager | 2026-05-15 00:00:00 | 2026-05-20 00:00:00 | Open |  | 
+A6 | Program | Action Item | Deploy automotive domain consultant into discovery workshops | Global Delivery President | 2026-05-15 00:00:00 | 2026-05-20 00:00:00 | Open |  | 
+A7 | Program | Action Item | Publish revised discovery and POC recovery plan | Implementation Program Manager | 2026-05-15 00:00:00 | 2026-
+
+[Plm Program Weekly Review Full audio transcript.docx (Segment 0)]: [Project: PLM Program] [File: Plm Program Weekly Review Full audio transcript.docx] Automotive PLM Consolidation Program
+Weekly Governance Review Meeting
+Program: Automotive PLM Consolidation – 18 Month RoadmapMeeting Type: Weekly Steering & Governance ReviewDate: 15-May-2026Scheduled Duration: 30 MinutesActual Duration: 45 MinutesProgram Status: RED
+Participants
+Customer Program Manager (CPM)
+Implementation Team Program Manager (IPM)
+Global Delivery President – Implementation Team (GDP)
+Full audio transcript of the meeting 
+Opening of Meeting
+[00:00 – Meeting Begins]
+CPM: Good evening everyone. Thank you for joining at short notice. I know this meeting was planned for thirty minutes, but given the current situation of the program, I believe we need to spend additional time to address concerns openly and transparently.
+IPM: Absolutely. Thank you for arranging this discussion. We understand the seriousness of the situation and we are committed to addressing all concerns directly.
+GDP: Good evening everyone. I appreciate the candid escalation from your side. I wanted to
+[Plm Program Weekly Review Full audio transcript.docx (Segment 0)]: [Project: PLM Program] [File: Plm Program Weekly Review Full audio transcript.docx] Automotive PLM Consolidation Program
+Weekly Governance Review Meeting
+Program: Automotive PLM Consolidation – 18 Month RoadmapMeeting Type: Weekly Steering & Governance ReviewDate: 15-May-2026Scheduled Duration: 30 MinutesActual Duration: 45 MinutesProgram Status: RED
+Participants
+Customer Program Manager (CPM)
+Implementation Team Program Manager (IPM)
+Global Delivery President – Implementation Team (GDP)
+Full audio transcript of the meeting 
+Opening of Meeting
+[00:00 – Meeting Begins]
+CPM: Good evening everyone. Thank you for joining at short notice. I know this meeting was planned for thirty minutes, but given the current situation of the program, I believe we need to spend additional time to address concerns openly and transparently.
+IPM: Absolutely. Thank you for arranging this discussion. We understand the seriousness of the situation and we are committed to addressing all concerns directly.
+GDP: Good evening everyone. I appreciate the candid escalation from your side. I wanted to
+[Plm Program Weekly Review Full audio transcript.docx (Segment 1)]: [Project: PLM Program] [File: Plm Program Weekly Review Full audio transcript.docx] ion. We understand the seriousness of the situation and we are committed to addressing all concerns directly.
+GDP: Good evening everyone. I appreciate the candid escalation from your side. I wanted to personally join this review because this program is strategically important for both organizations.
+CPM: Thank you. I 
+
+[Plm Program Weekly Review Meeting minutes.docx (Segment 0)]: [Project: PLM Program] [File: Plm Program Weekly Review Meeting minutes.docx] Automotive PLM Consolidation Program
+Weekly Governance Review Meeting
+Program: Automotive PLM Consolidation – 18 Month RoadmapMeeting Type: Weekly Steering & Governance ReviewDate: 15-May-2026Scheduled Duration: 30 MinutesActual Duration: 45 MinutesProgram Status: RED
+Participants
+Customer Program Manager (CPM)
+Implementation Team Program Manager (IPM)
+Global Delivery President – Implementation Team (GDP)
+Minutes of Meeting (MoM)
+Meeting Information
+Item
+Details
+Program
+Automotive PLM Consolidation
+Meeting Type
+Weekly Governance Review
+Date
+15-May-2026
+Duration
+45 Minutes
+Program Status
+RED
+Chairperson
+Customer Program Manager
+Key Discussion Points
+1. Staffing Gaps
+Critical leadership roles remain unfilled.
+Missing roles include:
+Solution Architect
+Technical Architect
+Data Migration Lead
+Customer highlighted negative impact on workshop effectiveness and stakeholder confidence.
+2. Automotive Domain Readiness
+Delivery team lacks familiarity with automotive engineering and quality process
+[Plm Program Weekly Review Meeting minutes.docx (Segment 0)]: [Project: PLM Program] [File: Plm Program Weekly Review Meeting minutes.docx] Automotive PLM Consolidation Program
+Weekly Governance Review Meeting
+Program: Automotive PLM Consolidation – 18 Month RoadmapMeeting Type: Weekly Steering & Governance ReviewDate: 15-May-2026Scheduled Duration: 30 MinutesActual Duration: 45 MinutesProgram Status: RED
+Participants
+Customer Program Manager (CPM)
+Implementation Team Program Manager (IPM)
+Global Delivery President – Implementation Team (GDP)
+Minutes of Meeting (MoM)
+Meeting Information
+Item
+Details
+Program
+Automotive PLM Consolidation
+Meeting Type
+Weekly Governance Review
+Date
+15-May-2026
+Duration
+45 Minutes
+Program Status
+RED
+Chairperson
+Customer Program Manager
+Key Discussion Points
+1. Staffing Gaps
+Critical leadership roles remain unfilled.
+Missing roles include:
+Solution Architect
+Technical Architect
+Data Migration Lead
+Customer highlighted negative impact on workshop effectiveness and stakeholder confidence.
+2. Automotive Domain Readiness
+Delivery team lacks familiarity with automotive engineering and quality process
+[Plm Program Weekly Review Meeting minutes.docx (Segment 1)]: [Project: PLM Program] [File: Plm Program Weekly Review Meeting minutes.docx] ustomer highlighted negative impact on workshop effectiveness and stakeholder confidence.
+2. Automotive Domain Readiness
+Delivery team lacks familiarity with automotive engineering and quality processes.
+Concerns raised regarding understanding of:
+APQP
+FAI
+ASPICE
+Automotive supplier collaboration workflows
+Customer emphasized need for better preparednes
+
+[Plm Program Weekly Review Recovery Plan and Action items.docx (Segment 0)]: [Project: PLM Program] [File: Plm Program Weekly Review Recovery Plan and Action items.docx] Automotive PLM Consolidation Program
+Weekly Governance Review Meeting Details
+Program: Automotive PLM Consolidation – 18 Month RoadmapMeeting Type: Weekly Steering & Governance ReviewDate: 15-May-2026Scheduled Duration: 30 MinutesActual Duration: 45 MinutesProgram Status: RED
+Agreed Recovery Action Plan
+One Week Stabilization Objectives before next review meeting
+The following stabilization objectives were agreed to be completed within one week:
+Close all critical staffing gaps.
+Establish confidence recovery plan.
+Improve workshop readiness.
+Launch automotive domain enablement.
+Publish revised discovery and POC recovery timeline.
+Next Review Meeting
+Item
+Details
+Meeting
+Weekly Governance Review
+Proposed Date
+22-May-2026
+Focus Area
+Recovery Plan Validation & Staffing Closure
+Expected Outcome
+Program stabilization progress review
+Action Items
+ID
+Action Item
+Owner
+Due Date (starting 15/May/2026)
+Status
+A1
+Finalize and onboard Solution Architect
+Global Delivery President
+Within 5 business 
+[Plm Program Weekly Review Recovery Plan and Action items.docx (Segment 0)]: [Project: PLM Program] [File: Plm Program Weekly Review Recovery Plan and Action items.docx] Automotive PLM Consolidation Program
+Weekly Governance Review Meeting Details
+Program: Automotive PLM Consolidation – 18 Month RoadmapMeeting Type: Weekly Steering & Governance ReviewDate: 15-May-2026Scheduled Duration: 30 MinutesActual Duration: 45 MinutesProgram Status: RED
+Agreed Recovery Action Plan
+One Week Stabilization Objectives before next review meeting
+The following stabilization objectives were agreed to be completed within one week:
+Close all critical staffing gaps.
+Establish confidence recovery plan.
+Improve workshop readiness.
+Launch automotive domain enablement.
+Publish revised discovery and POC recovery timeline.
+Next Review Meeting
+Item
+Details
+Meeting
+Weekly Governance Review
+Proposed Date
+22-May-2026
+Focus Area
+Recovery Plan Validation & Staffing Closure
+Expected Outcome
+Program stabilization progress review
+Action Items
+ID
+Action Item
+Owner
+Due Date (starting 15/May/2026)
+Status
+A1
+Finalize and onboard Solution Architect
+Global Delivery President
+Within 5 business 
+[Plm Program Weekly Review Recovery Plan and Action items.docx (Segment 1)]: [Project: PLM Program] [File: Plm Program Weekly Review Recovery Plan and Action items.docx] e
+Program stabilization progress review
+Action Items
+ID
+Action Item
+Owner
+Due Date (starting 15/May/2026)
+Status
+A1
+Finalize and onboard Solution Architect
+Global Delivery President
+Within 5 business days
+Open
+A2
+Finalize and onboard Technical Architect
+Global Deli
+
+[Plm Program Weekly Review Risks and decisions.docx (Segment 0)]: [Project: PLM Program] [File: Plm Program Weekly Review Risks and decisions.docx] Automotive PLM Consolidation Program
+Weekly Governance Review Meeting Details
+Program: Automotive PLM Consolidation – 18 Month RoadmapMeeting Type: Weekly Steering & Governance ReviewDate: 15-May-2026Scheduled Duration: 30 MinutesActual Duration: 45 MinutesProgram Status: RED
+Next Review Meeting
+Item
+Details
+Meeting
+Weekly Governance Review
+Proposed Date
+22-May-2026
+Focus Area
+Recovery Plan Validation & Staffing Closure
+Expected Outcome
+Program stabilization progress review
+Risks Identified
+Risk
+Impact
+Mitigation
+Delay in staffing critical roles
+Discovery and architecture delays
+Executive escalation and prioritized onboarding
+Lack of automotive domain knowledge
+Reduced workshop effectiveness
+Structured domain training and domain SME support
+Customer confidence erosion
+Governance escalation and delivery scrutiny
+Increased transparency and executive oversight
+Discovery delays impacting downstream phases
+Compression of sprint rollout timeline
+Parallel execution and recovery planning
+Decis
+[Plm Program Weekly Review Risks and decisions.docx (Segment 0)]: [Project: PLM Program] [File: Plm Program Weekly Review Risks and decisions.docx] Automotive PLM Consolidation Program
+Weekly Governance Review Meeting Details
+Program: Automotive PLM Consolidation – 18 Month RoadmapMeeting Type: Weekly Steering & Governance ReviewDate: 15-May-2026Scheduled Duration: 30 MinutesActual Duration: 45 MinutesProgram Status: RED
+Next Review Meeting
+Item
+Details
+Meeting
+Weekly Governance Review
+Proposed Date
+22-May-2026
+Focus Area
+Recovery Plan Validation & Staffing Closure
+Expected Outcome
+Program stabilization progress review
+Risks Identified
+Risk
+Impact
+Mitigation
+Delay in staffing critical roles
+Discovery and architecture delays
+Executive escalation and prioritized onboarding
+Lack of automotive domain knowledge
+Reduced workshop effectiveness
+Structured domain training and domain SME support
+Customer confidence erosion
+Governance escalation and delivery scrutiny
+Increased transparency and executive oversight
+Discovery delays impacting downstream phases
+Compression of sprint rollout timeline
+Parallel execution and recovery planning
+Decis
+[Plm Program Weekly Review Risks and decisions.docx (Segment 1)]: [Project: PLM Program] [File: Plm Program Weekly Review Risks and decisions.docx]  and delivery scrutiny
+Increased transparency and executive oversight
+Discovery delays impacting downstream phases
+Compression of sprint rollout timeline
+Parallel execution and recovery planning
+Decisions Taken
+Program classified as Tier‑1 strategic delivery initiative by implementation leadership.
+Executive-level monitoring to c
+
+[Plm Program Weekly Review Summary transcript.docx (Segment 0)]: [Project: PLM Program] [File: Plm Program Weekly Review Summary transcript.docx] Automotive PLM Consolidation Program
+Weekly Governance Review Meeting
+Program: Automotive PLM Consolidation – 18 Month RoadmapMeeting Type: Weekly Steering & Governance ReviewDate: 15-May-2026Scheduled Duration: 30 MinutesActual Duration: 45 MinutesProgram Status: RED
+Participants
+Customer Program Manager (CPM)
+Implementation Team Program Manager (IPM)
+Global Delivery President – Implementation Team (GDP)
+Executive Summary Transcript
+Overall Meeting Summary
+A detailed governance review discussion was conducted between the Customer Program Manager, Implementation Team Program Manager, and the Global Delivery President regarding the current RED status of the Automotive PLM Consolidation Program.
+The customer formally expressed concerns regarding:
+Delay in onboarding critical leadership and delivery roles.
+Lack of automotive industry domain knowledge within the implementation team.
+Declining stakeholder confidence and increasing executive escalations.
+Potential downstream impact on the ov
+[Plm Program Weekly Review Summary transcript.docx (Segment 0)]: [Project: PLM Program] [File: Plm Program Weekly Review Summary transcript.docx] Automotive PLM Consolidation Program
+Weekly Governance Review Meeting
+Program: Automotive PLM Consolidation – 18 Month RoadmapMeeting Type: Weekly Steering & Governance ReviewDate: 15-May-2026Scheduled Duration: 30 MinutesActual Duration: 45 MinutesProgram Status: RED
+Participants
+Customer Program Manager (CPM)
+Implementation Team Program Manager (IPM)
+Global Delivery President – Implementation Team (GDP)
+Executive Summary Transcript
+Overall Meeting Summary
+A detailed governance review discussion was conducted between the Customer Program Manager, Implementation Team Program Manager, and the Global Delivery President regarding the current RED status of the Automotive PLM Consolidation Program.
+The customer formally expressed concerns regarding:
+Delay in onboarding critical leadership and delivery roles.
+Lack of automotive industry domain knowledge within the implementation team.
+Declining stakeholder confidence and increasing executive escalations.
+Potential downstream impact on the ov
+[Plm Program Weekly Review Summary transcript.docx (Segment 1)]: [Project: PLM Program] [File: Plm Program Weekly Review Summary transcript.docx] elivery roles.
+Lack of automotive industry domain knowledge within the implementation team.
+Declining stakeholder confidence and increasing executive escalations.
+Potential downstream impact on the overall 18‑month roadmap.
+The implementation leadership acknowledged the concerns and accepted accountability for staffing and readiness ga
+
+[PLM_Program_Roadmap_18Month.pptx (Segment 0)]: [Project: PLM Program] [File: PLM_Program_Roadmap_18Month.pptx] --- Slide 1 ---
+Automotive PLM Consolidation  ·  18-Month Program Roadmap
+Part & BOM   ·   Change Mgmt   ·   Quality Mgmt   ·   Supplier Collaboration   ·   SAP   ·   NX   ·   Cadence   ·   Data Migration
+Phase 1 – PoC & Solution Design
+Phase 2 – Sprint Dev & Pilot
+Phase 3 – Adoption & Rollout
+Phase Gate / Milestone
+Phase 1 — PoC & Solution Design  (M1 – M6)
+Phase 2 — Sprint Development & Pilot Rollout  (M5 – M13)
+Phase 3 — Adoption  (M12–M18)
+M1
+M2
+M3
+M4
+M5
+M6
+M7
+M8
+M9
+M10
+M11
+M12
+M13
+M14
+M15
+M16
+M17
+M18
+CORE PLM CAPABILITIES
+Part & BOM Management
+Change Management
+Quality Management
+Supplier Collaboration
+INTEGRATIONS
+SAP Integration
+NX Integration
+Cadence Integration
+DATA
+Data Migration
+PROGRAM
+Program Governance
+Change Mgmt & Training
+User Adoption & Rollout
+Milestones ◆ denote phase gate reviews and go-live events  ·  Phases overlap to enable continuous delivery  ·  M = Month
+Automotive PLM Consolidation  ·  Confidential
+End of Hyper care
+Hyper care period
+[PLM_Program_Roadmap_18Month.pptx (Segment 0)]: [Project: PLM Program] [File: PLM_Program_Roadmap_18Month.pptx] --- Slide 1 ---
+Automotive PLM Consolidation  ·  18-Month Program Roadmap
+Part & BOM   ·   Change Mgmt   ·   Quality Mgmt   ·   Supplier Collaboration   ·   SAP   ·   NX   ·   Cadence   ·   Data Migration
+Phase 1 – PoC & Solution Design
+Phase 2 – Sprint Dev & Pilot
+Phase 3 – Adoption & Rollout
+Phase Gate / Milestone
+Phase 1 — PoC & Solution Design  (M1 – M6)
+Phase 2 — Sprint Development & Pilot Rollout  (M5 – M13)
+Phase 3 — Adoption  (M12–M18)
+M1
+M2
+M3
+M4
+M5
+M6
+M7
+M8
+M9
+M10
+M11
+M12
+M13
+M14
+M15
+M16
+M17
+M18
+CORE PLM CAPABILITIES
+Part & BOM Management
+Change Management
+Quality Management
+Supplier Collaboration
+INTEGRATIONS
+SAP Integration
+NX Integration
+Cadence Integration
+DATA
+Data Migration
+PROGRAM
+Program Governance
+Change Mgmt & Training
+User Adoption & Rollout
+Milestones ◆ denote phase gate reviews and go-live events  ·  Phases overlap to enable continuous delivery  ·  M = Month
+Automotive PLM Consolidation  ·  Confidential
+End of Hyper care
+Hyper care period
+
+[Track specific action items.xlsx (Segment 0)]: [Project: PLM Program] [File: Track specific action items.xlsx] --- Sheet: Quality Management ---
+Action ID | Action Item Description | Target Date | Owner
+QM-1 | Engage certified automotive domain translator/interpreter for all process documents. Target: 100% translation of backlog within 5 business days. | 2026-08-20 00:00:00 | Impl. PM
+QM-2 | Immediately backfill BA vacancy—deploy available internal BA from Part & BOM track (now stable) on 50% dual allocation to Quality workshops. | 2026-08-18 00:00:00 | Impl. PM
+QM-3 | Run parallel workshops—two simultaneous sessions per week (English + translated document sets) to recover the 3-week lag in 10 working days. | 2026-08-22 00:00:00 | Quality Lead
+QM-4 | Pre-validate translated documents with customer business owner before each workshop to reduce rework loops. | Ongoing | Customer PM
+QM-5 | Publish revised Quality track schedule with recovery milestones and share with steering committee. | 2026-08-19 00:00:00 | Impl. PM
+--- Sheet: Supplier Collaboration ---
+Action ID | Action Item Description | Tar
+[Track specific action items.xlsx (Segment 0)]: [Project: PLM Program] [File: Track specific action items.xlsx] --- Sheet: Quality Management ---
+Action ID | Action Item Description | Target Date | Owner
+QM-1 | Engage certified automotive domain translator/interpreter for all process documents. Target: 100% translation of backlog within 5 business days. | 2026-08-20 00:00:00 | Impl. PM
+QM-2 | Immediately backfill BA vacancy—deploy available internal BA from Part & BOM track (now stable) on 50% dual allocation to Quality workshops. | 2026-08-18 00:00:00 | Impl. PM
+QM-3 | Run parallel workshops—two simultaneous sessions per week (English + translated document sets) to recover the 3-week lag in 10 working days. | 2026-08-22 00:00:00 | Quality Lead
+QM-4 | Pre-validate translated documents with customer business owner before each workshop to reduce rework loops. | Ongoing | Customer PM
+QM-5 | Publish revised Quality track schedule with recovery milestones and share with steering committee. | 2026-08-19 00:00:00 | Impl. PM
+--- Sheet: Supplier Collaboration ---
+Action ID | Action Item Description | Tar
+[Track specific action items.xlsx (Segment 1)]: [Project: PLM Program] [File: Track specific action items.xlsx] ised Quality track schedule with recovery milestones and share with steering committee. | 2026-08-19 00:00:00 | Impl. PM
+--- Sheet: Supplier Collaboration ---
+Action ID | Action Item Description | Target Date | Owner
+SC-1 | Escalate supplier availability blockage to customer CXO / executive sponsor. Mandate named supplier SMEs with $\ge$ 40% time commitment via formal SLA. | 2026-08-18 00:00:00 | Cust. Exec Sponsor
+SC-2 | If CXO escala

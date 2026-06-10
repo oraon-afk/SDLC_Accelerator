@@ -40,21 +40,21 @@ const TABS: {
     label: 'Risks',
     shortLabel: 'Risks',
     icon: ShieldAlert,
-    badge: (r) => r.risks.length,
+    badge: (r) => (r.risks ?? []).length,
   },
   {
     id: 'actions',
     label: 'Action Tracker',
     shortLabel: 'Actions',
     icon: ClipboardList,
-    badge: (r) => r.action_tracker.overdue_actions > 0 ? `${r.action_tracker.overdue_actions} overdue` : r.top_actions.length,
+    badge: (r) => r.action_tracker?.overdue_actions > 0 ? `${r.action_tracker.overdue_actions} overdue` : (r.top_actions ?? []).length,
   },
   {
     id: 'schedule',
     label: 'Schedule Alerts',
     shortLabel: 'Schedule',
     icon: Calendar,
-    badge: (r) => r.schedule_alerts.length,
+    badge: (r) => (r.schedule_alerts ?? []).length,
   },
 
   {
@@ -113,7 +113,7 @@ export default function ResultsDashboard({ result, onBack, onRegenerate, isRegen
           </div>
         </div>
         <p className="text-xs text-brand-light/50">
-          Analysed {result.source_artifacts.length} artifact{result.source_artifacts.length !== 1 ? 's' : ''}
+          Analysed {(result.source_artifacts ?? []).length} artifact{(result.source_artifacts ?? []).length !== 1 ? 's' : ''}
           {' · '}
           {new Date(result.analysis_timestamp).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
         </p>

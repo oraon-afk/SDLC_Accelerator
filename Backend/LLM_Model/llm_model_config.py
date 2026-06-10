@@ -9,6 +9,7 @@ class RequestData(BaseModel):
     file: Optional[str] = ""
     content: Optional[str] = ""
     prompt: str
+    json_mode: Optional[bool] = False
 
 # Local Ollama address
 OLLAMA_URL = "http://127.0.0.1:11434"
@@ -55,10 +56,16 @@ def process_request(data: RequestData) -> str:
     else:
         raise ValueError("Invalid content type")
     
-    llm = ChatOllama(
-        model=model,
-        base_url=OLLAMA_URL
-    )
+    kwargs = {
+        "model": model,
+        "base_url": OLLAMA_URL,
+        "num_ctx": 16384,
+        "temperature": 0.0
+    }
+    if getattr(data, "json_mode", False):
+        kwargs["format"] = "json"
+        
+    llm = ChatOllama(**kwargs)
 
     message_content = data.prompt
     if data.content:
