@@ -347,7 +347,7 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
                 aria-label="Powered by GPT-4o and Claude 3.5"
               >
                 <Zap className="w-3 h-3 text-brand-accent" aria-hidden="true" />
-                <span className="text-xs font-medium text-brand-light">GPT‑4o · Claude 3.5</span>
+                <span className="text-xs font-medium text-brand-light">Local LLM Model</span>
               </div>
               <button className="p-2 text-brand-light/60 hover:text-white transition-colors relative">
                 <Bell className="w-5 h-5" />
