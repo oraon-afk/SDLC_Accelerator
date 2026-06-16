@@ -102,10 +102,6 @@ def resolve_project_folder_name(project_name: str) -> str:
         if d.lower() == name_lower or d.lower().replace(" ", "_") == name_lower.replace(" ", "_"):
             return d
             
-    # Fallback to the first directory if only one is available
-    if len(dirs) == 1:
-        return dirs[0]
-        
     return project_name
 
 def on_the_fly_scan_and_index(project_name: str, vector_store: LocalVectorStore) -> List[str]:

@@ -23,6 +23,7 @@ interface Props {
   }) => void;
   isProcessing: boolean;
   processingStep: string;
+  hasIndexedFiles?: boolean;
 }
 
 const DEFAULT_MODULES: AnalysisModules = {
@@ -32,7 +33,7 @@ const DEFAULT_MODULES: AnalysisModules = {
   escalationPrediction: true,
 };
 
-export default function IntelliPMWorkspace({ onAnalysisStart, isProcessing, processingStep }: Props) {
+export default function IntelliPMWorkspace({ onAnalysisStart, isProcessing, processingStep, hasIndexedFiles = false }: Props) {
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [notes, setNotes] = useState('');
   const [modules, setModules] = useState<AnalysisModules>(DEFAULT_MODULES);
@@ -41,7 +42,7 @@ export default function IntelliPMWorkspace({ onAnalysisStart, isProcessing, proc
   const [showConfig, setShowConfig] = useState(true);
 
   const atLeastOneEnabled = Object.values(modules).some(Boolean);
-  const hasInput = files.some((f) => f.status === 'ready') || notes.trim().length > 0;
+  const hasInput = files.some((f) => f.status === 'ready') || notes.trim().length > 0 || hasIndexedFiles;
   const canRun = hasInput && atLeastOneEnabled && !isProcessing;
 
   const handleRun = () => {
@@ -207,7 +208,7 @@ export default function IntelliPMWorkspace({ onAnalysisStart, isProcessing, proc
       {!hasInput && (
         <p role="alert" className="text-xs text-brand-light/60 flex items-center gap-1.5">
           <span aria-hidden="true">ℹ️</span>
-          Please upload at least one artifact or enter text in the notes area to proceed.
+          Please upload at least one artifact, enter notes, or verify that the project has indexed files to proceed.
         </p>
       )}
 

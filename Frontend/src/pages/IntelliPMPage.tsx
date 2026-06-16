@@ -49,6 +49,7 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [lastPayload, setLastPayload] = useState<any>(null);
+  const [hasIndexedFiles, setHasIndexedFiles] = useState(false);
 
   // Load projects from localStorage (Runtime only)
   const [projects] = useState<any[]>(() => {
@@ -470,12 +471,16 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
                       onAnalysisStart={handleAnalysisStart}
                       isProcessing={false}
                       processingStep={processingStep}
+                      hasIndexedFiles={hasIndexedFiles}
                     />
                   </div>
 
                   {/* Right Column: Project Documents Panel */}
                   <div className="bg-brand-primary/5 border border-brand-primary/30 rounded-2xl shadow-xl p-5 sm:p-6 backdrop-blur-md flex flex-col">
-                    <ProjectDocumentsPanel projectName={projectName} />
+                    <ProjectDocumentsPanel 
+                      projectName={projectName} 
+                      onFilesChange={(files) => setHasIndexedFiles(files.length > 0)}
+                    />
                   </div>
                 </div>
               )}

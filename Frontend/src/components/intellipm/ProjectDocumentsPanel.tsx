@@ -3,6 +3,7 @@ import { Upload, FileText, Loader2, CheckCircle, AlertCircle, Calendar, FileDown
 
 interface ProjectDocumentsPanelProps {
   projectName: string;
+  onFilesChange?: (files: ProjectFile[], lastVectorized: number | null) => void;
 }
 
 interface ProjectFile {
@@ -11,7 +12,7 @@ interface ProjectFile {
   last_modified: number;
 }
 
-export default function ProjectDocumentsPanel({ projectName }: ProjectDocumentsPanelProps) {
+export default function ProjectDocumentsPanel({ projectName, onFilesChange }: ProjectDocumentsPanelProps) {
   const [files, setFiles] = useState<ProjectFile[]>([]);
   const [lastVectorized, setLastVectorized] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,8 +28,11 @@ export default function ProjectDocumentsPanel({ projectName }: ProjectDocumentsP
       const response = await fetch(`http://localhost:8000/api/projects/${encodeURIComponent(projectName)}/files`);
       if (!response.ok) throw new Error('Failed to retrieve project files');
       const data = await response.json();
-      setFiles(data.files || []);
-      setLastVectorized(data.last_vectorized || null);
+      const newFiles = data.files || [];
+      const newLastVectorized = data.last_vectorized || null;
+      setFiles(newFiles);
+      setLastVectorized(newLastVectorized);
+      if (onFilesChange) onFilesChange(newFiles, newLastVectorized);
     } catch (error) {
       console.error('Error fetching project documents:', error);
     } finally {
@@ -37,6 +41,9 @@ export default function ProjectDocumentsPanel({ projectName }: ProjectDocumentsP
   };
 
   useEffect(() => {
+    setFiles([]);
+    setLastVectorized(null);
+    if (onFilesChange) onFilesChange([], null);
     fetchProjectFiles();
     setUploadStatus(null);
   }, [projectName]);
@@ -68,8 +75,11 @@ export default function ProjectDocumentsPanel({ projectName }: ProjectDocumentsP
       }
 
       const data = await response.json();
-      setFiles(data.files || []);
-      setLastVectorized(data.last_vectorized || null);
+      const newFiles = data.files || [];
+      const newLastVectorized = data.last_vectorized || null;
+      setFiles(newFiles);
+      setLastVectorized(newLastVectorized);
+      if (onFilesChange) onFilesChange(newFiles, newLastVectorized);
       setUploadStatus({
         type: 'success',
         message: `File "${file.name}" uploaded and indexed successfully.`,
