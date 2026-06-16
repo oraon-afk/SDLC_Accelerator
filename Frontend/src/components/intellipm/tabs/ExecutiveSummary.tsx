@@ -24,6 +24,29 @@ function HealthIndicator({ label, value }: { label: string; value: string }) {
   );
 }
 
+function getSentimentStyles(sentiment: string | undefined) {
+  if (!sentiment) {
+    return {
+      classes: 'bg-slate-500/10 border-slate-500/30 text-slate-300'
+    };
+  }
+  const clean = sentiment.toLowerCase();
+  if (clean.includes('positive')) {
+    return {
+      classes: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+    };
+  } else if (clean.includes('negative')) {
+    return {
+      classes: 'bg-rose-500/10 border-rose-500/30 text-rose-400'
+    };
+  } else {
+    // Neutral or fallback
+    return {
+      classes: 'bg-slate-500/10 border-slate-500/30 text-slate-300'
+    };
+  }
+}
+
 export default function ExecutiveSummary({ result, onTabChange }: Props) {
   const {
     project_health_summary,
@@ -111,9 +134,20 @@ export default function ExecutiveSummary({ result, onTabChange }: Props) {
           <div className="space-y-3.5">
             {document_summary.map((item, idx) => (
               <div key={idx} className="p-3.5 rounded-xl bg-brand-primary/10 border border-brand-primary/20 space-y-1.5 hover:border-brand-accent transition-all duration-200">
-                <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-brand-accent flex-shrink-0" />
-                  <span className="text-sm font-bold text-white font-mono truncate">{item.file_name}</span>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <FileText className="w-4 h-4 text-brand-accent flex-shrink-0" />
+                    <span className="text-sm font-bold text-white font-mono truncate">{item.file_name}</span>
+                  </div>
+                  {item.sentiment && (
+                    <span
+                      className={`text-xs px-2 py-0.5 rounded-md border font-medium whitespace-normal break-words max-w-[300px] flex-shrink-0 ${getSentimentStyles(item.sentiment).classes}`}
+                      role="status"
+                      aria-label={`Document Sentiment: ${item.sentiment}`}
+                    >
+                      {item.sentiment}
+                    </span>
+                  )}
                 </div>
                 <p className="text-xs text-brand-light/90 leading-relaxed whitespace-pre-line">
                   {item.summary}

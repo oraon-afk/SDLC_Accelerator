@@ -1,6 +1,6 @@
-export type HealthColor = 'Green' | 'Yellow' | 'Red';
+export type HealthColor = 'Green' | 'Yellow' | 'Red' | 'NA';
 export type ImpactLevel = 'High' | 'Medium' | 'Low';
-export type EscalationLikelihood = 'High' | 'Medium' | 'Low';
+export type EscalationLikelihood = 'High' | 'Medium' | 'Low' | 'NA';
 export type PriorityLevel = 'High' | 'Medium' | 'Low';
 export type TimeHorizon = 'Next 2 weeks' | '1 month' | 'Entire project';
 export type TabId = 'summary' | 'risks' | 'actions' | 'schedule' | 'export';
@@ -64,6 +64,7 @@ export interface ActionTracker {
 export interface DocumentSummaryItem {
   file_name: string;
   summary: string;
+  sentiment?: string;
 }
 
 export interface AnalysisResult {
@@ -76,6 +77,7 @@ export interface AnalysisResult {
       schedule: string;
       resources: string;
       quality: string;
+      budget?: string;
     };
   };
   top_actions: TopAction[];
@@ -96,4 +98,11 @@ export interface AnalysisResult {
     schedule_analysis: number;
   };
   source_artifacts: string[];
+  budget_variance?: {
+    total_budget: number;
+    actual_to_date: number;
+    forecast_at_completion: number;
+    variance_percent: number;
+    major_variance_reasons: string[];
+  };
 }

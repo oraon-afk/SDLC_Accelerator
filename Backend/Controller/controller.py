@@ -1190,7 +1190,12 @@ async def analyze_project_payload(payload: AnalysisRequestPayload):
             file_path = os.path.join(project_dir, file_name)
             if not os.path.exists(file_path):
                 print(f"[Pipeline Warning] File not found on disk: {file_path}")
-                return {"file_name": file_name, "summary": "File could not be found on the server disk."}
+                return {
+                    "file_name": file_name,
+                    "summary": "File could not be found on the server disk.",
+                    "sentiment": "Neutral",
+                    "risks": []
+                }
             try:
                 print(f"[Pipeline] Extracting content from file: {file_path}")
                 # run blocking parse in thread pool
@@ -1199,24 +1204,92 @@ async def analyze_project_payload(payload: AnalysisRequestPayload):
                     _LLM_EXECUTOR, document_parsers.parse_document, file_path, project_dir, OLLAMA_URL
                 )
                 if not file_text:
-                    return {"file_name": file_name, "summary": "Document content was empty."}
+                    return {
+                        "file_name": file_name,
+                        "summary": "Document content was empty.",
+                        "sentiment": "Neutral",
+                        "risks": []
+                    }
 
                 # PERF: cap at 4000 chars (was 8000) – still enough signal, half the tokens
                 snippet = file_text[:4000]
                 summary_prompt = (
-                    f"You are a PMO AI assistant. Summarize the key points, objectives, statuses, and issues "
-                    f"from the document below.\nDocument: {file_name}\n\nContent:\n{snippet}\n\n"
-                    f"Respond ONLY with the summary. No markdown headers or greetings."
+                    f"You are a PMO AI assistant. Analyze the document below.\n"
+                    f"Provide:\n"
+                    f"1. A concise summary of the key points, objectives, statuses, and issues.\n"
+                    f"2. A sentiment analysis classification (Positive, Neutral, or Negative) with brief justification.\n"
+                    f"3. A list of any specific risks or risk factors identified in this document.\n\n"
+                    f"Document: {file_name}\n\n"
+                    f"Content:\n{snippet}\n\n"
+                    f"You MUST respond with a JSON object in the following format:\n"
+                    f"{{\n"
+                    f"  \"summary\": \"<concise summary string>\",\n"
+                    f"  \"sentiment\": \"Positive | Neutral | Negative (e.g. Negative - due to team scheduling delays)\",\n"
+                    f"  \"risks\": [\n"
+                    f"    {{\n"
+                    f"      \"risk\": \"<description of risk>\",\n"
+                    f"      \"impact\": \"High | Medium | Low\",\n"
+                    f"      \"probability\": \"High | Medium | Low\",\n"
+                    f"      \"mitigation\": \"<mitigation or NA>\",\n"
+                    f"      \"owner\": \"<owner or NA>\"\n"
+                    f"    }}\n"
+                    f"  ]\n"
+                    f"}}"
                 )
                 llm_req = llm_model_config.RequestData(
-                    content_type="text", file="", content="", prompt=summary_prompt
+                    content_type="text", file="", content="", prompt=summary_prompt, json_mode=True
                 )
-                print(f"[Pipeline] Invoking LLM summary for: {file_name}")
+                print(f"[Pipeline] Invoking LLM summary and sentiment analysis for: {file_name}")
                 summary_res = await _llm_call(llm_req)
-                return {"file_name": file_name, "summary": summary_res.strip()}
+                
+                try:
+                    res_raw = summary_res.strip()
+                    # Clean JSON wrapper if present
+                    si = res_raw.find('{'); ei = res_raw.rfind('}')
+                    if si != -1 and ei != -1:
+                        res_json = json.loads(res_raw[si:ei + 1])
+                    else:
+                        res_json = json.loads(res_raw)
+                        
+                    summary_text = res_json.get("summary", "")
+                    sentiment_text = res_json.get("sentiment", "Neutral")
+                    doc_risks = res_json.get("risks", [])
+                    if not isinstance(doc_risks, list):
+                        doc_risks = []
+                except Exception as parse_err:
+                    print(f"[Pipeline Warning] Failed parsing summary JSON: {parse_err}")
+                    summary_text = summary_res.strip()
+                    sentiment_text = "Neutral"
+                    doc_risks = []
+                    
+                # Format doc_risks to match Risk schema
+                formatted_doc_risks = []
+                for r in doc_risks:
+                    if isinstance(r, dict) and r.get("risk"):
+                        formatted_doc_risks.append({
+                            "risk": r.get("risk"),
+                            "impact": r.get("impact") or "Medium",
+                            "probability": r.get("probability") or "Medium",
+                            "mitigation": r.get("mitigation") or "NA",
+                            "owner": r.get("owner") or "NA",
+                            "status": "Open",
+                            "source_file": file_name
+                        })
+                
+                return {
+                    "file_name": file_name,
+                    "summary": summary_text,
+                    "sentiment": sentiment_text,
+                    "risks": formatted_doc_risks
+                }
             except Exception as e:
                 print(f"[Pipeline Error] Failed parsing/summarizing {file_name}: {e}")
-                return {"file_name": file_name, "summary": f"Failed to parse or summarize: {e}"}
+                return {
+                    "file_name": file_name,
+                    "summary": f"Failed to parse or summarize: {e}",
+                    "sentiment": "Neutral",
+                    "risks": []
+                }
 
         # ------------------------------------------------------------------
         # Helper: build uploaded_docs_content synchronously (no LLM needed)
@@ -1331,8 +1404,21 @@ User Notes: {custom_notes}
             llm_risks_raw, known_source_files, grounded_risks, text_field="risk"
         )
 
-        # MERGE: grounded (authoritative) FIRST, then validated LLM additions
-        extracted_risks = grounded_risks + validated_llm_risks
+        # Extract risks identified during individual document analysis
+        summary_risks = []
+        if document_summary:
+            for item in document_summary:
+                doc_risks = item.get("risks", [])
+                if doc_risks:
+                    summary_risks.extend(doc_risks)
+
+        # Validate summary-level risks
+        validated_summary_risks = validate_llm_items(
+            summary_risks, known_source_files, grounded_risks + validated_llm_risks, text_field="risk"
+        )
+
+        # MERGE: grounded (authoritative) FIRST, then validated LLM additions and validated summary risks
+        extracted_risks = grounded_risks + validated_llm_risks + validated_summary_risks
         print(
             f"[Pipeline] Wave 1 complete – "
             f"{len(grounded_risks)} grounded + {len(validated_llm_risks)} LLM-augmented risks | "
@@ -1581,6 +1667,16 @@ Decisions: {decisions_str}
         sched_confidence  = 0.85 if extracted_schedule else 0.0
         overall_conf      = round((risk_confidence + action_confidence + sched_confidence) / 3, 2)
 
+        # Prepare document_summary for client (only return filename, summary, and sentiment)
+        formatted_doc_summary = []
+        if document_summary:
+            for item in document_summary:
+                formatted_doc_summary.append({
+                    "file_name": item.get("file_name", ""),
+                    "summary": item.get("summary", ""),
+                    "sentiment": item.get("sentiment", "Neutral")
+                })
+
         analysis_data = {
             "analysis_timestamp": time.strftime('%Y-%m-%dT%H:%M:%SZ'),
             "priority_level": analysis_priority,
@@ -1593,7 +1689,7 @@ Decisions: {decisions_str}
                 "avg_age_open_days": avg_age,
                 "actions_by_owner": actions_by_owner
             },
-            "document_summary": document_summary,
+            "document_summary": formatted_doc_summary,
             "risks": extracted_risks,
             "schedule_alerts": extracted_schedule,
             "escalation_prediction": extracted_escalation,
