@@ -22,7 +22,7 @@ from LLM_Model import llm_model_config
 from Model.vector_store import LocalVectorStore
 from Embedd_Model.embed_model_config import get_ollama_embedding, OLLAMA_URL
 from Resources import document_parsers
-from Resources.doc_intelligence import build_grounded_fact_base, validate_llm_items
+from Resources.doc_intelligence import build_grounded_fact_base, validate_llm_items, _normalise_text, _similarity
 from project_scheduler import chunk_text
 
 app = FastAPI(title="SDLC Accelerator Backend API", version="1.0.0")
@@ -1523,7 +1523,30 @@ Project: {project_name} | Priority: {analysis_priority}
         validated_llm_actions = validate_llm_items(
             llm_actions_raw, known_source_files, grounded_actions, text_field="action"
         )
-        extracted_actions = grounded_actions + validated_llm_actions
+        
+        # Convert suggested actions from risks into action items to be merged into Action Tracker
+        risk_actions = []
+        existing_action_texts = {
+            _normalise_text(a.get("action", "")) for a in (grounded_actions + validated_llm_actions)
+        }
+        for r in extracted_risks:
+            s_action = r.get("suggested_action")
+            if s_action and s_action.strip().upper() != "NA":
+                norm_act = _normalise_text(s_action)
+                if norm_act not in existing_action_texts and not any(_similarity(norm_act, existing) > 0.70 for existing in existing_action_texts):
+                    action_item = {
+                        "action": s_action,
+                        "owner": r.get("owner") or "Unassigned",
+                        "due_date": "NA",
+                        "status": "Not Started",
+                        "age_days": 0,
+                        "priority": r.get("impact") or "Medium",
+                        "source_file": r.get("source_file") or "NA"
+                    }
+                    risk_actions.append(action_item)
+                    existing_action_texts.add(norm_act)
+                    
+        extracted_actions = grounded_actions + validated_llm_actions + risk_actions
 
         # Normalise age_days to int for all actions
         for a in extracted_actions:
