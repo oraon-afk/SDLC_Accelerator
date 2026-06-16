@@ -271,15 +271,23 @@ export default function RisksTab({ risks: initialRisks }: Props) {
                           </div>
                         </div>
                       ) : (
-                        <div className="flex items-start gap-2 group">
-                          <span className="text-xs leading-relaxed">{risk.mitigation}</span>
-                          <button
-                            onClick={() => startEdit(globalIdx, risk.mitigation)}
-                            className="flex-shrink-0 text-xs text-brand-accent opacity-0 group-hover:opacity-100 focus-visible:opacity-100 hover:text-brand-accent/80 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded transition-opacity"
-                            aria-label={`Edit mitigation for: ${risk.risk}`}
-                          >
-                            Edit
-                          </button>
+                        <div className="flex flex-col gap-1.5">
+                          <div className="flex items-start gap-2 group">
+                            <span className="text-xs leading-relaxed"><strong className="text-brand-light font-medium">Mitigation: </strong>{risk.mitigation}</span>
+                            <button
+                              onClick={() => startEdit(globalIdx, risk.mitigation)}
+                              className="flex-shrink-0 text-xs text-brand-accent opacity-0 group-hover:opacity-100 focus-visible:opacity-100 hover:text-brand-accent/80 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded transition-opacity"
+                              aria-label={`Edit mitigation for: ${risk.risk}`}
+                            >
+                              Edit
+                            </button>
+                          </div>
+                          {risk.suggested_action && risk.suggested_action !== 'NA' && (
+                            <div className="text-[11px] leading-relaxed text-brand-accent bg-brand-primary/10 border border-brand-primary/20 rounded-md p-2 mt-1.5 font-sans">
+                              <span className="font-bold text-white">Suggested Action: </span>
+                              {risk.suggested_action}
+                            </div>
+                          )}
                         </div>
                       )}
                     </td>

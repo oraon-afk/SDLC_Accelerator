@@ -39,6 +39,7 @@ export interface Risk {
   owner: string;
   status: string;
   source_file?: string;
+  suggested_action?: string;
 }
 
 export interface ScheduleAlert {

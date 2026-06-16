@@ -51,10 +51,7 @@ def run_test():
             timeHorizon="Entire project",
             notes="Look closely at the delayed UAT sign-off and the Solution/Technical architect staffing gaps discussed in the weekly reviews."
         ),
-        uploaded_files=[
-            UploadedFileMeta(name="Plm Program Weekly Review Meeting minutes.docx", size=92212, type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
-            UploadedFileMeta(name="Master RAID Tracker.csv", size=1393, type="text/csv")
-        ]
+        uploaded_files=[]
     )
 
     print("[Pipeline Test] Triggering analyze_project_payload handler...")

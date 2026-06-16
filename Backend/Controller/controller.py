@@ -883,6 +883,8 @@ def sanitize_analysis_response(data: Any, default_priority: str, default_artifac
             item["status"] = "NA"
         if "source_file" not in item or not isinstance(item["source_file"], str):
             item["source_file"] = "NA"
+        if "suggested_action" not in item or not isinstance(item["suggested_action"], str):
+            item["suggested_action"] = "NA"
             
     # schedule_alerts
     if "schedule_alerts" not in data or not isinstance(data["schedule_alerts"], list):
@@ -973,6 +975,11 @@ async def analyze_project_payload(payload: AnalysisRequestPayload):
         # Resolve the project name early so that ALL operations (disk scan, DB lookup) use the correct name
         resolved_folder_name = resolve_project_folder_name(raw_project_name)
         
+        backend_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        workspace_root = os.path.dirname(backend_root)
+        resource_docs_root = os.path.join(workspace_root, "Resource Docs")
+        project_dir = os.path.join(resource_docs_root, resolved_folder_name)
+        
         print(f"\n====================================================")
         print(f"[PIPELINE START] Analyzing project: '{raw_project_name}' (resolved to '{resolved_folder_name}')")
         print(f"====================================================")
@@ -980,6 +987,35 @@ async def analyze_project_payload(payload: AnalysisRequestPayload):
         # Phase 1: On-the-Fly Scan and Indexing — use the resolved folder name so the disk path matches
         v_store = LocalVectorStore()
         analyzed_artifacts = on_the_fly_scan_and_index(resolved_folder_name, v_store)
+        
+        # Determine the files to analyze (uploaded files in this request, fallback to all project files on disk)
+        files_to_analyze = []
+        if payload.uploaded_files and len(payload.uploaded_files) > 0:
+            files_to_analyze = payload.uploaded_files
+            print(f"[Pipeline] Analyzing {len(files_to_analyze)} uploaded files.")
+        elif analyzed_artifacts:
+            # Fallback to all files detected in the project folder
+            filtered_artifacts = [
+                f for f in analyzed_artifacts 
+                if not f.startswith("~$") and not f.startswith(".")
+            ]
+            for fname in filtered_artifacts:
+                fpath = os.path.join(project_dir, fname)
+                size = 0
+                if os.path.exists(fpath):
+                    size = os.path.getsize(fpath)
+                ext = os.path.splitext(fname.lower())[1]
+                ftype = "application/octet-stream"
+                if ext == ".docx":
+                    ftype = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                elif ext == ".csv":
+                    ftype = "text/csv"
+                elif ext == ".pdf":
+                    ftype = "application/pdf"
+                elif ext in (".xlsx", ".xls"):
+                    ftype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                files_to_analyze.append(UploadedFileMeta(name=fname, size=size, type=ftype))
+            print(f"[Pipeline] Fallback: Analyzing {len(files_to_analyze)} files existing in project folder.")
                 # Phase 2: Retrieve all contextual chunks from SQLite vector db
         # Try with resolved name first, then fall back to the raw payload name
         print(f"[Pipeline] Retrieving contextual chunks from Vector DB...")
@@ -1231,7 +1267,8 @@ async def analyze_project_payload(payload: AnalysisRequestPayload):
                     f"      \"impact\": \"High | Medium | Low\",\n"
                     f"      \"probability\": \"High | Medium | Low\",\n"
                     f"      \"mitigation\": \"<mitigation or NA>\",\n"
-                    f"      \"owner\": \"<owner or NA>\"\n"
+                    f"      \"owner\": \"<owner or NA>\",\n"
+                    f"      \"suggested_action\": \"<suggested action item to address this risk or NA>\"\n"
                     f"    }}\n"
                     f"  ]\n"
                     f"}}"
@@ -1273,7 +1310,8 @@ async def analyze_project_payload(payload: AnalysisRequestPayload):
                             "mitigation": r.get("mitigation") or "NA",
                             "owner": r.get("owner") or "NA",
                             "status": "Open",
-                            "source_file": file_name
+                            "source_file": file_name,
+                            "suggested_action": r.get("suggested_action") or "NA"
                         })
                 
                 return {
@@ -1296,9 +1334,9 @@ async def analyze_project_payload(payload: AnalysisRequestPayload):
         # ------------------------------------------------------------------
         def _build_uploaded_content() -> str:
             parts = []
-            if not payload.uploaded_files:
+            if not files_to_analyze:
                 return ""
-            for file_meta in payload.uploaded_files:
+            for file_meta in files_to_analyze:
                 file_path = os.path.join(project_dir, file_meta.name)
                 if not os.path.exists(file_path):
                     continue
@@ -1323,16 +1361,16 @@ async def analyze_project_payload(payload: AnalysisRequestPayload):
         uploaded_docs_content = ""
         document_summary = []
 
-        if payload.uploaded_files and len(payload.uploaded_files) > 0:
-            print(f"[Pipeline] Wave 1 – summarising {len(payload.uploaded_files)} files in parallel with Risk Analysis...")
+        if files_to_analyze and len(files_to_analyze) > 0:
+            print(f"[Pipeline] Wave 1 – summarising {len(files_to_analyze)} files in parallel with Risk Analysis...")
             # Kick off all file summaries concurrently
-            summary_tasks = [asyncio.ensure_future(_summarize_file(f)) for f in payload.uploaded_files]
+            summary_tasks = [asyncio.ensure_future(_summarize_file(f)) for f in files_to_analyze]
 
             # Build raw content for LLM context in background thread (parse only, no LLM)
             loop = asyncio.get_event_loop()
             uploaded_content_future = loop.run_in_executor(_LLM_EXECUTOR, _build_uploaded_content)
         else:
-            print("[Pipeline] No files uploaded. Bypassing document summarization pipeline.")
+            print("[Pipeline] No files found to analyze. Bypassing document summarization pipeline.")
             document_summary = [{"file_name": "NA", "summary": "NA"}]
             summary_tasks = []
             uploaded_content_future = None
@@ -1371,7 +1409,7 @@ User Notes: {custom_notes}
 {doc_context[:8000]}
 
 ### OUTPUT — JSON array of ADDITIONAL risks not already in VERIFIED RISKS:
-[{{"risk":"<exact quote or close paraphrase from doc>","impact":"High|Medium|Low","probability":"High|Medium|Low","mitigation":"<from doc or NA>","owner":"<from doc or NA>","status":"Open|Monitoring|In Progress|Escalated","source_file":"<exact filename>"}}]
+[{{"risk":"<exact quote or close paraphrase from doc>","impact":"High|Medium|Low","probability":"High|Medium|Low","mitigation":"<from doc or NA>","owner":"<from doc or NA>","status":"Open|Monitoring|In Progress|Escalated","source_file":"<exact filename>","suggested_action":"<suggested action item to address this risk or NA>"}}]
 """
         risk_llm_req = llm_model_config.RequestData(
             content_type="text", file="", content="", prompt=risk_augment_prompt, json_mode=True
