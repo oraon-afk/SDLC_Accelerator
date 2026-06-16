@@ -5,6 +5,7 @@ import type { Persona } from '../types';
 import { personaInfo, agents } from '../data/agents';
 import IntelliPMWorkspace from '../components/intellipm/IntelliPMWorkspace';
 import ResultsDashboard from '../components/intellipm/ResultsDashboard';
+import ProjectDocumentsPanel from '../components/intellipm/ProjectDocumentsPanel';
 import { emptyAnalysisResult } from '../data/mockAnalysisResult';
 import { Brain, Zap, Home, LogOut, Menu, X, Bell, ClipboardList, Search, Shield, Layers, CheckSquare, FileText } from 'lucide-react';
 
@@ -131,6 +132,8 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
   });
 
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id || '');
+  const selectedProject = projects.find((p) => p.id === selectedProjectId);
+  const projectName = selectedProject ? selectedProject.name : '';
 
   const handleAnalysisStart = useCallback(
     async (config: {
@@ -458,30 +461,44 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
             )}
 
             {/* Content Card */}
-            <div className="bg-brand-primary/5 border border-brand-primary/30 rounded-2xl shadow-xl p-5 sm:p-6 lg:p-8 backdrop-blur-md">
+            <div>
               {appState === 'workspace' && (
-                <IntelliPMWorkspace
-                  onAnalysisStart={handleAnalysisStart}
-                  isProcessing={false}
-                  processingStep={processingStep}
-                />
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* Left Column: Workspace Form */}
+                  <div className="lg:col-span-2 bg-brand-primary/5 border border-brand-primary/30 rounded-2xl shadow-xl p-5 sm:p-6 lg:p-8 backdrop-blur-md">
+                    <IntelliPMWorkspace
+                      onAnalysisStart={handleAnalysisStart}
+                      isProcessing={false}
+                      processingStep={processingStep}
+                    />
+                  </div>
+
+                  {/* Right Column: Project Documents Panel */}
+                  <div className="bg-brand-primary/5 border border-brand-primary/30 rounded-2xl shadow-xl p-5 sm:p-6 backdrop-blur-md flex flex-col">
+                    <ProjectDocumentsPanel projectName={projectName} />
+                  </div>
+                </div>
               )}
 
               {appState === 'processing' && (
-                <IntelliPMWorkspace
-                  onAnalysisStart={handleAnalysisStart}
-                  isProcessing={true}
-                  processingStep={processingStep}
-                />
+                <div className="bg-brand-primary/5 border border-brand-primary/30 rounded-2xl shadow-xl p-5 sm:p-6 lg:p-8 backdrop-blur-md">
+                  <IntelliPMWorkspace
+                    onAnalysisStart={handleAnalysisStart}
+                    isProcessing={true}
+                    processingStep={processingStep}
+                  />
+                </div>
               )}
 
               {appState === 'results' && result && (
-                <ResultsDashboard
-                  result={result}
-                  onBack={handleBack}
-                  onRegenerate={handleRegenerate}
-                  isRegenerating={isRegenerating}
-                />
+                <div className="bg-brand-primary/5 border border-brand-primary/30 rounded-2xl shadow-xl p-5 sm:p-6 lg:p-8 backdrop-blur-md">
+                  <ResultsDashboard
+                    result={result}
+                    onBack={handleBack}
+                    onRegenerate={handleRegenerate}
+                    isRegenerating={isRegenerating}
+                  />
+                </div>
               )}
             </div>
           </div>

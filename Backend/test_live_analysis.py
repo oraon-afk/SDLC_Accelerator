@@ -60,7 +60,8 @@ def run_test():
     print("[Pipeline Test] Triggering analyze_project_payload handler...")
     
     # Call the actual pipeline directly in Python
-    result = analyze_project_payload(payload)
+    import asyncio
+    result = asyncio.run(analyze_project_payload(payload))
     
     print("\n[Pipeline Test] COMPLETED successfully. Analysis Result JSON output:")
     print("----------------------------------------------------")

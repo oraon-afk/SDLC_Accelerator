@@ -7,9 +7,10 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from typing import Optional, Dict, List, Any, TypedDict
 from langgraph.graph import StateGraph, END
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import shutil
 
 # Shared thread-pool for parallel LLM inference calls (sync LLM client → run in threads)
 _LLM_EXECUTOR = ThreadPoolExecutor(max_workers=4)
@@ -660,6 +661,121 @@ def search_project_documents(project_name: str, query: str):
             "results": search_results
         }
     except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/projects/{project_name}/files", tags=["Project_Files"])
+def get_project_files(project_name: str):
+    try:
+        resolved_name = resolve_project_folder_name(project_name)
+        v_store = LocalVectorStore()
+        all_tracked = v_store.get_all_tracked_files()
+        project_files = []
+        last_vectorized = None
+        for f in all_tracked:
+            if f["project_name"].lower() == resolved_name.lower():
+                project_files.append({
+                    "name": f["file_name"],
+                    "path": f["file_path"],
+                    "last_modified": f["last_modified"]
+                })
+                if last_vectorized is None or f["last_modified"] > last_vectorized:
+                    last_vectorized = f["last_modified"]
+        return {
+            "project_name": resolved_name,
+            "files": project_files,
+            "last_vectorized": last_vectorized
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/projects/{project_name}/upload", tags=["Project_Files"])
+async def upload_project_file(project_name: str, file: UploadFile = File(...)):
+    try:
+        resolved_name = resolve_project_folder_name(project_name)
+        
+        # Determine directory
+        backend_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        workspace_root = os.path.dirname(backend_root)
+        resource_docs_root = os.path.join(workspace_root, "Resource Docs")
+        project_dir = os.path.join(resource_docs_root, resolved_name)
+        
+        # Ensure directory exists
+        os.makedirs(project_dir, exist_ok=True)
+        
+        final_path = os.path.join(project_dir, file.filename)
+        temp_path = os.path.join(project_dir, ".tmp_" + file.filename)
+        
+        # Write to temporary file first (prevents watcher conflict)
+        with open(temp_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+            
+        mtime = os.path.getmtime(temp_path)
+        f_hash = get_file_hash(temp_path)
+        
+        # Index the file on-the-fly using the temp file
+        v_store = LocalVectorStore()
+        
+        try:
+            # Parse text from temp path
+            content = document_parsers.parse_document(temp_path, project_dir, ollama_url=OLLAMA_URL)
+            
+            # Delete old chunks for this file under the final filename if they exist
+            v_store.delete_file_chunks(resolved_name, file.filename)
+            
+            if content and not content.startswith("Error") and not content.startswith("Unsupported"):
+                chunks = chunk_text(content)
+                for i, chunk in enumerate(chunks):
+                    scoped_chunk_text = f"[Project: {resolved_name}] [File: {file.filename}] {chunk}"
+                    embedding = get_ollama_embedding(scoped_chunk_text, ollama_url=OLLAMA_URL)
+                    
+                    v_store.add_chunk(
+                        project_name=resolved_name,
+                        file_name=file.filename,
+                        chunk_id=i,
+                        text_content=scoped_chunk_text,
+                        embedding=embedding
+                    )
+            
+            # Save file metadata tracking (referencing final filename and path)
+            v_store.track_file(
+                project_name=resolved_name,
+                file_name=file.filename,
+                file_path=final_path,
+                last_modified=mtime,
+                file_hash=f_hash
+            )
+            
+            # Rename temp file to final path (atomically replacing if exists)
+            os.replace(temp_path, final_path)
+            
+        except Exception as parse_err:
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
+            raise parse_err
+            
+        # Get updated files list
+        all_tracked = v_store.get_all_tracked_files()
+        project_files = []
+        last_vectorized = None
+        for f in all_tracked:
+            if f["project_name"].lower() == resolved_name.lower():
+                project_files.append({
+                    "name": f["file_name"],
+                    "path": f["file_path"],
+                    "last_modified": f["last_modified"]
+                })
+                if last_vectorized is None or f["last_modified"] > last_vectorized:
+                    last_vectorized = f["last_modified"]
+                    
+        return {
+            "status": "success",
+            "message": f"File '{file.filename}' uploaded and vectorized successfully.",
+            "files": project_files,
+            "last_vectorized": last_vectorized
+        }
+        
+    except Exception as e:
+        print(f"Error uploading and vectorizing file: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 def sanitize_analysis_response(data: Any, default_priority: str, default_artifacts: List[str], active_modules: Optional[List[str]] = None) -> Dict[str, Any]:
