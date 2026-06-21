@@ -1,8 +1,8 @@
 import { Persona } from '../types';
 import { personaInfo, agents } from '../data/agents';
 import { useNavigate } from 'react-router-dom';
-import { 
-  ClipboardList, Search, Shield, Layers, CheckSquare, 
+import {
+  ClipboardList, Search, Shield, Layers, CheckSquare,
   FileText, Activity, TrendingUp, LogOut, Upload, ChevronRight, Bell, Zap, Menu, X, AlertTriangle,
   Folder, Plus, Target, Users, DollarSign
 } from 'lucide-react';
@@ -120,18 +120,18 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
   const [newProjectName, setNewProjectName] = useState('');
   const [newBusinessGoal, setNewBusinessGoal] = useState('');
   const [newExpectedOutcome, setNewExpectedOutcome] = useState('');
-  
+
   // Lists / tags states
   const [newFeaturesIncluded, setNewFeaturesIncluded] = useState<string[]>([]);
   const [newFeaturesExcluded, setNewFeaturesExcluded] = useState<string[]>([]);
   const [newBusinessOwner, setNewBusinessOwner] = useState<string[]>([]);
   const [newTechnicalOwner, setNewTechnicalOwner] = useState<string[]>([]);
   const [newEndUsers, setNewEndUsers] = useState<string[]>([]);
-  
+
   const [newTeamSize, setNewTeamSize] = useState('');
   const [newCostEstimation, setNewCostEstimation] = useState('');
   const [newToolRequirements, setNewToolRequirements] = useState('');
-  
+
   const [newPerformanceTargets, setNewPerformanceTargets] = useState<string[]>([]);
   const [newUserAdoption, setNewUserAdoption] = useState<string[]>([]);
   const [newTimeReduction, setNewTimeReduction] = useState<string[]>([]);
@@ -202,17 +202,17 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
     setNewProjectName('');
     setNewBusinessGoal('');
     setNewExpectedOutcome('');
-    
+
     setNewFeaturesIncluded([]);
     setNewFeaturesExcluded([]);
     setNewBusinessOwner([]);
     setNewTechnicalOwner([]);
     setNewEndUsers([]);
-    
+
     setNewTeamSize('');
     setNewCostEstimation('');
     setNewToolRequirements('');
-    
+
     setNewPerformanceTargets([]);
     setNewUserAdoption([]);
     setNewTimeReduction([]);
@@ -238,7 +238,7 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
 
   return (
     <div className="min-h-screen bg-brand-dark flex overflow-hidden font-sans">
-      
+
       {/* Mobile sidebar overlay */}
       {isSidebarOpen && (
         <div className="fixed inset-0 bg-slate-900/50 z-20 lg:hidden" onClick={() => setIsSidebarOpen(false)} />
@@ -310,7 +310,7 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
             <button className="lg:hidden p-2 text-brand-light/80 hover:bg-brand-primary/20 rounded-lg" onClick={() => setIsSidebarOpen(true)}>
               <Menu className="w-5 h-5" />
             </button>
-            
+
             <div className="ml-auto flex items-center gap-4">
               <button className="p-2 text-brand-light/60 hover:text-brand-light transition-colors relative">
                 <Bell className="w-5 h-5" />
@@ -438,7 +438,7 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
                   <Plus className="w-4 h-4" /> Create Project
                 </button>
               </div>
-              
+
               {projects.length === 0 ? (
                 <div className="bg-brand-primary/5 rounded-2xl p-8 border border-brand-primary/30 text-center">
                   <p className="text-brand-light/60 text-sm">No projects created yet. Click "Create Project" to add your first project.</p>
@@ -1277,10 +1277,9 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
                         <div className="absolute left-2 top-6 bottom-[-24px] w-0.5 bg-brand-primary/30"></div>
                       )}
                       {/* Timeline dot */}
-                      <div className={`absolute left-0 top-1.5 w-4 h-4 rounded-full border-2 border-brand-dark shadow-sm ${
-                        activity.status === 'success' ? 'bg-emerald-400' : 'bg-amber-400'
-                      }`}></div>
-                      
+                      <div className={`absolute left-0 top-1.5 w-4 h-4 rounded-full border-2 border-brand-dark shadow-sm ${activity.status === 'success' ? 'bg-emerald-400' : 'bg-amber-400'
+                        }`}></div>
+
                       <div>
                         <p className="text-sm font-bold text-brand-light">{activity.agent}</p>
                         <p className="text-sm text-brand-light/70 mt-0.5">{activity.action}</p>
@@ -1298,9 +1297,9 @@ export default function Dashboard({ persona, onChangePersona }: DashboardProps) 
         </div>
       </main>
 
-      <ProjectChatbot 
-        projectName={projects[0]?.name} 
-        projectDetails={projects[0]} 
+      <ProjectChatbot
+        projectName={projects[0]?.name}
+        projectDetails={projects[0]}
         allProjects={projects}
       />
     </div>

@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Persona } from '../types';
 import { agents, personaInfo } from '../data/agents';
-import { 
-  Upload, FileText, Settings, Play, 
+import {
+  Upload, FileText, Settings, Play,
   Home, LogOut, Loader, CheckCircle, XCircle,
   ClipboardList, Search, Shield, Layers, CheckSquare
 } from 'lucide-react';
@@ -176,7 +176,7 @@ export default function AgentWorkspace({ persona, onChangePersona }: AgentWorksp
                 <Settings className="w-5 h-5 text-slate-700" />
                 <h3 className="text-sm font-semibold text-slate-900">Configuration</h3>
               </div>
-              
+
               {agentId === 'intelli-pm' && (
                 <div className="space-y-3">
                   <label className="flex items-center gap-2">
@@ -251,11 +251,10 @@ export default function AgentWorkspace({ persona, onChangePersona }: AgentWorksp
             <button
               onClick={handleRunAnalysis}
               disabled={uploadedFiles.length === 0 || status === 'analyzing'}
-              className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
-                uploadedFiles.length === 0 || status === 'analyzing'
+              className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${uploadedFiles.length === 0 || status === 'analyzing'
                   ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
                   : 'bg-blue-600 text-white hover:bg-blue-700'
-              }`}
+                }`}
             >
               {status === 'analyzing' ? (
                 <>

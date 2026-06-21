@@ -44,16 +44,16 @@ export default function PersonaSelection({ onSelectPersona }: PersonaSelectionPr
           <p className="text-xl text-slate-400 max-w-2xl mx-auto font-light">
             Select your role to access specialized AI-powered tools tailored for your workflow
           </p>
-          
+
           <div className="flex justify-center gap-4 mt-8">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-700 bg-slate-800/50 text-xs font-medium text-slate-300 backdrop-blur-sm">
+            {/* <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-700 bg-slate-800/50 text-xs font-medium text-slate-300 backdrop-blur-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               GPT-4o
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-700 bg-slate-800/50 text-xs font-medium text-slate-300 backdrop-blur-sm">
               <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" style={{ animationDelay: '0.5s' }}></span>
               Claude 3.5 Sonnet
-            </span>
+            </span> */}
           </div>
         </div>
 
@@ -63,7 +63,7 @@ export default function PersonaSelection({ onSelectPersona }: PersonaSelectionPr
             const info = personaInfo[persona];
             const Icon = personaIcons[persona];
             const availableAgents = agents.filter(a => a.persona === persona).length;
-            
+
             return (
               <button
                 key={persona}
@@ -72,20 +72,20 @@ export default function PersonaSelection({ onSelectPersona }: PersonaSelectionPr
                 style={{ animationDelay: `${0.2 + index * 0.1}s` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-300"></div>
-                
+
                 <div className="relative z-10">
                   <div className={`inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br ${info.color} rounded-xl mb-6 shadow-lg transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
                     <Icon className="w-7 h-7 text-white" />
                   </div>
-                  
+
                   <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">
                     {info.title}
                   </h3>
-                  
+
                   <p className="text-slate-400 text-sm mb-6 leading-relaxed">
                     {info.description}
                   </p>
-                  
+
                   <div className="flex items-center justify-between border-t border-brand-primary/30 pt-4">
                     <span className="text-xs font-medium text-brand-light/70 group-hover:text-brand-light transition-colors">
                       {availableAgents} {availableAgents === 1 ? 'Agent' : 'Agents'} Available

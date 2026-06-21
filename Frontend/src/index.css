@@ -1,27 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-light: #FFF0DC;
-  --color-brand-accent: #F0BB78;
-  --color-brand-primary: #543A14;
-  --color-brand-dark: #131010;
-}
+  /* Brand colors mapped to Corporate SaaS recommended style */
+  --color-brand-light: #EEF4FF;
+  --color-brand-accent: #14B8A6;
+  --color-brand-primary: #2563EB;
+  --color-brand-dark: #0B1220;
 
-/* WCAG-Compliant Professional Color Palette */
-:root {
-  /* Primary Colors - Deep Blue (4.5:1 contrast ratio on white) */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
-  
-  /* Secondary Colors - Slate */
+  /* Primary Colors - Blue Scale */
+  --color-primary-50: #EEF4FF;
+  --color-primary-100: #DCE8FF;
+  --color-primary-200: #B8D1FF;
+  --color-primary-300: #84B1FF;
+  --color-primary-400: #4F8CFF;
+  --color-primary-500: #2563EB;
+  --color-primary-600: #1D4ED8;
+  --color-primary-700: #1E40AF;
+  --color-primary-800: #1E3A8A;
+  --color-primary-900: #172554;
+
+  /* Secondary Colors - Slate Scale */
   --color-secondary-50: #f8fafc;
   --color-secondary-100: #f1f5f9;
   --color-secondary-200: #e2e8f0;
@@ -32,26 +30,114 @@
   --color-secondary-700: #334155;
   --color-secondary-800: #1e293b;
   --color-secondary-900: #0f172a;
-  
+
   /* Success - Emerald (WCAG AA compliant) */
-  --color-success-50: #ecfdf5;
-  --color-success-600: #059669;
-  --color-success-700: #047857;
-  
+  --color-success-light: #DCFCE7;
+  --color-success-50: #DCFCE7;
+  --color-success: #22C55E;
+  --color-success-600: #22C55E;
+  --color-success-700: #15803D;
+  --color-success-dark: #15803D;
+
   /* Warning - Amber (WCAG AA compliant) */
-  --color-warning-50: #fffbeb;
-  --color-warning-600: #d97706;
-  --color-warning-700: #b45309;
-  
+  --color-warning-light: #FEF3C7;
+  --color-warning-50: #FEF3C7;
+  --color-warning: #F59E0B;
+  --color-warning-600: #F59E0B;
+  --color-warning-700: #B45309;
+  --color-warning-dark: #B45309;
+
   /* Error - Red (WCAG AA compliant) */
-  --color-error-50: #fef2f2;
-  --color-error-600: #dc2626;
-  --color-error-700: #b91c1c;
+  --color-error-light: #FEE2E2;
+  --color-error-50: #FEE2E2;
+  --color-error: #EF4444;
+  --color-error-600: #EF4444;
+  --color-error-700: #B91C1C;
+  --color-error-dark: #B91C1C;
+
+  /* Info - Blue/Light Blue (WCAG AA compliant) */
+  --color-info-light: #DBEAFE;
+  --color-info-50: #DBEAFE;
+  --color-info: #3B82F6;
+  --color-info-600: #3B82F6;
+  --color-info-700: #1D4ED8;
+  --color-info-dark: #1D4ED8;
+}
+
+/* WCAG-Compliant Professional Color Palette & SaaS CSS variables */
+:root {
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
+
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+
+  --border: #CBD5E1;
+
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --error: #EF4444;
+
+  /* Preserve basic color properties */
+  --color-primary-50: #EEF4FF;
+  --color-primary-100: #DCE8FF;
+  --color-primary-200: #B8D1FF;
+  --color-primary-300: #84B1FF;
+  --color-primary-400: #4F8CFF;
+  --color-primary-500: #2563EB;
+  --color-primary-600: #1D4ED8;
+  --color-primary-700: #1E40AF;
+  --color-primary-800: #1E3A8A;
+  --color-primary-900: #172554;
+
+  --color-secondary-50: #f8fafc;
+  --color-secondary-100: #f1f5f9;
+  --color-secondary-200: #e2e8f0;
+  --color-secondary-300: #cbd5e1;
+  --color-secondary-400: #94a3b8;
+  --color-secondary-500: #64748b;
+  --color-secondary-600: #475569;
+  --color-secondary-700: #334155;
+  --color-secondary-800: #1e293b;
+  --color-secondary-900: #0f172a;
+
+  --color-success-50: #DCFCE7;
+  --color-success-600: #22C55E;
+  --color-success-700: #15803D;
+
+  --color-warning-50: #FEF3C7;
+  --color-warning-600: #F59E0B;
+  --color-warning-700: #B45309;
+
+  --color-error-50: #FEE2E2;
+  --color-error-600: #EF4444;
+  --color-error-700: #B91C1C;
+}
+
+[data-theme="dark"] {
+  --primary: #3B82F6;
+  --primary-hover: #60A5FA;
+
+  --bg-primary: #0B1220;
+  --bg-secondary: #111827;
+
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+
+  --border: #334155;
+
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --error: #EF4444;
 }
 
 /* Ensure good contrast for all text */
 body {
-  color: #1e293b; /* Slate 800 - high contrast on light backgrounds */
+  color: #1e293b;
+  /* Slate 800 - high contrast on light backgrounds */
   font-feature-settings: "kern" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -82,6 +168,7 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -94,23 +181,49 @@ html {
 
 /* Custom animations */
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .animate-fade-in {
@@ -147,9 +260,17 @@ html {
 }
 
 @keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Custom scrollbar */
@@ -174,6 +295,7 @@ html {
 
 /* Reduced motion accessibility */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -185,6 +307,7 @@ html {
 
 /* High contrast mode improvements */
 @media (forced-colors: active) {
+
   .bg-gradient-to-r,
   .bg-gradient-to-br {
     background: ButtonFace;

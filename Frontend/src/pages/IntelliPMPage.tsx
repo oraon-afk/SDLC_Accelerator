@@ -383,19 +383,19 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
                   <li key={step} className="flex items-center gap-1">
                     <span
                       className={`flex items-center gap-1 font-medium ${isActive
-                          ? 'text-brand-accent'
-                          : isPast
-                            ? 'text-brand-light/80'
-                            : 'text-brand-light/40'
+                        ? 'text-brand-accent'
+                        : isPast
+                          ? 'text-brand-light/80'
+                          : 'text-brand-light/40'
                         }`}
                       aria-current={isActive ? 'step' : undefined}
                     >
                       <span
                         className={`inline-flex w-5 h-5 rounded-full text-xs items-center justify-center font-bold flex-shrink-0 ${isActive
-                            ? 'bg-brand-accent text-brand-dark'
-                            : isPast
-                              ? 'bg-brand-primary text-brand-light'
-                              : 'bg-brand-dark border border-brand-primary/50 text-brand-light/40'
+                          ? 'bg-brand-accent text-brand-dark'
+                          : isPast
+                            ? 'bg-brand-primary text-brand-light'
+                            : 'bg-brand-dark border border-brand-primary/50 text-brand-light/40'
                           }`}
                         aria-hidden="true"
                       >
@@ -477,8 +477,8 @@ export default function IntelliPMPage({ persona, onChangePersona }: IntelliPMPag
 
                   {/* Right Column: Project Documents Panel */}
                   <div className="bg-brand-primary/5 border border-brand-primary/30 rounded-2xl shadow-xl p-5 sm:p-6 backdrop-blur-md flex flex-col">
-                    <ProjectDocumentsPanel 
-                      projectName={projectName} 
+                    <ProjectDocumentsPanel
+                      projectName={projectName}
                       onFilesChange={(files) => setHasIndexedFiles(files.length > 0)}
                     />
                   </div>

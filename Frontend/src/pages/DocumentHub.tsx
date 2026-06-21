@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Persona } from '../types';
 import { personaInfo } from '../data/agents';
-import { 
-  Upload, FileText, Home, LogOut, Search, Trash2, 
+import {
+  Upload, FileText, Home, LogOut, Search, Trash2,
   Download, Calendar, File
 } from 'lucide-react';
 
@@ -161,11 +161,10 @@ export default function DocumentHub({ persona, onChangePersona }: DocumentHubPro
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      doc.status === 'processed' ? 'bg-emerald-100 text-emerald-800' :
-                      doc.status === 'processing' ? 'bg-amber-100 text-amber-800' :
-                      'bg-slate-100 text-slate-800'
-                    }`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${doc.status === 'processed' ? 'bg-emerald-100 text-emerald-800' :
+                        doc.status === 'processing' ? 'bg-amber-100 text-amber-800' :
+                          'bg-slate-100 text-slate-800'
+                      }`}>
                       {doc.status}
                     </span>
                     <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">

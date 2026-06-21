@@ -28,13 +28,13 @@ function App() {
     <Router>
       <div className="min-h-screen bg-slate-50">
         <Routes>
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
-              selectedPersona ? 
-                (isAuthenticated ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />) : 
+              selectedPersona ?
+                (isAuthenticated ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />) :
                 <PersonaSelection onSelectPersona={setSelectedPersona} />
-            } 
+            }
           />
           <Route
             path="/login"
@@ -44,37 +44,37 @@ function App() {
                 <Navigate to="/" replace />
             }
           />
-          <Route 
-            path="/dashboard" 
+          <Route
+            path="/dashboard"
             element={
-              selectedPersona && isAuthenticated ? 
-                <Dashboard persona={selectedPersona} onChangePersona={handleLogout} /> : 
+              selectedPersona && isAuthenticated ?
+                <Dashboard persona={selectedPersona} onChangePersona={handleLogout} /> :
                 (selectedPersona ? <Navigate to="/login" replace /> : <Navigate to="/" replace />)
-            } 
+            }
           />
-          <Route 
-            path="/agent/intelli-pm" 
+          <Route
+            path="/agent/intelli-pm"
             element={
-              selectedPersona && isAuthenticated ? 
-                <IntelliPMPage persona={selectedPersona} onChangePersona={handleLogout} /> : 
+              selectedPersona && isAuthenticated ?
+                <IntelliPMPage persona={selectedPersona} onChangePersona={handleLogout} /> :
                 (selectedPersona ? <Navigate to="/login" replace /> : <Navigate to="/" replace />)
-            } 
+            }
           />
-          <Route 
-            path="/agent/:agentId" 
+          <Route
+            path="/agent/:agentId"
             element={
-              selectedPersona && isAuthenticated ? 
-                <AgentWorkspace persona={selectedPersona} onChangePersona={handleLogout} /> : 
+              selectedPersona && isAuthenticated ?
+                <AgentWorkspace persona={selectedPersona} onChangePersona={handleLogout} /> :
                 (selectedPersona ? <Navigate to="/login" replace /> : <Navigate to="/" replace />)
-            } 
+            }
           />
-          <Route 
-            path="/documents" 
+          <Route
+            path="/documents"
             element={
-              selectedPersona && isAuthenticated ? 
-                <DocumentHub persona={selectedPersona} onChangePersona={handleLogout} /> : 
+              selectedPersona && isAuthenticated ?
+                <DocumentHub persona={selectedPersona} onChangePersona={handleLogout} /> :
                 (selectedPersona ? <Navigate to="/login" replace /> : <Navigate to="/" replace />)
-            } 
+            }
           />
         </Routes>
       </div>
